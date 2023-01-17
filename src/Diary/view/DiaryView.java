@@ -2,22 +2,37 @@ package Diary.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
 import com.mommoo.flat.button.FlatButton;
+import com.mommoo.flat.component.FlatPanel;
+import com.mommoo.flat.text.label.FlatLabel;
+import com.mommoo.flat.text.textarea.FlatTextArea;
 import com.mommoo.flat.text.textfield.FlatTextField;
 
 import Diary.Controller.Trans;
 import Diary.model.MemberDAO;
 import Diary.model.MemberDTO;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import com.mommoo.flat.text.label.FlatLabel;
-import java.awt.Toolkit;
-import com.mommoo.flat.text.textarea.FlatTextArea;
 
 public class DiaryView extends JFrame {
 
@@ -26,28 +41,30 @@ public class DiaryView extends JFrame {
 	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("bg5.png"));
 	private ImageIcon logoim = new ImageIcon(DiaryView.class.getResource("logo6.png"));
 	private ImageIcon papagoImg = new ImageIcon(DiaryView.class.getResource("papa.png"));
-private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"));
+	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"));
+	private String[] category = {"쇼핑","배달","관리비","월급","용돈","로또당첨"};
+	private String[] type = {"수입","지출"};
 	private JPanel contentPane;
-	JPanel bgPanel = new JPanel();
+	private JPanel bgPanel = new JPanel();
 	private FlatLabel loginAlert = new FlatLabel();
-	JPanel signUpPanel = new JPanel();
-	JPanel logInpanel = new JPanel();
-	JPanel loginLabelpane = new JPanel();
-	JLabel loginLabel = new JLabel("SIGN IN");
-	JPanel IdPanel = new JPanel();
-	FlatTextField userID = new FlatTextField(false);
-	JPanel pwPanel = new JPanel();
-	FlatTextField userPw = new FlatTextField(true);
-	JPanel logoPanel = new JPanel();
-	JLabel logo = new JLabel("");
-	JPanel btnPanel = new JPanel();
-	FlatButton fltbtnLogin = new FlatButton();
-	FlatButton fltbtnSignup = new FlatButton();
-	FlatTextField signUp_userPassword = new FlatTextField(true);
-	FlatLabel signInAlert = new FlatLabel();
-	FlatLabel signUpAlert = new FlatLabel();
-	MemberDTO member;
-	MemberDTO logininfo;
+	private JPanel signUpPanel = new JPanel();
+	private JPanel logInpanel = new JPanel();
+	private JPanel loginLabelpane = new JPanel();
+	private JLabel loginLabel = new JLabel("SIGN IN");
+	private JPanel IdPanel = new JPanel();
+	private FlatTextField userID = new FlatTextField(false);
+	private JPanel pwPanel = new JPanel();
+	private FlatTextField userPw = new FlatTextField(true);
+	private JPanel logoPanel = new JPanel();
+	private JLabel logo = new JLabel("");
+	private JPanel btnPanel = new JPanel();
+	private FlatButton fltbtnLogin = new FlatButton();
+	private FlatButton fltbtnSignup = new FlatButton();
+	private FlatTextField signUp_userPassword = new FlatTextField(true);
+	private FlatLabel signInAlert = new FlatLabel();
+	private FlatLabel signUpAlert = new FlatLabel();
+	private MemberDTO member;
+	private MemberDTO logininfo;
 	private final JPanel menuPanel = new JPanel();
 	private final FlatLabel flatLabel = new FlatLabel();
 	private final FlatButton flatButton_2 = new FlatButton();
@@ -72,7 +89,26 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 	private final JPanel panel_1 = new JPanel();
 	private final JLabel transLangLogo = new JLabel("New label");
 	private final JLabel transLangBg = new JLabel("l");
-	
+	private JPanel accountPanel_3 = new JPanel();
+	private FlatTextField accountAmount = new FlatTextField(false);
+	private JComboBox accountCategory = new JComboBox(category);
+	private  FlatButton accountMemo = new FlatButton();
+	private final JLabel AccountLogo = new JLabel("");
+	private final JPanel accountPanel_2 = new JPanel();
+	private final JPanel accountPanel_1 = new JPanel();
+	private final JPanel accountPanel = new JPanel(false);
+	private final JLabel lblNewLabel_1_1 = new JLabel("가계부로고");
+	private final FlatPanel flatPanel = new FlatPanel();
+	private  FlatTextField flatTextField = new FlatTextField(false);
+	private final JLabel lblNewLabel_2 = new JLabel("가계부 작성");
+	private final JLabel lblNewLabel_3 = new JLabel("메모");
+	private final JLabel lblNewLabel_3_1 = new JLabel("금액");
+	private final JLabel lblNewLabel_3_1_1 = new JLabel("날짜");
+	private final JComboBox accountType = new JComboBox(type);
+	private final JPanel panel_4 = new JPanel();
+	private final JScrollPane scrollPane = new JScrollPane();
+	private final JLabel lblNewLabel = new JLabel("");
+
 	public DiaryView() {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/icon.png"));
@@ -84,6 +120,9 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 				menuPanel.setLayout(null);
 				menuPanel.setBounds(0, 0, 1034, 624);
 				menuPanel.setVisible(false);
+				accountPanel.setVisible(false);
+				transLang.setVisible(false);
+				
 				// 백그라운드 패널
 				bgPanel.setBounds(0, 0, 1034, 624);
 				contentPane.add(bgPanel);
@@ -172,18 +211,13 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 				fltbtnSignup.setText("SIGN UP");
 				fltbtnSignup.setBounds(75, 41, 202, 31);
 				btnPanel.add(fltbtnSignup);
-				//회원가입 알림
-				signInAlert.setForeground(Color.RED);
-				signInAlert.setFont(new Font("굴림", Font.BOLD, 12));
-				signInAlert.setBackground(new Color(251, 222, 224));
-				signInAlert.setBounds(76, 26, 201, 21);
-				btnPanel.add(signInAlert);
 				//회원가입 버튼 액션
 				fltbtnSignup.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(e.getSource()==fltbtnSignup) {
 							logInpanel.setVisible(false);
 							btnPanel.setVisible(false);
+							accountPanel.setVisible(false);
 							signUpPanel.setVisible(true);
 						}
 					}
@@ -196,6 +230,12 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 				signUpPanel.setVisible(false);
 				bgPanel.add(signUpPanel);
 				signUpPanel.setLayout(null);
+				signInAlert.setBounds(0, 0, 201, 21);
+				signUpPanel.add(signInAlert);
+				//회원가입 알림
+				signInAlert.setForeground(Color.RED);
+				signInAlert.setFont(new Font("굴림", Font.BOLD, 12));
+				signInAlert.setBackground(new Color(251, 222, 224));
 				
 				JPanel signUpPanel_1 = new JPanel();
 				signUpPanel_1.setLayout(null);
@@ -328,6 +368,16 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 				flatButton_3.setBounds(840, 283, 58, 54);
 				
 				menuPanel.add(flatButton_3);
+				flatButton_1.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(e.getSource() == flatButton_1) {
+							bgPanel.setVisible(false);
+							menuPanel.setVisible(false);
+							transLang.setVisible(false);
+							accountPanel.setVisible(true);
+						}
+					}
+				});
 				flatButton_1.setBackground(new Color(196, 174, 119, 0));
 				flatButton_1.setBounds(401, 283, 58, 54);
 				
@@ -435,6 +485,15 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 				panel_1.setBounds(0, 0, 203, 111);
 				
 				transLang.add(panel_1);
+				transLangLogo.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(e.getSource() == transLangLogo) {
+							menuPanel.setVisible(true);
+							transLang.setVisible(false);
+						}
+					}
+				});
 				transLangLogo.setBounds(-25, 10, 252, 91);
 				transLangLogo.setIcon(logoim);
 				panel_1.add(transLangLogo);
@@ -442,6 +501,123 @@ private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"
 				transLangBg.setIcon(icon);
 				
 				transLang.add(transLangBg);
+				accountPanel.setLayout(null);
+				accountPanel.setBounds(0, 0, 1034, 624);
+				
+				contentPane.add(accountPanel);
+				accountPanel_1.setLayout(null);
+				accountPanel_1.setBackground(new Color(251, 222, 224));
+				accountPanel_1.setBounds(725, 0, 309, 111);
+				
+				accountPanel.add(accountPanel_1);
+				lblNewLabel_1_1.setBounds(0, 10, 297, 91);
+				
+				accountPanel_1.add(lblNewLabel_1_1);
+				accountPanel_2.setLayout(null);
+				accountPanel_2.setBackground(new Color(234, 220, 215));
+				accountPanel_2.setBounds(70, 121, 893, 442);
+				
+				accountPanel.add(accountPanel_2);
+				flatPanel.setLayout(null);
+				flatPanel.setBounds(12, 10, 869, 95);
+				JSpinner date_sp = new JSpinner();
+				date_sp.setLocation(243, 36);
+				date_sp.setSize(130, 30);
+			     Calendar calendar = Calendar.getInstance(); //calendar 인스턴스 생성
+			     Date curDate = (Date)calendar.getTime(); // 현재 날짜 가져옴
+			     calendar.add(Calendar.YEAR, -50); 
+			     Date minDate = (Date)calendar.getTime(); //minDate = curDate - 50년
+			     calendar.add(Calendar.YEAR, 100);
+			     Date maxDate = (Date)calendar.getTime(); //maxDate = minDate + 100년
+			     SpinnerDateModel dateModel = new SpinnerDateModel(curDate, minDate,maxDate, Calendar.YEAR);
+			     date_sp.setModel(dateModel); 
+			     date_sp.setEditor(new JSpinner.DateEditor(date_sp, "yyyy년MM월dd일"));
+			     flatPanel.add(date_sp);
+				accountPanel_2.add(flatPanel);
+				date_sp.setBounds(243, 36, 130, 30);
+				
+				flatPanel.add(date_sp);
+				flatTextField.setHint("로또1등 당첨금");
+				flatTextField.setBounds(548, 37, 174, 30);
+				
+				flatPanel.add(flatTextField);
+				accountMemo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(e.getSource()==accountMemo) {
+							String date = (new SimpleDateFormat("yyyy-MM-dd").format(date_sp.getValue())).toString();
+							String type = accountType.getSelectedItem().toString();
+							String amount = accountAmount.getText();
+							String memo = accountMemo.getText();
+							String category = accountCategory.getSelectedItem().toString();
+							System.out.println(category);
+						}
+					}
+				});
+				accountMemo.setText("등록");
+				accountMemo.setBounds(755, 27, 96, 40);
+				
+				flatPanel.add(accountMemo);
+				lblNewLabel_2.setBounds(16, 6, 61, 16);
+				
+				flatPanel.add(lblNewLabel_2);
+				lblNewLabel_3.setBounds(517, 44, 31, 16);
+				
+				flatPanel.add(lblNewLabel_3);
+				accountCategory.setBounds(82, 43, 123, 23);
+				
+				flatPanel.add(accountCategory);
+				lblNewLabel_3_1.setBounds(378, 44, 31, 16);
+				
+				flatPanel.add(lblNewLabel_3_1);
+				accountAmount.setHint("100000");
+				accountAmount.setBounds(412, 37, 93, 30);
+				
+				flatPanel.add(accountAmount);
+				lblNewLabel_3_1_1.setBounds(216, 45, 31, 16);
+				
+				flatPanel.add(lblNewLabel_3_1_1);
+				accountType.setBounds(6, 43, 77, 23);
+				
+				flatPanel.add(accountType);
+				panel_4.setLayout(null);
+				panel_4.setBounds(12, 114, 869, 318);
+				
+				accountPanel_2.add(panel_4);
+				scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+				scrollPane.setBounds(0, 0, 869, 318);
+				JTable table;
+				String columnNames[] = {"no.","수입/지출","카테고리","날짜","금액","메모" };
+			    
+			    // 테이블에 출력할 데이터 배열
+			        String data[][] ={
+			                {"1", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"},
+			                {"2", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"},
+			                {"3", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"}};
+			        DefaultTableModel model = new DefaultTableModel(data,columnNames);
+				table = new JTable(model);
+				scrollPane.setViewportView(table);
+				
+				panel_4.add(scrollPane);
+				accountPanel_3.setLayout(null);
+				accountPanel_3.setBackground(new Color(251, 222, 224));
+				accountPanel_3.setBounds(0, 0, 203, 111);
+				
+				accountPanel.add(accountPanel_3);
+				AccountLogo.setBounds(-25, 10, 252, 91);
+				AccountLogo.setIcon(logoim);
+				accountPanel_3.add(AccountLogo);
+				lblNewLabel.setBounds(0, 0, 1034, 624);
+				lblNewLabel.setIcon(icon);
+				accountPanel.add(lblNewLabel);
+				AccountLogo.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(e.getSource() == AccountLogo) {
+							menuPanel.setVisible(true);
+							accountPanel.setVisible(false);
+						}
+					}
+				});
 
 	}
 	public void logInVal(int logInVal) {
