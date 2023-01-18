@@ -56,8 +56,6 @@ public class DiaryView extends JFrame {
 	private FlatLabel loginAlert = new FlatLabel();
 	private JPanel signUpPanel = new JPanel();
 	private JPanel logInpanel = new JPanel();
-	private JPanel loginLabelpane = new JPanel();
-	private JLabel loginLabel = new JLabel("SIGN IN");
 	private JPanel IdPanel = new JPanel();
 	private FlatTextField userID = new FlatTextField(false);
 	private JPanel pwPanel = new JPanel();
@@ -68,7 +66,6 @@ public class DiaryView extends JFrame {
 	private FlatButton fltbtnLogin = new FlatButton();
 	private FlatButton fltbtnSignup = new FlatButton();
 	private FlatTextField signUp_userPassword = new FlatTextField(true);
-	private FlatLabel signInAlert = new FlatLabel();
 	private FlatLabel signUpAlert = new FlatLabel();
 	private MemberDTO member;
 	private MemberDTO logininfo;
@@ -135,29 +132,19 @@ public class DiaryView extends JFrame {
 				contentPane.add(bgPanel);
 				bgPanel.setLayout(null);
 				//로그인 패널
-				logInpanel.setBounds(327, 121, 362, 255);
+				logInpanel.setBounds(580, 65, 362, 255);
 				bgPanel.add(logInpanel);
 				logInpanel.setForeground(new Color(255, 252, 250, 0));
 				logInpanel.setBackground(new Color(255, 255, 255, 0));
 				logInpanel.setLayout(null);
-				//로그인 라벨 패널
-				loginLabelpane.setBackground(new Color(255, 255, 255, 0));
-				loginLabelpane.setBounds(64, 74, 222, 54);
-				logInpanel.add(loginLabelpane);
-				loginLabelpane.setLayout(null);
-				//로그인 라벨
-				loginLabel.setForeground(new Color(95, 80, 89));
-				loginLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
-				loginLabel.setBounds(45, 6, 138, 36);
-				loginLabelpane.add(loginLabel);
 				//아이디 입력창패널
 				IdPanel.setBackground(new Color(255, 255, 255, 0));
 				IdPanel.setBounds(64, 140, 222, 45);
 				logInpanel.add(IdPanel);
 				IdPanel.setLayout(null);
 				//아이디 입력필드
-				userID.setSelectionColor(new Color(95, 80, 89));
-				userID.setFocusGainedColor(new Color(95, 80, 89));
+				userID.setSelectionColor(new Color(240, 228, 9));
+				userID.setFocusGainedColor(new Color(240, 228, 9));
 				userID.setHint("USER ID");
 				userID.setBounds(6, 6, 210, 33);
 				IdPanel.add(userID);
@@ -167,15 +154,15 @@ public class DiaryView extends JFrame {
 				pwPanel.setBounds(64, 186, 222, 45);
 				logInpanel.add(pwPanel);
 				//비밀번호 입력 필드
-				userPw.setSelectionColor(new Color(95, 80, 89));
-				userPw.setFocusGainedColor(new Color(95, 80, 89));
+				userPw.setSelectionColor(new Color(240, 228, 9));
+				userPw.setFocusGainedColor(new Color(240, 228, 9));
 				userPw.setHint("USER PASSWORD");
 				userPw.setBounds(6, 6, 210, 33);
 				pwPanel.add(userPw);
 				//로고 입력 패널
 				logoPanel.setLayout(null);
 				logoPanel.setBackground(new Color(255, 255, 255, 0));
-				logoPanel.setBounds(64, -47, 222, 121);
+				logoPanel.setBounds(64, 10, 222, 121);
 				logInpanel.add(logoPanel);
 				//로고 입력 라벨
 				logo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -183,19 +170,19 @@ public class DiaryView extends JFrame {
 				logo.setBounds(20, 35, 181, 87);
 				logoPanel.add(logo);
 				//로그인 상태창
-				loginAlert.setBackground(new Color(251, 222, 224));
+				loginAlert.setBackground(new Color(255, 255, 255));
 				loginAlert.setFont(new Font("굴림", Font.BOLD, 12));
 				loginAlert.setForeground(new Color(255, 0, 0));
 				loginAlert.setBounds(74, 234, 201, 21);
 				logInpanel.add(loginAlert);
 				//버튼 패널 
-				btnPanel.setBounds(327, 374, 362, 96);
+				btnPanel.setBounds(580, 320, 362, 96);
 				bgPanel.add(btnPanel);
 				btnPanel.setBackground(new Color(255, 252, 250, 0));
 				btnPanel.setLayout(null);
 				//로그인버튼
 				fltbtnLogin.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
-				fltbtnLogin.setBackground(new Color(95, 80, 89));
+				fltbtnLogin.setBackground(new Color(231, 184, 126));
 				fltbtnLogin.setText("LOGIN");
 				fltbtnLogin.setBounds(75, 6, 202, 31);
 				btnPanel.add(fltbtnLogin);
@@ -214,7 +201,7 @@ public class DiaryView extends JFrame {
 				});
 				//회원가입버튼
 				fltbtnSignup.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
-				fltbtnSignup.setBackground(new Color(95, 80, 89));
+				fltbtnSignup.setBackground(new Color(231, 184, 126));
 				fltbtnSignup.setText("SIGN UP");
 				fltbtnSignup.setBounds(75, 41, 202, 31);
 				btnPanel.add(fltbtnSignup);
@@ -231,23 +218,17 @@ public class DiaryView extends JFrame {
 				});
 				
 				//회원가입 폼 패널
-				signUpPanel.setBounds(321, 65, 362, 464);
+				signUpPanel.setBounds(580, 65, 362, 464);
 				signUpPanel.setForeground(new Color(255, 252, 250, 0));
 				signUpPanel.setBackground(new Color(255, 252, 250, 0));
 				signUpPanel.setVisible(false);
 				bgPanel.add(signUpPanel);
 				signUpPanel.setLayout(null);
-				signInAlert.setBounds(0, 0, 201, 21);
-				signUpPanel.add(signInAlert);
-				//회원가입 알림
-				signInAlert.setForeground(Color.RED);
-				signInAlert.setFont(new Font("굴림", Font.BOLD, 12));
-				signInAlert.setBackground(new Color(251, 222, 224));
 				
 				JPanel signUpPanel_1 = new JPanel();
 				signUpPanel_1.setLayout(null);
 				signUpPanel_1.setBackground(new Color(255, 255, 255, 0));
-				signUpPanel_1.setBounds(72, 10, 222, 110);
+				signUpPanel_1.setBounds(64, 10, 222, 110);
 				signUpPanel.add(signUpPanel_1);
 
 				logo_2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -256,22 +237,10 @@ public class DiaryView extends JFrame {
 				
 				signUpPanel_1.add(logo_2);
 				
-				JPanel loginPanel_2 = new JPanel();
-				loginPanel_2.setLayout(null);
-				loginPanel_2.setBackground(new Color(255, 255, 255, 0));
-				loginPanel_2.setBounds(72, 130, 222, 54);
-				signUpPanel.add(loginPanel_2);
-				
-				JLabel lblSignUp = new JLabel("SIGN UP");
-				lblSignUp.setForeground(new Color(95, 80, 89));
-				lblSignUp.setFont(new Font("Comic Sans MS", Font.BOLD, 26));
-				lblSignUp.setBounds(45, 6, 138, 36);
-				loginPanel_2.add(lblSignUp);
-				
 				JPanel IdPanel_2 = new JPanel();
 				IdPanel_2.setLayout(null);
 				IdPanel_2.setBackground(new Color(255, 255, 255, 0));
-				IdPanel_2.setBounds(72, 196, 222, 45);
+				IdPanel_2.setBounds(64, 140, 222, 45);
 				signUpPanel.add(IdPanel_2);
 				
 				FlatTextField signUp_userId = new FlatTextField(false);
@@ -284,7 +253,7 @@ public class DiaryView extends JFrame {
 				JPanel IdPanel_1_1 = new JPanel();
 				IdPanel_1_1.setLayout(null);
 				IdPanel_1_1.setBackground(new Color(255, 255, 255, 0));
-				IdPanel_1_1.setBounds(72, 242, 222, 45);
+				IdPanel_1_1.setBounds(64, 186, 222, 45);
 				signUpPanel.add(IdPanel_1_1);
 				
 				FlatTextField signUp_userName = new FlatTextField(false);
@@ -297,8 +266,8 @@ public class DiaryView extends JFrame {
 				FlatButton fltbtnSignUp = new FlatButton();
 				fltbtnSignUp.setText("SIGN UP");
 				fltbtnSignUp.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
-				fltbtnSignUp.setBackground(new Color(95, 80, 89));
-				fltbtnSignUp.setBounds(84, 364, 202, 31);
+				fltbtnSignUp.setBackground(new Color(231, 184, 126));
+				fltbtnSignUp.setBounds(75, 275, 202, 31);
 				signUpPanel.add(fltbtnSignUp);
 				fltbtnSignUp.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -322,14 +291,14 @@ public class DiaryView extends JFrame {
 				//회원가입 알림
 				signUpAlert.setForeground(Color.RED);
 				signUpAlert.setFont(new Font("굴림", Font.BOLD, 12));
-				signUpAlert.setBackground(new Color(251, 222, 224));
-				signUpAlert.setBounds(83, 339, 201, 21);
+				signUpAlert.setBackground(new Color(255, 255, 255));
+				signUpAlert.setBounds(64, 443, 201, 21);
 				signUpPanel.add(signUpAlert);
 				
 				JPanel IdPanel_1_1_1 = new JPanel();
 				IdPanel_1_1_1.setLayout(null);
 				IdPanel_1_1_1.setBackground(new Color(255, 255, 255, 0));
-				IdPanel_1_1_1.setBounds(72, 284, 222, 45);
+				IdPanel_1_1_1.setBounds(64, 232, 222, 45);
 				signUpPanel.add(IdPanel_1_1_1);
 				//회원가입_비밀번호입력필드
 				signUp_userPassword.setSelectionColor(new Color(95, 80, 89));
@@ -341,8 +310,8 @@ public class DiaryView extends JFrame {
 				FlatButton fltbtnBack = new FlatButton();
 				fltbtnBack.setText("Go Back");
 				fltbtnBack.setFont(new Font("Comic Sans MS", Font.PLAIN, 18));
-				fltbtnBack.setBackground(new Color(95, 80, 89));
-				fltbtnBack.setBounds(84, 400, 202, 31);
+				fltbtnBack.setBackground(new Color(231, 184, 126));
+				fltbtnBack.setBounds(75, 310, 202, 31);
 				signUpPanel.add(fltbtnBack);
 				fltbtnBack.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -359,7 +328,8 @@ public class DiaryView extends JFrame {
 						bg.setBounds(0, 0, 1040, 630);
 						bgPanel.add(bg);
 						bg.setForeground(new Color(255, 252, 250));
-						bg.setIcon(icon);
+						ImageIcon bg6 = new ImageIcon(DiaryView.class.getResource("bg6.png"));
+						bg.setIcon(bg6);
 				
 				contentPane.add(menuPanel);
 				flatLabel.setFont(new Font("MD개성체", Font.BOLD, 16));
