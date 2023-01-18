@@ -1,12 +1,14 @@
 package Diary.view;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -176,7 +178,7 @@ public class DiaryView extends JFrame {
 				loginAlert.setBounds(74, 234, 201, 21);
 				logInpanel.add(loginAlert);
 				//버튼 패널 
-				btnPanel.setBounds(580, 320, 362, 96);
+				btnPanel.setBounds(580, 320, 362, 209);
 				bgPanel.add(btnPanel);
 				btnPanel.setBackground(new Color(255, 252, 250, 0));
 				btnPanel.setLayout(null);
@@ -205,6 +207,25 @@ public class DiaryView extends JFrame {
 				fltbtnSignup.setText("SIGN UP");
 				fltbtnSignup.setBounds(75, 41, 202, 31);
 				btnPanel.add(fltbtnSignup);
+				
+				JLabel lblNewLabel_1 = new JLabel("");
+				lblNewLabel_1.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							if(e.getSource()== lblNewLabel_1) {
+								 Desktop desktop = Desktop.getDesktop();
+						            try {
+						                URI uri = new URI("https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=aqCPYfEE4Bkvh2QLKvGk&redirect_uri=https%3A%2F%2Fjikwang.net%2Fcallback.html&state=29acb18d-62bd-4100-a447-407962acd0ff");
+						                desktop.browse(uri);
+						            } catch (Exception ex) {
+						                ex.printStackTrace();
+						            }
+							
+						}
+					}
+				});
+				lblNewLabel_1.setBounds(75, 112, 196, 31);
+				btnPanel.add(lblNewLabel_1);
 				//회원가입 버튼 액션
 				fltbtnSignup.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
