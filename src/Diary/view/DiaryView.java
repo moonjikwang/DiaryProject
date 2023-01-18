@@ -1,16 +1,15 @@
 package Diary.view;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,10 +43,10 @@ public class DiaryView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("bg5.png"));
+	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("bg.png"));
 	private ImageIcon logoim = new ImageIcon(DiaryView.class.getResource("logo6.png"));
 	private ImageIcon papagoImg = new ImageIcon(DiaryView.class.getResource("papa.png"));
-	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"));
+	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu2.png"));
 	private String[] category = {"쇼핑","배달","관리비","월급","용돈","로또당첨"};
 	private String[] type = {"수입","지출"};
 	private JTable table;
@@ -176,7 +175,7 @@ public class DiaryView extends JFrame {
 				loginAlert.setBounds(74, 234, 201, 21);
 				logInpanel.add(loginAlert);
 				//버튼 패널 
-				btnPanel.setBounds(580, 320, 362, 96);
+				btnPanel.setBounds(580, 320, 362, 209);
 				bgPanel.add(btnPanel);
 				btnPanel.setBackground(new Color(255, 252, 250, 0));
 				btnPanel.setLayout(null);
@@ -205,6 +204,25 @@ public class DiaryView extends JFrame {
 				fltbtnSignup.setText("SIGN UP");
 				fltbtnSignup.setBounds(75, 41, 202, 31);
 				btnPanel.add(fltbtnSignup);
+				
+				JLabel lblNewLabel_1 = new JLabel("");
+				lblNewLabel_1.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							if(e.getSource()== lblNewLabel_1) {
+								 Desktop desktop = Desktop.getDesktop();
+						            try {
+						                URI uri = new URI("https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=aqCPYfEE4Bkvh2QLKvGk&redirect_uri=https%3A%2F%2Fjikwang.net%2Fcallback.html&state=29acb18d-62bd-4100-a447-407962acd0ff");
+						                desktop.browse(uri);
+						            } catch (Exception ex) {
+						                ex.printStackTrace();
+						            }
+							
+						}
+					}
+				});
+				lblNewLabel_1.setBounds(75, 112, 196, 31);
+				btnPanel.add(lblNewLabel_1);
 				//회원가입 버튼 액션
 				fltbtnSignup.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -333,8 +351,8 @@ public class DiaryView extends JFrame {
 				
 				contentPane.add(menuPanel);
 				flatLabel.setFont(new Font("MD개성체", Font.BOLD, 16));
-				flatLabel.setBackground(new Color(251, 222, 224));
-				flatLabel.setBounds(438, 152, 206, 33);
+				flatLabel.setBackground(new Color(255, 234, 151));
+				flatLabel.setBounds(0, 0, 206, 33);
 				
 				menuPanel.add(flatLabel);
 				flatButton_2.setBackground(new Color(196, 174, 119, 0));
@@ -403,7 +421,7 @@ public class DiaryView extends JFrame {
 				
 				contentPane.add(transLang);
 				panel_1_1.setLayout(null);
-				panel_1_1.setBackground(new Color(251, 222, 224));
+				panel_1_1.setBackground(new Color(255, 234, 151));
 				panel_1_1.setBounds(725, 0, 309, 111);
 				
 				transLang.add(panel_1_1);
@@ -411,7 +429,7 @@ public class DiaryView extends JFrame {
 				papago.setIcon(papagoImg);
 				panel_1_1.add(papago);
 				panel_2.setLayout(null);
-				panel_2.setBackground(new Color(234, 220, 215));
+				panel_2.setBackground(new Color(251, 234, 189));
 				panel_2.setBounds(70, 121, 893, 442);
 				
 				transLang.add(panel_2);
@@ -434,6 +452,7 @@ public class DiaryView extends JFrame {
 				flatLabel_1_1.setBounds(451, 23, 75, 21);
 				
 				panel_2.add(flatLabel_1_1);
+				transBtn.setBackground(new Color(242, 206, 96));
 				transBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String trans = null;
@@ -448,6 +467,7 @@ public class DiaryView extends JFrame {
 				
 				
 				panel_2.add(transBtn);
+				resetBtn.setBackground(new Color(242, 206, 96));
 				resetBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						beforeArea.setText("");
@@ -460,7 +480,7 @@ public class DiaryView extends JFrame {
 				
 				panel_2.add(resetBtn);
 				panel_1.setLayout(null);
-				panel_1.setBackground(new Color(251, 222, 224));
+				panel_1.setBackground(new Color(255, 234, 151));
 				panel_1.setBounds(0, 0, 203, 111);
 				
 				transLang.add(panel_1);
@@ -485,7 +505,7 @@ public class DiaryView extends JFrame {
 				
 				contentPane.add(accountPanel);
 				accountPanel_1.setLayout(null);
-				accountPanel_1.setBackground(new Color(251, 222, 224));
+				accountPanel_1.setBackground(new Color(255, 234, 151));
 				accountPanel_1.setBounds(725, 0, 309, 111);
 				
 				accountPanel.add(accountPanel_1);
@@ -493,7 +513,7 @@ public class DiaryView extends JFrame {
 				
 				accountPanel_1.add(lblNewLabel_1_1);
 				accountPanel_2.setLayout(null);
-				accountPanel_2.setBackground(new Color(234, 220, 215));
+				accountPanel_2.setBackground(new Color(251, 234, 189));
 				accountPanel_2.setBounds(70, 121, 893, 442);
 				
 				accountPanel.add(accountPanel_2);
@@ -520,6 +540,7 @@ public class DiaryView extends JFrame {
 				flatTextField.setBounds(548, 37, 174, 30);
 				
 				flatPanel.add(flatTextField);
+				accountMemo.setBackground(new Color(242, 206, 96));
 				accountMemo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(e.getSource()==accountMemo) {
@@ -592,7 +613,7 @@ public class DiaryView extends JFrame {
 				
 				panel_4.add(scrollPane);
 				accountPanel_3.setLayout(null);
-				accountPanel_3.setBackground(new Color(251, 222, 224));
+				accountPanel_3.setBackground(new Color(255, 234, 151));
 				accountPanel_3.setBounds(0, 0, 203, 111);
 				
 				accountPanel.add(accountPanel_3);
