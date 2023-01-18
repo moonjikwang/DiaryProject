@@ -9,10 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -424,7 +421,7 @@ public class DiaryView extends JFrame {
 				
 				contentPane.add(transLang);
 				panel_1_1.setLayout(null);
-				panel_1_1.setBackground(new Color(251, 222, 224));
+				panel_1_1.setBackground(new Color(255, 234, 151));
 				panel_1_1.setBounds(725, 0, 309, 111);
 				
 				transLang.add(panel_1_1);
@@ -432,7 +429,7 @@ public class DiaryView extends JFrame {
 				papago.setIcon(papagoImg);
 				panel_1_1.add(papago);
 				panel_2.setLayout(null);
-				panel_2.setBackground(new Color(234, 220, 215));
+				panel_2.setBackground(new Color(251, 234, 189));
 				panel_2.setBounds(70, 121, 893, 442);
 				
 				transLang.add(panel_2);
@@ -455,6 +452,7 @@ public class DiaryView extends JFrame {
 				flatLabel_1_1.setBounds(451, 23, 75, 21);
 				
 				panel_2.add(flatLabel_1_1);
+				transBtn.setBackground(new Color(242, 206, 96));
 				transBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String trans = null;
@@ -469,6 +467,7 @@ public class DiaryView extends JFrame {
 				
 				
 				panel_2.add(transBtn);
+				resetBtn.setBackground(new Color(242, 206, 96));
 				resetBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						beforeArea.setText("");
@@ -481,7 +480,7 @@ public class DiaryView extends JFrame {
 				
 				panel_2.add(resetBtn);
 				panel_1.setLayout(null);
-				panel_1.setBackground(new Color(251, 222, 224));
+				panel_1.setBackground(new Color(255, 234, 151));
 				panel_1.setBounds(0, 0, 203, 111);
 				
 				transLang.add(panel_1);
