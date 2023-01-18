@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,8 +34,11 @@ import com.mommoo.flat.text.textarea.FlatTextArea;
 import com.mommoo.flat.text.textfield.FlatTextField;
 
 import Diary.Controller.Trans;
+import Diary.model.AccountDAO;
+import Diary.model.AccountDTO;
 import Diary.model.MemberDAO;
 import Diary.model.MemberDTO;
+import net.proteanit.sql.DbUtils;
 
 public class DiaryView extends JFrame {
 
@@ -44,6 +50,7 @@ public class DiaryView extends JFrame {
 	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"));
 	private String[] category = {"쇼핑","배달","관리비","월급","용돈","로또당첨"};
 	private String[] type = {"수입","지출"};
+	private JTable table;
 	private JPanel contentPane;
 	private JPanel bgPanel = new JPanel();
 	private FlatLabel loginAlert = new FlatLabel();
@@ -375,8 +382,10 @@ public class DiaryView extends JFrame {
 							menuPanel.setVisible(false);
 							transLang.setVisible(false);
 							accountPanel.setVisible(true);
+							accountList();
 						}
 					}
+
 				});
 				flatButton_1.setBackground(new Color(196, 174, 119, 0));
 				flatButton_1.setBounds(401, 283, 58, 54);
@@ -547,9 +556,20 @@ public class DiaryView extends JFrame {
 							String date = (new SimpleDateFormat("yyyy-MM-dd").format(date_sp.getValue())).toString();
 							String type = accountType.getSelectedItem().toString();
 							String amount = accountAmount.getText();
-							String memo = accountMemo.getText();
+							String memo = flatTextField.getText();
 							String category = accountCategory.getSelectedItem().toString();
-							System.out.println(category);
+							AccountDTO account = new AccountDTO(category,type,member.getUserid(),date,amount,memo);
+							int result = AccountDAO.getInstance().add(account);
+							System.out.println(result);
+							if(result == 1) {
+								accountPanel.revalidate();
+								accountPanel.repaint();
+								accountAmount.setText("");
+								flatTextField.setText("");
+								accountCategory.setSelectedIndex(0);
+								accountList();
+							}
+							
 						}
 					}
 				});
@@ -585,16 +605,19 @@ public class DiaryView extends JFrame {
 				accountPanel_2.add(panel_4);
 				scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 				scrollPane.setBounds(0, 0, 869, 318);
-				JTable table;
-				String columnNames[] = {"no.","수입/지출","카테고리","날짜","금액","메모" };
+				
+				String columnNames[] = {"no.","날짜","카테고리","수입/지출","메모","금액" };
 			    
 			    // 테이블에 출력할 데이터 배열
 			        String data[][] ={
 			                {"1", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"},
 			                {"2", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"},
 			                {"3", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"}};
+			     
 			        DefaultTableModel model = new DefaultTableModel(data,columnNames);
 				table = new JTable(model);
+				table.setAutoCreateColumnsFromModel(false);
+				table.setModel(DbUtils.resultSetToTableModel(AccountDAO.getInstance().list(userId())));
 				scrollPane.setViewportView(table);
 				
 				panel_4.add(scrollPane);
@@ -651,5 +674,15 @@ public class DiaryView extends JFrame {
 			result = MemberDAO.getInstance().idToName(member);
 		}
 		return result;
+	}
+	public String userId() {
+		String result = null;
+		if(member != null) {
+			result = member.getUserid();
+		}
+		return result;
+	}
+	private void accountList() {
+		table.setModel(DbUtils.resultSetToTableModel(AccountDAO.getInstance().list(userId())));
 	}
 }
