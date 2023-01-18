@@ -46,10 +46,10 @@ public class DiaryView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("bg5.png"));
+	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("bg.png"));
 	private ImageIcon logoim = new ImageIcon(DiaryView.class.getResource("logo6.png"));
 	private ImageIcon papagoImg = new ImageIcon(DiaryView.class.getResource("papa.png"));
-	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu.png"));
+	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu2.png"));
 	private String[] category = {"쇼핑","배달","관리비","월급","용돈","로또당첨"};
 	private String[] type = {"수입","지출"};
 	private JTable table;
@@ -354,7 +354,7 @@ public class DiaryView extends JFrame {
 				
 				contentPane.add(menuPanel);
 				flatLabel.setFont(new Font("MD개성체", Font.BOLD, 16));
-				flatLabel.setBackground(new Color(251, 222, 224));
+				flatLabel.setBackground(new Color(255, 234, 151));
 				flatLabel.setBounds(438, 152, 206, 33);
 				
 				menuPanel.add(flatLabel);
