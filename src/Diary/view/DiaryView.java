@@ -557,7 +557,7 @@ public class DiaryView extends JFrame {
 				accountMemo.setBounds(755, 27, 96, 40);
 				
 				flatPanel.add(accountMemo);
-				lblNewLabel_2.setBounds(16, 6, 61, 16);
+				lblNewLabel_2.setBounds(16, 6, 65, 16);
 				
 				flatPanel.add(lblNewLabel_2);
 				lblNewLabel_3.setBounds(517, 44, 31, 16);
