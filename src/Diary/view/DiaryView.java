@@ -505,7 +505,7 @@ public class DiaryView extends JFrame {
 				
 				contentPane.add(accountPanel);
 				accountPanel_1.setLayout(null);
-				accountPanel_1.setBackground(new Color(251, 222, 224));
+				accountPanel_1.setBackground(new Color(255, 234, 151));
 				accountPanel_1.setBounds(725, 0, 309, 111);
 				
 				accountPanel.add(accountPanel_1);
@@ -513,7 +513,7 @@ public class DiaryView extends JFrame {
 				
 				accountPanel_1.add(lblNewLabel_1_1);
 				accountPanel_2.setLayout(null);
-				accountPanel_2.setBackground(new Color(234, 220, 215));
+				accountPanel_2.setBackground(new Color(251, 234, 189));
 				accountPanel_2.setBounds(70, 121, 893, 442);
 				
 				accountPanel.add(accountPanel_2);
@@ -540,6 +540,7 @@ public class DiaryView extends JFrame {
 				flatTextField.setBounds(548, 37, 174, 30);
 				
 				flatPanel.add(flatTextField);
+				accountMemo.setBackground(new Color(242, 206, 96));
 				accountMemo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(e.getSource()==accountMemo) {
@@ -612,7 +613,7 @@ public class DiaryView extends JFrame {
 				
 				panel_4.add(scrollPane);
 				accountPanel_3.setLayout(null);
-				accountPanel_3.setBackground(new Color(251, 222, 224));
+				accountPanel_3.setBackground(new Color(255, 234, 151));
 				accountPanel_3.setBounds(0, 0, 203, 111);
 				
 				accountPanel.add(accountPanel_3);
