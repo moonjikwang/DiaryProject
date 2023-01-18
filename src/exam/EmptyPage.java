@@ -8,11 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import com.mommoo.flat.button.FlatButton;
 
 
 public class EmptyPage extends JFrame {
-	private ImageIcon icon = new ImageIcon(EmptyPage.class.getResource("bg.png"));
+	private ImageIcon icon = new ImageIcon(EmptyPage.class.getResource("bg5.png"));
 	private ImageIcon logoim = new ImageIcon(EmptyPage.class.getResource("logo6.png"));
 	/**
 	 * 
@@ -53,7 +52,7 @@ public class EmptyPage extends JFrame {
 		
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
-		panel_1_1.setBackground(new Color(255, 234, 151));
+		panel_1_1.setBackground(new Color(251, 222, 224));
 		panel_1_1.setBounds(725, 0, 309, 111);
 		AccountPanel.add(panel_1_1);
 		
@@ -62,14 +61,14 @@ public class EmptyPage extends JFrame {
 		panel_1_1.add(lblNewLabel_1_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(251, 234, 189));
+		panel_2.setBackground(new Color(234, 220, 215));
 		panel_2.setBounds(70, 121, 893, 442);
 		AccountPanel.add(panel_2);
 		panel_2.setLayout(null);
 
 	
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 234, 151));
+		panel_1.setBackground(new Color(251, 222, 224));
 		panel_1.setBounds(0, 0, 203, 111);
 		AccountPanel.add(panel_1);
 		panel_1.setLayout(null);
