@@ -352,7 +352,7 @@ public class DiaryView extends JFrame {
 				contentPane.add(menuPanel);
 				flatLabel.setFont(new Font("MD개성체", Font.BOLD, 16));
 				flatLabel.setBackground(new Color(255, 234, 151));
-				flatLabel.setBounds(438, 152, 206, 33);
+				flatLabel.setBounds(0, 0, 206, 33);
 				
 				menuPanel.add(flatLabel);
 				flatButton_2.setBackground(new Color(196, 174, 119, 0));
