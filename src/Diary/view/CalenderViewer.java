@@ -4,7 +4,10 @@ package Diary.view;
  *  할일:
  * 	추후 수정해야할 부분
  * 
- * "2023-01-01" 스트링을 에스큐엘 데이트로 바꾸기
+ * A파트 : 연월일 선택영역 (미구현)
+ * B파트 : 달력 출력 영역 (JDatePicker로 임시 구현)
+ * C파트 : 할일 목록 영역 (임시구현)
+ * D파트 : 일정 등록 영역 (임시구현)
  * 
  * 제이데이트피커 : https://blog.naver.com/ka28/221975811790
  */
@@ -40,6 +43,8 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import java.awt.Font;
 import java.awt.CardLayout;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 
@@ -68,47 +73,8 @@ public class CalenderViewer extends JFrame {
 		});
 	}
 
-	// 직접 작성한 코드
-	// 콤보박스에 날짜 세팅 : 이후 이 날짜에 따라 달력을 출력할 예정
-	Calendar date = Calendar.getInstance();
-	LocalDate now = LocalDate.now();
-	int year = now.getYear();
-	int month = now.getMonthValue();
-	int nowdate = now.getDayOfMonth();
-
-	int calYear = year;
-	int calMonth = month;
-	int calDate = nowdate;
-
-	JComboBox yearCombo;
-	JComboBox monthCombo;
-
-	// 년도세팅
-	public String[] setYear() {
-		String[] years = new String[10];
-		int j = 0;
-		for (int i = year - 5; i < year + 5; i++) { // 해당구문을 반복문을돌려서 배열로 만들어주는 메서드
-
-			String srt = Integer.toString(i);
-			years[j] = srt;
-			j++;
-		}
-
-		return years; 
-	}
-
-	// 월세팅
-	public void setMonth() {
-		for (int i = 1; i <= 12; i++) {
-			monthCombo.addItem(i);
-		}
-		monthCombo.setSelectedItem(month); // 콤보박스에 담지만 이벤트와 연동시켜주기위해 선언이라고 함..
-	}
-
-	
-	
-	
-	
+//---------------<B파트 변수 선언>-----------
+	JButton dateButs[][];
 
 	/**
 	 * Create the frame.
@@ -143,6 +109,65 @@ public class CalenderViewer extends JFrame {
 		panel_2.setBounds(70, 121, 893, 442);
 		AccountPanel.add(panel_2);
 		panel_2.setLayout(null);
+		
+// -------------------------<B파트 GUI>-------------------
+		//-------------<요일칸>---------------
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.setBounds(46, 72, 500, 46);
+		panel_8.setLayout(new GridLayout(1, 7, 2, 2));
+		panel_2.add(panel_8);
+		
+		JButton[] weekDaysName = new JButton[7];	//요일 칸을 버튼의 배열로 정의
+		final String WEEK_DAY_NAME[] = { "SUN", "MON", "TUE", "WED", "THR", "FRI", "SAT" };
+		for(int i=0 ; i<CAL_WIDTH ; i++){
+			weekDaysName[i]=new JButton(WEEK_DAY_NAME[i]);
+			weekDaysName[i].setBorderPainted(false);		//테두리 없애기
+			weekDaysName[i].setBackground(Color.WHITE);
+			
+			if(i == 0) weekDaysName[i].setBackground(new Color(200, 100, 100));
+			else if (i == 6) weekDaysName[i].setBackground(new Color(100, 150, 200));
+			else weekDaysName[i].setBackground(new Color(220, 220, 220));
+			
+			panel_8.add(weekDaysName[i]);
+		}
+		
+		//-------------<낱짜칸>---------------
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(null);
+		panel_3.setBounds(46, 117, 500, 232);
+		panel_3.setLayout(new GridLayout(6, 7, 2, 2));
+
+		dateButs = new JButton[6][7];	//날짜 칸을 버튼의 이중배열로 정의
+		
+		for(int i=0 ; i<CAL_HEIGHT ; i++){
+			for(int j=0 ; j<CAL_WIDTH ; j++){
+				
+				//날짜 칸 만들기
+				dateButs[i][j]=new JButton();		
+				dateButs[i][j].setBorderPainted(false);		//테두리 없애기
+				dateButs[i][j].setBackground(Color.WHITE);
+//				dateButs[i][j].addActionListener(lForDateButs);
+				
+				if(j==0) dateButs[i][j].setBackground(new Color(255,220,220)); //일요일 색지정
+				else if(j==6) dateButs[i][j].setBackground(new Color(220,230,255));	//토요일 색지정
+				
+				//월별 날짜를 이중배열로 만드는 메서드
+				calDates = makeCalData();
+	
+				//날짜를 날짜칸 버튼에 배치하기
+				dateButs[i][j].setText(calDates[i][j]+"");
+				
+				//날짜가 없는 칸은 감추기
+				if(calDates[i][j] == 0) dateButs[i][j].setVisible(false);
+				else dateButs[i][j].setVisible(true);
+				
+				panel_3.add(dateButs[i][j]);
+			}
+		}
+// -------------------------<B파트 GUI 끝>-------------------		
+
+		panel_2.add(panel_3);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
@@ -152,22 +177,26 @@ public class CalenderViewer extends JFrame {
 
 		JButton btnNewButton_2 = new JButton("◀");
 		btnNewButton_2.setToolTipText("이전월");
+		btnNewButton_2.setBackground(new Color(240,240,240));
+		btnNewButton_2.setBorderPainted(false);	
 		panel.add(btnNewButton_2);
 
 		yearCombo = new JComboBox();
+		setYear();
 		yearCombo.setToolTipText("연도 선택");
-		yearCombo.setModel(new DefaultComboBoxModel(setYear()));
-		yearCombo.setSelectedIndex(5);
+		yearCombo.setModel(new DefaultComboBoxModel());
+//		yearCombo.setSelectedIndex(5);
+		
 		panel.add(yearCombo);
 
 		JLabel lblNewLabel_4 = new JLabel("년");
 		panel.add(lblNewLabel_4);
 
 		monthCombo = new JComboBox();
+		setMonth();
 		monthCombo.setToolTipText("월 선택");
-		monthCombo.setModel(new DefaultComboBoxModel(
-				new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
-		monthCombo.setSelectedIndex(month - 1);
+		monthCombo.setModel(new DefaultComboBoxModel());
+//		monthCombo.setSelectedIndex(nowmonth - 1);
 		panel.add(monthCombo);
 
 		JLabel lblNewLabel_5 = new JLabel("월");
@@ -175,26 +204,9 @@ public class CalenderViewer extends JFrame {
 
 		JButton btnNewButton_3 = new JButton("▶");
 		btnNewButton_3.setToolTipText("다음월");
+		btnNewButton_3.setBackground(new Color(240,240,240));
+		btnNewButton_3.setBorderPainted(false);	
 		panel.add(btnNewButton_3);
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(null);
-		panel_3.setBounds(46, 72, 500, 277);
-		panel_2.add(panel_3);
-//		panel_3.setLayout(new GridLayout(5, 7, 0, 0));
-		panel_3.setLayout(new BorderLayout());
-
-		model = new UtilDateModel();
-		datePanel = new JDatePanelImpl(model);
-	
-		datePicker = new JDatePickerImpl(datePanel);
-		panel_3.add("Center", datePanel);	//할일: 직접 코드 작성하면 삭제할 예정
-		
-		
-
-//		textArea = new JTextArea();
-//		
-//		panel_3.add(textArea);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(46, 359, 800, 60);
@@ -217,10 +229,10 @@ public class CalenderViewer extends JFrame {
 		textField_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == textField_1) {
-		            String data = textField_1.getText(); 
-		            title = data;
-		        }	
-				
+					String data = textField_1.getText();
+					title = data;
+				}
+
 			}
 		});
 		panel_4.add(textField_1);
@@ -234,9 +246,9 @@ public class CalenderViewer extends JFrame {
 		textField_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == textField_2) {
-		            String data = textField_2.getText(); 
-		            memo = data;
-		        }	
+					String data = textField_2.getText();
+					memo = data;
+				}
 			}
 		});
 		panel_4.add(textField_2);
@@ -247,9 +259,9 @@ public class CalenderViewer extends JFrame {
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == chckbxNewCheckBox) {
-		            boolean check = chckbxNewCheckBox.isSelected();
-		            attention = true;
-		        }	
+					boolean check = chckbxNewCheckBox.isSelected();
+					attention = true;
+				}
 			}
 		});
 		panel_4.add(chckbxNewCheckBox);
@@ -260,7 +272,7 @@ public class CalenderViewer extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				viewSchedule();
-			
+
 			}
 		});
 		panel_4.add(btnNewButton);
@@ -279,14 +291,15 @@ public class CalenderViewer extends JFrame {
 		panel_5.setBounds(563, 29, 283, 320);
 		panel_2.add(panel_5);
 		panel_5.setLayout(new CardLayout(0, 0));
-		
+
 		JList list = new JList();
 		list.setModel(new AbstractListModel() {
 			String[] values = viewSchedule();
+
 			public int getSize() {
 				return values.length;
 			}
-			
+
 			public Object getElementAt(int index) {
 				return values[index];
 			}
@@ -304,7 +317,11 @@ public class CalenderViewer extends JFrame {
 		panel_2.add(panel_7);
 
 		JButton btnNewButton_4 = new JButton("오늘 날짜 보기");
+		btnNewButton_4.setBackground(new Color(240,240,240));
+		btnNewButton_4.setBorderPainted(false);	
 		panel_7.add(btnNewButton_4);
+		
+		
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(251, 222, 224));
@@ -324,60 +341,161 @@ public class CalenderViewer extends JFrame {
 
 	}
 	
+//-------------------<A파트 : 연월일 선택영역 (미구현)>------------------------------------------
+		// 콤보박스에 날짜 세팅 : 이후 이 날짜에 따라 달력을 출력할 예정
+		Calendar date = Calendar.getInstance();
+		LocalDate now = LocalDate.now();
+		int nowyear = now.getYear();
+		int nowmonth = now.getMonthValue();
+		int nowdate = now.getDayOfMonth();
+
 	
-	//일정 추가 : 텍스트 필드에 입력된 내용을 DB로 보내주기
-		ScheduleDTO sdto;
-//		MemberDTO  mdto; //할일:MemberDTO 필요
+		JComboBox yearCombo;
+		JComboBox monthCombo;
 
-		private String sdate;
-		private String title;
-		private String memo;
-		private boolean attention;
-		
-		private String userid = "yh"; //할일:MemberDTO 필요
-		private LocalDate localDate;
-		
-		UtilDateModel model;
-		JDatePanelImpl datePanel;
-		JDatePickerImpl datePicker;	//할일: 직접 코드 구현후 삭제예정
-		
-		
-		JCheckBox chckbxNewCheckBox;
-		private void addSchedule() {
-			sdto = new ScheduleDTO();
-			
-			sdate = model.getYear()+"-"+  (model.getMonth()+1)+"-"+ model.getDay() ;
-					
-			title = textField_1.getText(); 
-			memo = textField_2.getText(); 
-			attention = chckbxNewCheckBox.isSelected();
-				
-			sdto.setUserId(userid);
-			sdto.setSdate(sdate);
+		// 년도세팅
+//		public String[] setYear() {
+//			String[] years = new String[10];
+//			int j = 0;
+//			for (int i = nowyear - 5; i < nowyear + 5; i++) { // 해당구문을 반복문을돌려서 배열로 만들어주는 메서드
+//
+//				String srt = Integer.toString(i);
+//				years[j] = srt;
+//				j++;
+//			}
+//
+//			return years;
+//		}
 
-			sdto.setTitle(title);
-			sdto.setMemo(memo);
-			sdto.setAttention(attention);
-			
-			int result = ScheduleDAO.getInstance().insert(sdto);
-		}
-		
-		//일정 조회
-		private String[] viewSchedule(){
-			ArrayList schedules =ScheduleDAO.getInstance().select(userid);
-			String[] schList = new String[schedules.size()];
-			
-			for (int i = 0; i < schedules.size(); i++) {
-				
-				ScheduleDTO dto = (ScheduleDTO) schedules.get(i);
-				schList[i] = "["+dto.getSdate().substring(0, 10)+"] "+ dto.getTitle();
-				
-				System.out.println( schList[i] );
-				
+		public void setYear() {
+			for (int i = nowyear - 5; i < nowyear + 5; i++) {
+				yearCombo.addItem(i);
 			}
+//			yearCombo.setSelectedItem(yearCombo); // 콤보박스에 담지만 이벤트와 연동시켜주기위해 선언이라고 함..
+		}
+		
+		
+		// 월세팅
+		public void setMonth() {
+			for (int i = 1; i <= 12; i++) {
+				monthCombo.addItem(i);
+			}
+//			monthCombo.setSelectedItem(nowmonth); // 콤보박스에 담지만 이벤트와 연동시켜주기위해 선언이라고 함..
+		}
 
-			return schList;	
+//-------------------<A파트 끝>------------------------------------------
+		
+		
+//------------------<B파트 : 달력 출력 영역 >-----------
+		static final int CAL_WIDTH = 7;
+		final static int CAL_HEIGHT = 6;
+		int calDates[][] = new int[CAL_HEIGHT][CAL_WIDTH];
+		int calYear;
+		int calMonth;
+		int calDayOfMon;
+		
+		
+	
+		private int[][] makeCalData(){ //일자를 7*6의 이중배열로 만들기
+//						
+//			calYear = Integer.parseInt(years[yearCombo.getSelectedIndex()]);
+//			calMonth = (int) monthCombo.getSelectedItem();
+//			
+//			
+			calYear = nowyear;
+			calMonth = nowmonth;
+			
+			Calendar sDay = Calendar.getInstance();		//첫날 객체 생성
+			sDay.set(calYear, calMonth-1, 1);			//첫날 날짜 세팅
+			
+			
+			Calendar eDay = Calendar.getInstance();		//막날 객체 생성
+			eDay.set(calYear, calMonth, 1); 			//다음달 첫날에서 하루 전 날이 이번달의 막날임
+			eDay.add(Calendar.DATE, -1);
+			
+			int start_Day_of_week = sDay.get(Calendar.DAY_OF_WEEK);		//첫날 요일 찾기
+			int end_Day = eDay.get(Calendar.DATE);
+			
+			// 달력 배열 초기화
+			for(int i = 0 ; i<CAL_HEIGHT ; i++){
+				for(int j = 0 ; j<CAL_WIDTH ; j++){
+					calDates[i][j] = 0;
+				}
+			}
+			// 달력 배열에 값 채워넣기
+			for(int i = 0, num = 1, k = 0 ; i<CAL_HEIGHT ; i++){
+				if(i == 0) k = start_Day_of_week;
+				else k = 0;
+				for(int j = k ; j<CAL_WIDTH ; j++){
+					if(num <= end_Day) calDates[i][j]=num++;
+				}
+			}
+			return calDates;
 			
 		}
 		
+		
+	
+//--------------------------------------<B파트 끝>-----------------------
+	
+
+
+//------------------<C파트 : 할일 목록 영역 (임시구현)>---------------------------------
+	// 일정 조회
+	private String[] viewSchedule() {
+		ArrayList schedules = ScheduleDAO.getInstance().select(userid);
+		String[] schList = new String[schedules.size()];
+
+		for (int i = 0; i < schedules.size(); i++) {
+
+			ScheduleDTO dto = (ScheduleDTO) schedules.get(i);
+			schList[i] = "[" + dto.getSdate().substring(0, 10) + "] " + dto.getTitle();
+
+			System.out.println(schList[i]);
+
+		}
+
+		return schList;
+
+	}
+//------------------<C파트 끝>---------------------------------
+
+//---------------<D파트 : 일정 등록 영역 (임시구현)>-----------------------
+	// 일정 추가 : 텍스트 필드에 입력된 내용을 DB로 보내주기
+	ScheduleDTO sdto;
+//			MemberDTO  mdto; //할일:MemberDTO 필요
+
+	private String sdate;
+	private String title;
+	private String memo;
+	private boolean attention;
+
+	private String userid = "yh"; // 할일:MemberDTO 필요
+	private LocalDate localDate;
+
+	UtilDateModel model;
+	JDatePanelImpl datePanel;
+	JDatePickerImpl datePicker; // 할일: 직접 코드 구현후 삭제예정
+
+	JCheckBox chckbxNewCheckBox;
+
+	private void addSchedule() {
+		sdto = new ScheduleDTO();
+
+		sdate = model.getYear() + "-" + (model.getMonth() + 1) + "-" + model.getDay();
+
+		title = textField_1.getText();
+		memo = textField_2.getText();
+		attention = chckbxNewCheckBox.isSelected();
+
+		sdto.setUserId(userid);
+		sdto.setSdate(sdate);
+
+		sdto.setTitle(title);
+		sdto.setMemo(memo);
+		sdto.setAttention(attention);
+
+		int result = ScheduleDAO.getInstance().insert(sdto);
+	}
+// -----------------------------<D파트 끝>-----------------------
 }
