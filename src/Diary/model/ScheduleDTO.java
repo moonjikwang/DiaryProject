@@ -3,6 +3,7 @@ package Diary.model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Comparator;
 
 public class ScheduleDTO {
 	
@@ -14,7 +15,7 @@ public class ScheduleDTO {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	private Date sdate;
+	private String sdate;
 	private String title;
 	private String memo;
 	private boolean attention;
@@ -27,10 +28,10 @@ public class ScheduleDTO {
 	public void setLocalDate(LocalDate localDate) {
 		this.localDate = localDate;
 	}
-	public Date getSdate() {
+	public String getSdate() {
 		return sdate;
 	}
-	public void setSdate(Date sdate) {
+	public void setSdate(String sdate) {
 		this.sdate = sdate;
 	}
 	public String getTitle() {
@@ -57,8 +58,6 @@ public class ScheduleDTO {
 	public void setAlert_time(Date alert_time) {
 		this.alert_time = alert_time;
 	}
-	
-	
 	
 
 }

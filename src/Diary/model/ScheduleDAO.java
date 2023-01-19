@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -19,7 +21,8 @@ public class ScheduleDAO {
 	private ScheduleDAO() {
 
 	}
-
+	
+//------------------------<커넥션 얻기>----------------------
 	private Connection getConnection() {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -33,10 +36,11 @@ public class ScheduleDAO {
 
 	}
 
+//------------------------<인스턴스 얻기>----------------------
 	public static ScheduleDAO getInstance() {
 		return dao;
 	}
-	
+
 	private void closer(Connection con) { // 중복코드 방지용 닫기 메서드
 		if (this.conn != null) {
 			try {
@@ -47,35 +51,35 @@ public class ScheduleDAO {
 		}
 	}
 
+//------------------------<일정 추가>----------------------
 	public int insert(ScheduleDTO dto) {
 		int result = 0; // 가입이 안될경우 리턴 초기화
-		
+
 		PreparedStatement pstmt = null;
-		String sql = "insert into Schedule (USERID, SDATE, TITLE, MEMO, ATTENTION,"
-				+ " ALERT_TIME, REG_DATE, NUM) "
+		String sql = "insert into Schedule (USERID, SDATE, TITLE, MEMO, ATTENTION," + " ALERT_TIME, REG_DATE, NUM) "
 				+ "values (?,?,?,?,?,?, sysdate, SCHEDULE_SEQ.NEXTVAL)";
-		
+
 		Connection con = getConnection();
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, dto.getUserId());
-			pstmt.setDate(2, dto.getSdate());	//할일: 로컬데이트로 받으면 안됨...ㅜㅜ
+			pstmt.setString(2, dto.getSdate()); // 할일: 로컬데이트로 받으면 안됨...ㅜㅜ
 //			pstmt.setDate(2, dto.getSdate());	//할일: 로컬데이트로 받으면 안됨...ㅜㅜ
 			pstmt.setString(3, dto.getTitle());
 			pstmt.setString(4, dto.getMemo());
 			pstmt.setBoolean(5, dto.isAttention());
 			pstmt.setDate(6, dto.getAlert_time());
-			
-		
+
 			result = pstmt.executeUpdate();
-			
+			System.out.println("일정추가 성공");
+
 		} catch (Exception e) {
-			System.out.println("인서트 실패 : " +e.getMessage());
-		}finally {
+			System.out.println("인서트 실패 : " + e.getMessage());
+		} finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-					closer(con); //지금 닫으면 다른 작업 못함
+					closer(con); // 지금 닫으면 다른 작업 못함
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -84,29 +88,32 @@ public class ScheduleDAO {
 		}
 		return result;
 	}
-	
-	public List<ScheduleDTO> select() {
-				
-		List<ScheduleDTO> schedules = Collections.EMPTY_LIST; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
-		Connection con = getConnection();
-		String sql = "select * from schedule where userid jikwang";
 
-		ScheduleDTO dto = null;
+//------------------------<일정 조회>----------------------
+	public ArrayList<ScheduleDTO> select(String id) {
+
+		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
+		Connection con = getConnection();
+		String sql = "select * from schedule where userid = ? order by SDATE";
+
+		ScheduleDTO dto;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		
+
 		try {
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) { // 커서를 빈 행에서 하나 내려서 데이터 테이블로 옮김
+			if (rs.next()) {
 
 				schedules = new ArrayList<ScheduleDTO>(); // 리스트 생성
 
-				do {
+				
+				do{
 					dto = new ScheduleDTO();
-					
-					dto.setSdate(rs.getDate("SDATE"));
+					dto.setSdate(rs.getString("SDATE"));
 					dto.setTitle(rs.getString("TITLE"));
 					dto.setMemo(rs.getString("MEMO"));
 					dto.setAttention(rs.getBoolean("ATTENTION"));
@@ -114,25 +121,30 @@ public class ScheduleDAO {
 
 					schedules.add(dto);
 
-				} while (rs.next());
+				}while (rs.next()) ;
 			}
 
-			pstmt.close();
-			closer(con);
-			
 		} catch (Exception e) {
-			System.out.println("인서트 실패 : " +e.getMessage());
-		}finally {
+			System.out.println("조회 실패 : " + e.getMessage());
+			e.printStackTrace();
+		} finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-					closer(con); //지금 닫으면 다른 작업 못함
+					closer(con); // 지금 닫으면 다른 작업 못함
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}
+		
+
+		//콘솔에서 조회내용을 확인하기 위한 메서드
+//		for (ScheduleDTO pdto : schedules) {
+//			System.out.println("["+pdto.getSdate()+"]"+pdto.getTitle()+" : "+pdto.getMemo());
+//		}
+		
 		return schedules;
 	}
 }
