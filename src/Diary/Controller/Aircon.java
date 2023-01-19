@@ -44,10 +44,7 @@ public class Aircon {
         JSONArray jsonArr = new JSONArray();
         JSONObject jsonObj = null;
         try {
-        	jsonObj = (JSONObject) parser.parse(data);
-			jsonObj = (JSONObject) jsonObj.get("response");
-			jsonObj = (JSONObject) jsonObj.get("body");
-			jsonArr = (JSONArray) parser.parse(jsonObj.get("items").toString());
+			jsonArr = (JSONArray) parser.parse(((JSONObject)((JSONObject) ((JSONObject)parser.parse(data)).get("response")).get("body")).get("items").toString());
 			 String ujbdata = null;
 			for(int i = 0; i < jsonArr.size();i++) {
 				jsonObj = (JSONObject) jsonArr.get(i);

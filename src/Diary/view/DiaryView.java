@@ -5,6 +5,8 @@ import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -501,6 +503,20 @@ public class DiaryView extends JFrame {
 				beforeArea.setBounds(12, 44, 427, 340);
 				
 				panel_2.add(beforeArea);
+				afterArea.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(e.getSource() == afterArea) {
+							Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+							String copyString = afterArea.getText();
+							if ( copyString != null) {
+							     StringSelection contents = new StringSelection(copyString);
+							     clipboard.setContents(contents, null);
+							     JOptionPane.showMessageDialog(bg, "복사되었습니다.");
+							}
+						}
+					}
+				});
 				afterArea.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 				afterArea.setEditable(false);
 				afterArea.setBounds(451, 44, 427, 340);
