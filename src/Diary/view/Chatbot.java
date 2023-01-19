@@ -24,8 +24,8 @@ import java.awt.FlowLayout;
 
 
 public class Chatbot extends JFrame {
-	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("chatBg.png"));
-	private ImageIcon talk = new ImageIcon(DiaryView.class.getResource("talk.png"));
+	private ImageIcon icon = new ImageIcon("img/chatBg.png");
+	private ImageIcon talk = new ImageIcon("img/talk.png");
 	
 	/**
 	 * 

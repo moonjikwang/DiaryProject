@@ -49,8 +49,8 @@ import javax.swing.JList;
 import javax.swing.AbstractListModel;
 
 public class CalenderViewer extends JFrame {
-	private ImageIcon icon = new ImageIcon(CalenderViewer.class.getResource("bg5.png"));
-	private ImageIcon logoim = new ImageIcon(CalenderViewer.class.getResource("logo6.png"));
+	private ImageIcon icon = new ImageIcon("img/bg.png");
+	private ImageIcon logoim = new ImageIcon("img/logo6.png");
 	/**
 	 * 
 	 */
@@ -96,7 +96,7 @@ public class CalenderViewer extends JFrame {
 
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
-		panel_1_1.setBackground(new Color(251, 222, 224));
+		panel_1_1.setBackground(new Color(255, 234, 151));
 		panel_1_1.setBounds(725, 0, 309, 111);
 		AccountPanel.add(panel_1_1);
 
@@ -105,7 +105,7 @@ public class CalenderViewer extends JFrame {
 		panel_1_1.add(lblNewLabel_1_1);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(234, 220, 215));
+		panel_2.setBackground(new Color(251, 234, 189));
 		panel_2.setBounds(70, 121, 893, 442);
 		AccountPanel.add(panel_2);
 		panel_2.setLayout(null);
@@ -171,7 +171,7 @@ public class CalenderViewer extends JFrame {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
-		panel.setBackground(new Color(234, 220, 215));
+		panel.setBackground(new Color(242, 206, 96));
 		panel.setBounds(46, 29, 380, 33);
 		panel_2.add(panel);
 
@@ -267,6 +267,7 @@ public class CalenderViewer extends JFrame {
 		panel_4.add(chckbxNewCheckBox);
 
 		JButton btnNewButton = new JButton("지우기");
+		btnNewButton.setBackground(new Color(242, 206, 96));
 		btnNewButton.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -278,6 +279,7 @@ public class CalenderViewer extends JFrame {
 		panel_4.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("일정추가");
+		btnNewButton_1.setBackground(new Color(242, 206, 96));
 		btnNewButton_1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -312,7 +314,7 @@ public class CalenderViewer extends JFrame {
 		panel_2.add(panel_6);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBackground(new Color(234, 220, 215));
+		panel_7.setBackground(new Color(242, 206, 96));
 		panel_7.setBounds(438, 29, 111, 33);
 		panel_2.add(panel_7);
 
@@ -324,13 +326,13 @@ public class CalenderViewer extends JFrame {
 		
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(251, 222, 224));
+		panel_1.setBackground(new Color(255, 234, 151));
 		panel_1.setBounds(0, 0, 203, 111);
 		AccountPanel.add(panel_1);
 		panel_1.setLayout(null);
 
 		JLabel lblNewLabel_1_2 = new JLabel("New label");
-		lblNewLabel_1_2.setIcon(new ImageIcon(CalenderViewer.class.getResource("/Diary/view/logo6.png")));
+		lblNewLabel_1_2.setIcon(new ImageIcon("img/logo6.png"));
 		lblNewLabel_1_2.setBounds(-25, 10, 252, 91);
 		panel_1.add(lblNewLabel_1_2);
 

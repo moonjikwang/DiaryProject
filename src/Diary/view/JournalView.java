@@ -24,8 +24,8 @@ import Diary.model.JournalDTO;
 
 
 public class JournalView  extends JFrame {
-	private ImageIcon icon = new ImageIcon(JournalView.class.getResource("bg.png"));
-	private ImageIcon logoim = new ImageIcon(JournalView.class.getResource("logo6.png"));
+	private ImageIcon icon = new ImageIcon("img/bg.png");
+	private ImageIcon logoim = new ImageIcon("img/logo6.png");
 	/**
 	 * 
 	 */
