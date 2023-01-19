@@ -2,6 +2,7 @@ package Diary.view;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -142,7 +143,7 @@ public class DiaryView extends JFrame {
 					try {
 						JSONObject jsonObj = Aircon.airCon();
 						JOptionPane.showMessageDialog(mntmNewMenuItem, jsonObj.get("stationName") +"" + jsonObj.get("dataTime") + " 기준\n미세먼지(PM10) 농도 : " + jsonObj.get("pm10Value") +
-								"\n" + "초미세먼지(PM2.5) 농도 : " + jsonObj.get("pm25Value"));
+								"\n" + "초미세먼지(PM2.5) 농도 : " + jsonObj.get("pm25Value"),"우리동네 미세먼지",JOptionPane.PLAIN_MESSAGE);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -159,6 +160,34 @@ public class DiaryView extends JFrame {
 				menuPanel.setVisible(false);
 				accountPanel.setVisible(false);
 				transLang.setVisible(false);
+				
+				JPanel panel = new JPanel();
+				panel.setBackground(new Color(0, 0, 0,0));
+				panel.setBounds(942, 509, 92, 82);
+				contentPane.add(panel);
+				panel.setLayout(null);
+				
+				JLabel lblNewLabel_4 = new JLabel("");
+				lblNewLabel_4.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(e.getSource()==lblNewLabel_4) {
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									try {
+										Chatbot frame = new Chatbot();
+										frame.setVisible(true);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							});
+						}
+					}
+				});
+				lblNewLabel_4.setIcon(new ImageIcon(DiaryView.class.getResource("chat.png")));
+				lblNewLabel_4.setBounds(0, 0, 92, 82);
+				panel.add(lblNewLabel_4);
 				
 				// 백그라운드 패널
 				bgPanel.setBounds(0, 0, 1034, 624);
