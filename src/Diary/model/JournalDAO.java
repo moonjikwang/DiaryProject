@@ -49,7 +49,7 @@ public class JournalDAO {
 	//---------------일기 Insert 메서드 끝------
 	
 	//----------------리스트 출력 메서드---------
-	public String list(String JournalList) {
+	public ResultSet list(String JournalList) {
 		ResultSet rs = null;
 		conn = getConnection();
 		try {

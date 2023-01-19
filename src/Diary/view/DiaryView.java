@@ -52,10 +52,10 @@ public class DiaryView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ImageIcon icon = new ImageIcon(DiaryView.class.getResource("bg.png"));
-	private ImageIcon logoim = new ImageIcon(DiaryView.class.getResource("logo6.png"));
-	private ImageIcon papagoImg = new ImageIcon(DiaryView.class.getResource("papa.png"));
-	private ImageIcon menuImg = new ImageIcon(DiaryView.class.getResource("menu2.png"));
+	private ImageIcon icon = new ImageIcon("img/bg.png");
+	private ImageIcon logoim = new ImageIcon("img/logo6.png");
+	private ImageIcon papagoImg = new ImageIcon("img/papa.png");
+	private ImageIcon menuImg = new ImageIcon("img/menu2.png");
 	private String[] category = {"쇼핑","배달","관리비","월급","용돈","로또당첨"};
 	private String[] type = {"수입","지출"};
 	private JTable table;
@@ -185,7 +185,7 @@ public class DiaryView extends JFrame {
 						}
 					}
 				});
-				lblNewLabel_4.setIcon(new ImageIcon(DiaryView.class.getResource("chat.png")));
+				lblNewLabel_4.setIcon(new ImageIcon("img/chat.png"));
 				lblNewLabel_4.setBounds(0, 0, 92, 82);
 				panel.add(lblNewLabel_4);
 				
@@ -409,7 +409,7 @@ public class DiaryView extends JFrame {
 						bg.setBounds(0, 0, 1040, 630);
 						bgPanel.add(bg);
 						bg.setForeground(new Color(255, 252, 250));
-						ImageIcon bg6 = new ImageIcon(DiaryView.class.getResource("bg6.png"));
+						ImageIcon bg6 = new ImageIcon("img/bg6.png");
 						bg.setIcon(bg6);
 						
 						
