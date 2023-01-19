@@ -4,14 +4,13 @@ package Diary.model;
 public class JournalDTO {
 	
 	private String userId;
-	private String regdate;
-	private String JournalInput;
-	private String JournalList;
-
-	public JournalDTO(String userId, String regdate, String JournalInput, String JournalList) {
+	private String journal;
+//	private String regdate;
+//	private String JournalList;
+	
+	public JournalDTO(String userId, String journal) {
 		this.userId = userId;
-		this.regdate = regdate;
-		this.JournalInput = JournalInput;
+		this.journal = journal;
 	}
 
 	public String getUserId() {
@@ -22,20 +21,12 @@ public class JournalDTO {
 		this.userId = userId;
 	}
 
-	public String getRegdate() {
-		return regdate;
+	public String getjournal() {
+		return journal;
 	}
 
-	public void setRegdate(String regdate) {
-		this.regdate = regdate;
-	}
-
-	public String getJournalInput() {
-		return JournalInput;
-	}
-
-	public void setJournalInput(String journalInput) {
-		JournalInput = journalInput;
+	public void setjournal(String journal) {
+		this.journal = journal;
 	}
 	
 }
