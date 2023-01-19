@@ -671,6 +671,8 @@ public class DiaryView extends JFrame {
 			     
 			        DefaultTableModel model = new DefaultTableModel(data,columnNames);
 				table = new JTable(model);
+				table.setShowGrid(false);
+				table.setRowSelectionAllowed(false);
 				table.setAutoCreateColumnsFromModel(false);
 				table.setModel(DbUtils.resultSetToTableModel(AccountDAO.getInstance().list(userId())));
 				scrollPane.setViewportView(table);

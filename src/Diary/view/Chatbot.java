@@ -16,6 +16,11 @@ import com.mommoo.flat.text.textarea.FlatTextArea;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JTextArea;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
 
 
 public class Chatbot extends JFrame {
@@ -30,7 +35,7 @@ public class Chatbot extends JFrame {
 	JLabel myTalk;
 	FlatTextField flatTextField;
 	FlatPanel myTalkPanel;
-
+	JLabel lblNewLabel_1;
 	/**
 	 * Create the frame.
 	 */
@@ -43,6 +48,12 @@ public class Chatbot extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(255, 0, 0,0));
+		panel_2.setBounds(12, 10, 288, 447);
+		contentPane.add(panel_2);
+		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 462, 312, 48);
 		contentPane.add(panel_1);
@@ -52,7 +63,7 @@ public class Chatbot extends JFrame {
 		flatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == flatButton) {
-					myTalk.setText(flatTextField.getText());
+					//textArea.setText(textArea.getText()+"\n"+"<나>"+flatTextField.getText());
 					myTalkPanel.setVisible(true);
 				}
 			}
@@ -72,7 +83,7 @@ public class Chatbot extends JFrame {
 		panel.setLayout(null);
 		
 		myTalkPanel = new FlatPanel();
-		myTalkPanel.setBounds(0, 0, 312, 50);
+		myTalkPanel.setBounds(350, 0, 312, 50);
 		myTalkPanel.setVisible(false);
 		panel.add(myTalkPanel);
 		myTalkPanel.setLayout(null);
@@ -82,7 +93,7 @@ public class Chatbot extends JFrame {
 		myTalk.setBounds(12, 10, 274, 30);
 		myTalkPanel.add(myTalk);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(0, 0, 312, 50);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setIcon(talk);
