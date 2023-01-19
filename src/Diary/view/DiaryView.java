@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,18 +27,25 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import org.json.simple.JSONObject;
+
 import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.component.FlatPanel;
 import com.mommoo.flat.text.label.FlatLabel;
 import com.mommoo.flat.text.textarea.FlatTextArea;
 import com.mommoo.flat.text.textfield.FlatTextField;
 
+import Diary.Controller.Aircon;
 import Diary.Controller.Trans;
 import Diary.model.AccountDAO;
 import Diary.model.AccountDTO;
 import Diary.model.MemberDAO;
 import Diary.model.MemberDTO;
 import net.proteanit.sql.DbUtils;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class DiaryView extends JFrame {
 
@@ -117,6 +125,32 @@ public class DiaryView extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1050, 663);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBorderPainted(false);
+		menuBar.setBackground(new Color(238, 231, 110));
+		setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("정보");
+		mnNewMenu.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("우리동네 미세먼지");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource()==mntmNewMenuItem) {
+					try {
+						JSONObject jsonObj = Aircon.airCon();
+						JOptionPane.showMessageDialog(mntmNewMenuItem, jsonObj.get("stationName") +"" + jsonObj.get("dataTime") + " 기준\n미세먼지(PM10) 농도 : " + jsonObj.get("pm10Value") +
+								"\n" + "초미세먼지(PM2.5) 농도 : " + jsonObj.get("pm25Value"));
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		mntmNewMenuItem.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+		mnNewMenu.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -348,11 +382,12 @@ public class DiaryView extends JFrame {
 						bg.setForeground(new Color(255, 252, 250));
 						ImageIcon bg6 = new ImageIcon(DiaryView.class.getResource("bg6.png"));
 						bg.setIcon(bg6);
-				
+						
+						
 				contentPane.add(menuPanel);
-				flatLabel.setFont(new Font("MD개성체", Font.BOLD, 16));
+				flatLabel.setFont(new Font("HY헤드라인M", Font.PLAIN, 14));
 				flatLabel.setBackground(new Color(255, 234, 151));
-				flatLabel.setBounds(0, 0, 206, 33);
+				flatLabel.setBounds(0, 0, 608, 46);
 				
 				menuPanel.add(flatLabel);
 				flatButton_2.setBackground(new Color(196, 174, 119, 0));
@@ -646,7 +681,7 @@ public class DiaryView extends JFrame {
 			loginAlert.setText("로그인에 성공했습니다 ");
 			try {
 				menuPanel.setVisible(true);
-				flatLabel.setText(userName()+"님 반갑습니다!");
+				flatLabel.setText(userName()+"님 반갑습니다! ");
 				bgPanel.setVisible(false);
 //				Menu frame = new Menu(member);
 //				frame.setVisible(true);
