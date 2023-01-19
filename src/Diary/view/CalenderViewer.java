@@ -17,6 +17,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.swing.DefaultComboBoxModel;
@@ -35,6 +37,11 @@ import Diary.model.ScheduleDTO;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import java.awt.Font;
+import java.awt.CardLayout;
+import java.awt.GridBagLayout;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
 
 public class CalenderViewer extends JFrame {
 	private ImageIcon icon = new ImageIcon(CalenderViewer.class.getResource("bg5.png"));
@@ -179,8 +186,11 @@ public class CalenderViewer extends JFrame {
 
 		model = new UtilDateModel();
 		datePanel = new JDatePanelImpl(model);
+	
 		datePicker = new JDatePickerImpl(datePanel);
 		panel_3.add("Center", datePanel);	//할일: 직접 코드 작성하면 삭제할 예정
+		
+		
 
 //		textArea = new JTextArea();
 //		
@@ -191,13 +201,16 @@ public class CalenderViewer extends JFrame {
 		panel_2.add(panel_4);
 
 		JLabel lblNewLabel_1 = new JLabel("날짜");
+		lblNewLabel_1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		panel_4.add(lblNewLabel_1);
 
 		textField = new JTextField();
+		textField.setEnabled(false);
 		panel_4.add(textField);
 		textField.setColumns(10);
 
 		JLabel lblNewLabel_2 = new JLabel("일정제목");
+		lblNewLabel_2.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		panel_4.add(lblNewLabel_2);
 
 		textField_1 = new JTextField();
@@ -214,6 +227,7 @@ public class CalenderViewer extends JFrame {
 		textField_1.setColumns(10);
 
 		JLabel lblNewLabel_3 = new JLabel("일정내용");
+		lblNewLabel_3.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		panel_4.add(lblNewLabel_3);
 
 		textField_2 = new JTextField();
@@ -229,6 +243,7 @@ public class CalenderViewer extends JFrame {
 		textField_2.setColumns(30);
 
 		chckbxNewCheckBox = new JCheckBox("중요");
+		chckbxNewCheckBox.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == chckbxNewCheckBox) {
@@ -240,9 +255,18 @@ public class CalenderViewer extends JFrame {
 		panel_4.add(chckbxNewCheckBox);
 
 		JButton btnNewButton = new JButton("지우기");
+		btnNewButton.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				viewSchedule();
+			
+			}
+		});
 		panel_4.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("일정추가");
+		btnNewButton_1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -254,6 +278,21 @@ public class CalenderViewer extends JFrame {
 		JPanel panel_5 = new JPanel();
 		panel_5.setBounds(563, 29, 283, 320);
 		panel_2.add(panel_5);
+		panel_5.setLayout(new CardLayout(0, 0));
+		
+		JList list = new JList();
+		list.setModel(new AbstractListModel() {
+			String[] values = viewSchedule();
+			public int getSize() {
+				return values.length;
+			}
+			
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		list.setToolTipText("일정목록");
+		panel_5.add(list, "name_9384279322200");
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setBounds(438, 69, 111, -42);
@@ -290,7 +329,7 @@ public class CalenderViewer extends JFrame {
 		ScheduleDTO sdto;
 //		MemberDTO  mdto; //할일:MemberDTO 필요
 
-		private Calendar sdate = Calendar.getInstance();
+		private String sdate;
 		private String title;
 		private String memo;
 		private boolean attention;
@@ -304,26 +343,41 @@ public class CalenderViewer extends JFrame {
 		
 		
 		JCheckBox chckbxNewCheckBox;
-		public void addSchedule() {
+		private void addSchedule() {
 			sdto = new ScheduleDTO();
 			
-			sdate.set(model.getYear(), model.getMonth()+1, model.getDay());
-//			localDate.of(model.getYear(), model.getMonth()+1, model.getDay());
-			Date setDate = new Date(sdate.getTimeInMillis());
-			
+			sdate = model.getYear()+"-"+  (model.getMonth()+1)+"-"+ model.getDay() ;
+					
 			title = textField_1.getText(); 
 			memo = textField_2.getText(); 
 			attention = chckbxNewCheckBox.isSelected();
 				
 			sdto.setUserId(userid);
-			sdto.setSdate(setDate);
-//			sdto.setLocalDate(localDate);	//할일:선택한 날짜로 자동입력
-//			sdto.setLocalDate(now);
+			sdto.setSdate(sdate);
+
 			sdto.setTitle(title);
 			sdto.setMemo(memo);
 			sdto.setAttention(attention);
 			
 			int result = ScheduleDAO.getInstance().insert(sdto);
 		}
+		
+		//일정 조회
+		private String[] viewSchedule(){
+			ArrayList schedules =ScheduleDAO.getInstance().select(userid);
+			String[] schList = new String[schedules.size()];
+			
+			for (int i = 0; i < schedules.size(); i++) {
+				
+				ScheduleDTO dto = (ScheduleDTO) schedules.get(i);
+				schList[i] = "["+dto.getSdate().substring(0, 10)+"] "+ dto.getTitle();
+				
+				System.out.println( schList[i] );
+				
+			}
 
+			return schList;	
+			
+		}
+		
 }
