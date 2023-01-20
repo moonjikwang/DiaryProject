@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import com.mommoo.flat.button.FlatButton;
@@ -63,6 +64,9 @@ public class Chatbot extends JFrame {
 		flatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == flatButton) {
+					if(flatTextField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(flatButton, "값을 입력하고 전송해주세요.");
+					}else {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
 					makeAnswer(flatTextField.getText());
@@ -70,7 +74,9 @@ public class Chatbot extends JFrame {
 						addAnswer(flatTextField.getText());
 					}
 					flatTextField.setText("");
+					}
 					myTalkPanel.setVisible(true);
+				
 				}
 			}
 
@@ -85,6 +91,9 @@ public class Chatbot extends JFrame {
 		flatTextField.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == 10) {
+					if(flatTextField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(flatButton, "값을 입력하고 전송해주세요.");
+					}else {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
 					makeAnswer(flatTextField.getText());
@@ -92,6 +101,7 @@ public class Chatbot extends JFrame {
 						addAnswer(flatTextField.getText());
 					}
 					flatTextField.setText("");
+					}
 				}
 			}
 		});
