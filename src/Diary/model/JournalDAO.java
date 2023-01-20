@@ -59,42 +59,62 @@ public class JournalDAO {
 		return result;//성공시 1리턴, 문제시 0 리턴
 	}
 	//----------------일기 저장 메서드 종료-----------
+	
 	//----------------리스트 출력 메서드 시작---------
-	public List<JournalDTO> getlist(String id) {
-		List<JournalDTO> jourList = Collections.EMPTY_LIST;
-		JournalDTO dto = null;
-		String sql = "select * from Jouranl where userid = ? order by regdate desc";
+	public ArrayList selectJour(String id) {
+
+		ArrayList<JournalDTO> jours = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
+		Connection con = getConnection();
+		String sql = "select * from DIARY where userid = ? order by REGDATE desc";
+
+		JournalDTO dto;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		Connection conn = getConnection();
-		
+
 		try {
-			pstmt = conn.prepareStatement(sql);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
 			
-			//데이터가 있으면,
-			if(rs.next()) {
-				jourList = new ArrayList<JournalDTO>();
-				do {
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+
+				jours = new ArrayList<JournalDTO>(); // 리스트 생성
+				
+				do{
 					dto = new JournalDTO();
-					dto.setUserId(rs.getString("userid"));
-					dto.setRegdate(rs.getDate("regdate"));
-//					dto.setjournal(rs.getString("memo")); //목록에 들어가므로 제외
-					
-					//jourList dto에 담기
-					jourList.add(dto);
-				} while (rs.next());
+					dto.setUserId(rs.getString("USERID"));
+					dto.setjournal(rs.getString("MEMO"));
+					dto.setRegdate(rs.getDate("REGDATE"));
+
+					jours.add(dto);
+
+				}while (rs.next()) ;
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
-		} catch (SQLException e) {
-			System.out.println("리스트출력 예외발생" + e.getMessage());
+
+		} catch (Exception e) {
+			System.out.println("조회 실패 : " + e.getMessage());
 			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+					con.close(); // 지금 닫으면 다른 작업 못함
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return jourList;
+		
+		//콘솔에서 조회내용을 확인하기 위한 메서드
+//		for (ScheduleDTO pdto : schedules) {
+//			System.out.println("["+pdto.getSdate()+"]"+pdto.getTitle()+" : "+pdto.getMemo());
+//		}
+		
+		//jourList dto에 담기
+		return jours;
 	}
+	
 	//----------------리스트 출력 메서드 종료---------	
 	//---------------편집 메서드 시작-----------------
 	public static void updateJour(Connection con) {
@@ -132,5 +152,7 @@ public class JournalDAO {
 		return 0;
 	}
 	//---------------삭제 메서드 종료---------------
+	
+
 	
 }//------------------JournalDTO class 종료----------
