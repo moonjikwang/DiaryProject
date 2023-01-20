@@ -11,6 +11,9 @@ import javax.swing.border.EmptyBorder;
 import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.component.FlatPanel;
 import com.mommoo.flat.text.textfield.FlatTextField;
+
+import Diary.model.ChatbotDAO;
+
 import com.mommoo.flat.component.FlatScrollPane;
 import com.mommoo.flat.text.textarea.FlatTextArea;
 import javax.swing.SwingConstants;
@@ -21,11 +24,15 @@ import javax.swing.AbstractListModel;
 import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Font;
 
 
 public class Chatbot extends JFrame {
 	private ImageIcon icon = new ImageIcon("img/chatBg.png");
 	private ImageIcon talk = new ImageIcon("img/talk.png");
+	Image img = new ImageIcon("img/chatBg.png").getImage();
 	
 	/**
 	 * 
@@ -36,10 +43,13 @@ public class Chatbot extends JFrame {
 	FlatTextField flatTextField;
 	FlatPanel myTalkPanel;
 	JLabel lblNewLabel_1;
+	FlatTextArea textarea;
+	int chatStats = 0;
 	/**
 	 * Create the frame.
 	 */
 	public Chatbot() {
+		setResizable(false);
 		
 		setBounds(100, 100, 328, 549);
 		contentPane = new JPanel();
@@ -47,12 +57,6 @@ public class Chatbot extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(255, 0, 0,0));
-		panel_2.setBounds(12, 10, 288, 447);
-		contentPane.add(panel_2);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 462, 312, 48);
@@ -63,9 +67,32 @@ public class Chatbot extends JFrame {
 		flatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == flatButton) {
-					//textArea.setText(textArea.getText()+"\n"+"<나>"+flatTextField.getText());
+					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
+					if(chatStats == 0) {
+					makeAnswer(flatTextField.getText());
+					}else {
+						addAnswer(flatTextField.getText());
+					}
+					flatTextField.setText("");
 					myTalkPanel.setVisible(true);
 				}
+			}
+
+			private void addAnswer(String text) {
+				ChatbotDAO.getInstance().addWord(text);
+				textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>이해했어요!");
+				chatStats = 0;
+			}
+
+			private void makeAnswer(String text) {
+				String response = ChatbotDAO.getInstance().response(text);
+				if(response == null) {
+					response = "제가 모르는 내용이네요. 어떤 대답을 원하세요?";
+					chatStats = 1;
+				}else {
+					chatStats = 0;
+				}
+				textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>"+response);
 			}
 		});
 		flatButton.setText("전송");
@@ -85,6 +112,22 @@ public class Chatbot extends JFrame {
 		myTalkPanel = new FlatPanel();
 		myTalkPanel.setBounds(350, 0, 312, 50);
 		myTalkPanel.setVisible(false);
+		
+		FlatScrollPane flatScrollPane = new FlatScrollPane();
+		flatScrollPane.setBounds(0, 0, 312, 462);
+		panel.add(flatScrollPane);
+		
+		textarea = new FlatTextArea(){
+            { setOpaque( false ) ; }
+            public void paintComponent(Graphics g){
+                g.drawImage(img,0,0,null);       //이미지 그리기
+                super.paintComponent(g);
+            }
+        };
+		textarea.setFont(new Font("굴림", Font.BOLD, 12));
+        textarea.setText("<스마트 다이어리 챗봇서비스 입니다>\n <현재 학습된 상황 수 " + ChatbotDAO.getInstance().list() + "건 입니다.>");
+		textarea.setEditable(false);;
+		flatScrollPane.setViewportView(textarea);
 		panel.add(myTalkPanel);
 		myTalkPanel.setLayout(null);
 		
