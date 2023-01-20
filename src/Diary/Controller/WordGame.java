@@ -18,7 +18,7 @@ public class WordGame {
 			String word =userValue;	
 			StringBuffer response = null;
 			URL url = new URL("https://opendict.korean.go.kr/api/search?key=" + key
-					+ "&type_search=search&q=" + word+"&req_type=json&advanced=y&target=1&method=start&type1=word&letter_s=2&letter_e=5&sort=popular&num=10");
+					+ "&type_search=search&q=" + word+"&req_type=json&advanced=y&target=1&method=include&type1=proverb&letter_s=2&letter_e=20&sort=popular&num=15");
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -34,7 +34,7 @@ public class WordGame {
 	            jsonObj = (JSONObject) parser.parse(response.toString());
 	            jsonObj = (JSONObject) jsonObj.get("channel");
 	            jsonArr = (JSONArray) jsonObj.get("item");
-	            	jsonObj = (JSONObject) jsonArr.get((int)(Math.random()*10));
+	            	jsonObj = (JSONObject) jsonArr.get((int)(Math.random()*15));
 	            	System.out.println(jsonObj.get("word"));
 	            	result = jsonObj.get("word").toString();
 	            	jsonArr = (JSONArray) jsonObj.get("sense");

@@ -3,6 +3,7 @@ package Diary.view;
 import java.awt.EventQueue;
 
 
+
 public class Diary {
 
 	public static void main(String[] args) {

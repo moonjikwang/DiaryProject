@@ -129,7 +129,8 @@ public class Chatbot extends JFrame {
 		panel.add(flatScrollPane);
 		
 		textarea = new FlatTextArea(){
-            { setOpaque( false ) ; }
+			private static final long serialVersionUID = 1L;
+			{ setOpaque( false ) ; }
             public void paintComponent(Graphics g){
                 g.drawImage(img,0,0,null);       //이미지 그리기
                 super.paintComponent(g);
