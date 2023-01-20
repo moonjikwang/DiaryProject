@@ -12,6 +12,7 @@ import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.component.FlatPanel;
 import com.mommoo.flat.text.textfield.FlatTextField;
 
+import Diary.Controller.Trans;
 import Diary.model.ChatbotDAO;
 
 import com.mommoo.flat.component.FlatScrollPane;
@@ -70,13 +71,15 @@ public class Chatbot extends JFrame {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
 					makeAnswer(flatTextField.getText());
+					}else if(chatStats == 2) {
+						textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>"+Trans.trans(flatTextField.getText()).toString());
+						chatStats = 0;
+						flatTextField.setText("");
 					}else {
 						addAnswer(flatTextField.getText());
 					}
 					flatTextField.setText("");
 					}
-					myTalkPanel.setVisible(true);
-				
 				}
 			}
 
@@ -97,6 +100,10 @@ public class Chatbot extends JFrame {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
 					makeAnswer(flatTextField.getText());
+					}else if(chatStats == 2) {
+						textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>"+Trans.trans(flatTextField.getText()).toString());
+						chatStats = 0;
+						flatTextField.setText("");
 					}else {
 						addAnswer(flatTextField.getText());
 					}
@@ -129,7 +136,7 @@ public class Chatbot extends JFrame {
             }
         };
 		textarea.setFont(new Font("나눔고딕", Font.BOLD, 14));
-        textarea.setText("<스마트 다이어리 챗봇서비스 입니다>\n <현재 학습된 상황 수 " + ChatbotDAO.getInstance().list() + "건 입니다.>");
+        textarea.setText("<스마트 다이어리 챗봇서비스 입니다>");
 		textarea.setEditable(false);;
 		flatScrollPane.setViewportView(textarea);
 		panel.add(myTalkPanel);
@@ -162,6 +169,9 @@ public class Chatbot extends JFrame {
 		if(response == null) {
 			response = "제가 모르는 내용이네요. 어떤 대답을 원하세요?";
 			chatStats = 1;
+		}else if(response.equals("번역기실행")) {
+			response = "번역할 내용을 입력해주세요 !";
+			chatStats = 2;
 		}else {
 			chatStats = 0;
 		}
