@@ -12,6 +12,7 @@ import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.component.FlatPanel;
 import com.mommoo.flat.text.textfield.FlatTextField;
 
+import Diary.Controller.Trans;
 import Diary.model.ChatbotDAO;
 
 import com.mommoo.flat.component.FlatScrollPane;
@@ -70,6 +71,8 @@ public class Chatbot extends JFrame {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
 					makeAnswer(flatTextField.getText());
+					}else if(chatStats == 2) {
+						textarea.setText(textarea.getText()+Trans.trans(flatTextField.getText()).toString());
 					}else {
 						addAnswer(flatTextField.getText());
 					}
@@ -93,6 +96,8 @@ public class Chatbot extends JFrame {
 				if(e.getKeyCode() == 10) {
 					if(flatTextField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(flatButton, "값을 입력하고 전송해주세요.");
+					}else if(chatStats == 2) {
+						textarea.setText(textarea.getText()+Trans.trans(flatTextField.getText()).toString());
 					}else {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
@@ -162,6 +167,9 @@ public class Chatbot extends JFrame {
 		if(response == null) {
 			response = "제가 모르는 내용이네요. 어떤 대답을 원하세요?";
 			chatStats = 1;
+		}else if(response.equals("번역기실행")){
+			response = "번역할 내용을 입력해주세요 ~";
+			chatStats = 2;
 		}else {
 			chatStats = 0;
 		}
