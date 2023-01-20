@@ -1,16 +1,22 @@
 package Diary.model;
 
+import java.sql.Date;
+
 //-----------JournalDiary 정보를 간직하는 DTO 객체 
 public class JournalDTO {
 	
 	private String userId;
 	private String journal;
-//	private String regdate;
+	private Date regdate;
 //	private String JournalList;
-	
+
 	public JournalDTO(String userId, String journal) {
 		this.userId = userId;
 		this.journal = journal;
+	}
+
+	public JournalDTO() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getUserId() {
@@ -29,4 +35,12 @@ public class JournalDTO {
 		this.journal = journal;
 	}
 	
+	
+	public Date getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
 }
