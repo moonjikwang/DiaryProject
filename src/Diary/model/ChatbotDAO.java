@@ -1,5 +1,6 @@
 package Diary.model;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
+
+import org.json.simple.JSONObject;
+
+import Diary.Controller.Aircon;
 
 public class ChatbotDAO {
 	//---------------------필드선언 및 초기화 --------------------
@@ -33,8 +38,14 @@ public class ChatbotDAO {
 	public String response(String requestText) {
 		memData = requestText;
 		String result = null;
-		conn = getConnection();
+		JSONObject jsonObj;
 		try {
+			jsonObj = Aircon.airCon();
+		conn = getConnection();
+		if(requestText.contains("미세먼지")) {
+			result = jsonObj.get("stationName") +"" + jsonObj.get("dataTime") + " 기준\n미세먼지(PM10) 농도 : " + jsonObj.get("pm10Value") +
+					"\n" + "초미세먼지(PM2.5) 농도 : " + jsonObj.get("pm25Value") + "입니다.";
+		}
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from chatbot");
 			while(rs.next()) {
@@ -52,7 +63,7 @@ public class ChatbotDAO {
 //			pstmt.executeUpdate();
 //			JOptionPane.showMessageDialog(null, "이해했어요.");
 		}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
