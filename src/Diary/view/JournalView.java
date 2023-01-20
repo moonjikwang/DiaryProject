@@ -1,5 +1,11 @@
 package Diary.view;
-
+/*
+ * 1. 윈도우 빌더 밑그림
+ * 2. 저장버튼 : 저장메서드 연결
+ * 3. 목록 출력 : 출력메서드 연결 //
+ * 4. 목록 선택버튼 -> 일기 출력 및 편집 : update //
+ * 5. 목록 선택버튼 -> 삭제버튼 : 데이터삭제 //
+ */
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -21,7 +27,6 @@ import com.mommoo.flat.text.textarea.FlatTextArea;
 
 import Diary.model.JournalDAO;
 import Diary.model.JournalDTO;
-
 
 public class JournalView  extends JFrame {
 	private ImageIcon icon = new ImageIcon("img/bg.png");
