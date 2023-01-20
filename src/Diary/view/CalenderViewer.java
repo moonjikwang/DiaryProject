@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -35,6 +36,8 @@ import Diary.model.ScheduleDTO;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 public class CalenderViewer extends JFrame implements ActionListener {
 	private ImageIcon icon = new ImageIcon("img/bg.png");
@@ -101,11 +104,11 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
-		panel.setBackground(new Color(242, 206, 96));
+		panel.setBackground(new Color(251, 234, 189));
 		panel.setBounds(46, 29, 380, 33);
 		panel_2.add(panel);
 
-//-------------
+//-------------<콤보박스>--------------------
 		yearCombo = new JComboBox();
 		setYear();
 		yearCombo.setSelectedItem(nowyear);
@@ -113,6 +116,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		panel.add(yearCombo);
 
 		JLabel lblNewLabel_4 = new JLabel("년");
+		lblNewLabel_4.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
 		panel.add(lblNewLabel_4);
 
 		monthCombo = new JComboBox();
@@ -125,6 +129,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		monthCombo.addActionListener(this);
 
 		JLabel lblNewLabel_5 = new JLabel("월");
+		lblNewLabel_5.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
 		panel.add(lblNewLabel_5);
 
 // -------------------------<B파트 GUI>-------------------
@@ -247,16 +252,28 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		});
 		panel_4.add(btnNewButton_1);
 
-		panel_5 = new JTabbedPane();
-		panel_5.setBounds(563, 29, 283, 320);
-		panel_5.addTab("일정목록", list);
-//		panel_5.addTab("상세일정", new JTextField());
+//------------------<C파트 : 할일 목록 영역>---------------
+//--------------<일정 탭>--------------
 		
-		panel_5.setLayout(new CardLayout(0, 0));
-
+		panel_5 = new JTabbedPane();
+		
+		panel_5_1 = new JPanel();
+		panel_5_2 = new JPanel();
+		
+//		panel_5_1.setLayout(new CardLayout());
+		
+		panel_5.setBounds(563, 29, 283, 320);
+		panel_5.addTab("이달의 일정", panel_5_1);
+		panel_5.addTab("상세일정", panel_5_2);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		panel_5_2.add(scrollPane);
 		
 		panel_2.add(panel_5);
 		
+			
+		
+		//이달의 일정
 		list = new JList();
 		list.setModel(new AbstractListModel() {
 			String[] values = viewSchedule();
@@ -269,19 +286,26 @@ public class CalenderViewer extends JFrame implements ActionListener {
 				return values[index];
 			}
 		});
+		list.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		list.setToolTipText("일정목록");
-		panel_5.add(list, "name_9384279322200");
+	
+		panel_5_1.add(list);
+		
+	
+		
+		
 
 		JPanel panel_6 = new JPanel();
 		panel_6.setBounds(438, 69, 111, -42);
 		panel_2.add(panel_6);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBackground(new Color(242, 206, 96));
+		panel_7.setBackground(new Color(251, 234, 189));
 		panel_7.setBounds(438, 29, 111, 33);
 		panel_2.add(panel_7);
 
 		btnNewButton_4 = new JButton("오늘 날짜 보기");
+		btnNewButton_4.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
 		btnNewButton_4.setBackground(new Color(240, 240, 240));
 		btnNewButton_4.setBorderPainted(false);
 		btnNewButton_4.addActionListener(this);
@@ -471,6 +495,12 @@ public class CalenderViewer extends JFrame implements ActionListener {
 //--------------------------------------<B파트 끝>-----------------------
 
 //------------------<C파트 : 할일 목록 영역 (임시구현)>---------------------------------
+	JList list;
+	JTabbedPane panel_5;
+	JScrollPane scroll;
+	JPanel panel_5_1;
+	JPanel panel_5_2;
+	
 	// 일정 조회
 	private String[] viewSchedule() {
 		ArrayList schedules = ScheduleDAO.getInstance().select(userid);
@@ -503,13 +533,8 @@ public class CalenderViewer extends JFrame implements ActionListener {
 	private String userid = "yh"; // 할일:MemberDTO 필요
 	private LocalDate localDate;
 
-	UtilDateModel model;
-	JDatePanelImpl datePanel;
-	JDatePickerImpl datePicker; // 할일: 직접 코드 구현후 삭제예정
-
 	JCheckBox chckbxNewCheckBox;
-	JList list;
-	JTabbedPane panel_5;
+
 
 	private void addSchedule() {
 		sdto = new ScheduleDTO();
@@ -528,8 +553,8 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		sdto.setMemo(memo);
 		sdto.setAttention(attention);
 		
-		panel_5.revalidate();
-		panel_5.repaint();
+		panel_5_1.revalidate();
+		panel_5_1.repaint();
 		
 //		list.revalidate();
 //		list.repaint();
@@ -537,7 +562,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		textField_1.setText("");
 		textField_2.setText("");
 		
-		panel_5.updateUI();
+		panel_5_1.updateUI();
 		list.updateUI();
 		
 		int result = ScheduleDAO.getInstance().insert(sdto);
