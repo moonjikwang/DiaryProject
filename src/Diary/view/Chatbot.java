@@ -128,7 +128,7 @@ public class Chatbot extends JFrame {
                 super.paintComponent(g);
             }
         };
-		textarea.setFont(new Font("굴림", Font.BOLD, 12));
+		textarea.setFont(new Font("나눔고딕", Font.BOLD, 14));
         textarea.setText("<스마트 다이어리 챗봇서비스 입니다>\n <현재 학습된 상황 수 " + ChatbotDAO.getInstance().list() + "건 입니다.>");
 		textarea.setEditable(false);;
 		flatScrollPane.setViewportView(textarea);
