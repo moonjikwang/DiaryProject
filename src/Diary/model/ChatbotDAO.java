@@ -49,7 +49,7 @@ public class ChatbotDAO {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from chatbot");
 			while(rs.next()) {
-				if(requestText.contains(rs.getString("request"))) {
+					if(requestText.contains(rs.getString("request"))) {
 					result = rs.getString("response");
 				}
 			}
