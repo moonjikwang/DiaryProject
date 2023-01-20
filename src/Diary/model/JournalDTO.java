@@ -15,9 +15,7 @@ public class JournalDTO {
 		this.journal = journal;
 	}
 
-	public JournalDTO() {
-		// TODO Auto-generated constructor stub
-	}
+	public JournalDTO() {}
 
 	public String getUserId() {
 		return userId;

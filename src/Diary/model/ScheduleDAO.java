@@ -90,11 +90,17 @@ public class ScheduleDAO {
 	}
 
 //------------------------<일정 조회>----------------------
-	public ArrayList<ScheduleDTO> select(String id) {
+	public ArrayList<ScheduleDTO> select(ScheduleDTO sDTO) {
 
+		String id = sDTO.getUserId();
+		int yy = Integer.parseInt(sDTO.getSdate().substring(0,4));
+		int mm = Integer.parseInt(sDTO.getSdate().substring(5,6));
+		
 		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
 		Connection con = getConnection();
-		String sql = "select * from schedule where userid = ? order by SDATE";
+		String sql = "SELECT * FROM schedule WHERE userid = ? "
+				+ "and EXTRACT(month from sdate) = ? "
+				+ "and EXTRACT(year from sdate) = ? order by SDATE";
 
 		ScheduleDTO dto;
 		ResultSet rs = null;
@@ -103,13 +109,14 @@ public class ScheduleDAO {
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
+			pstmt.setInt(2, mm);
+			pstmt.setInt(3, yy);
 			
 			rs = pstmt.executeQuery();
 
+			schedules = new ArrayList<ScheduleDTO>(); // 리스트 생성
+			
 			if (rs.next()) {
-
-				schedules = new ArrayList<ScheduleDTO>(); // 리스트 생성
-
 				
 				do{
 					dto = new ScheduleDTO();
@@ -140,11 +147,16 @@ public class ScheduleDAO {
 		}
 		
 
-		//콘솔에서 조회내용을 확인하기 위한 메서드
+//		콘솔에서 조회내용을 확인하기 위한 메서드
 //		for (ScheduleDTO pdto : schedules) {
 //			System.out.println("["+pdto.getSdate()+"]"+pdto.getTitle()+" : "+pdto.getMemo());
 //		}
-		
+//		
+//		
+//		System.out.println(sDTO.getSdate().substring(0, 4));
+//		System.out.println(sDTO.getSdate().substring(5,6));
 		return schedules;
 	}
+	
+	
 }

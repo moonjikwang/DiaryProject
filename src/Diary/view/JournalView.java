@@ -8,17 +8,19 @@ package Diary.view;
  */
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 
 import com.mommoo.flat.button.FlatButton;
@@ -96,13 +98,13 @@ public class JournalView  extends JFrame {
 		AccountPanel.add(panel_2);
 		panel_2.setLayout(null);
 		
-		FlatPanel jourList = new FlatPanel();
-		jourList.setBackground(new Color(255, 255, 255));
-		jourList.setBounds(266, 10, 615, 422);
-		panel_2.add(jourList);
-		jourList.setLayout(null);
+		FlatPanel panel_jourInput = new FlatPanel();
+		panel_jourInput.setBackground(new Color(255, 255, 255));
+		panel_jourInput.setBounds(266, 10, 615, 422);
+		panel_2.add(panel_jourInput);
+		panel_jourInput.setLayout(null);
 		
-		//일기 저장 버튼
+		//--------------일기 저장 버튼---------------
 		FlatButton saveBtn = new FlatButton();
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,8 +113,8 @@ public class JournalView  extends JFrame {
 					String userId = "SY";
 					JournalDTO journaldto = new JournalDTO(userId,journal);
 					JournalDAO.getInstance().registerJournal(journaldto);
-					jourList.revalidate();
-					jourList.repaint();
+					panel_jourInput.revalidate();
+					panel_jourInput.repaint();
 					jourDesc.setText("");
 				}
 			}
@@ -120,34 +122,52 @@ public class JournalView  extends JFrame {
 		saveBtn.setBackground(new Color(242, 206, 96));
 		saveBtn.setText("저장");
 		saveBtn.setBounds(484, 359, 119, 53);
-		jourList.add(saveBtn);
+		panel_jourInput.add(saveBtn);
+		//--------------일기 저장 버튼 종료------------
 		
-		//일기입력부분
+		//--------------일기 입력----------------------
 		jourDesc = new FlatTextArea();
 		jourDesc.setText("안녕하세요:)\r\n스마트 다이어리입니다.\r\n\r\n오늘의 일기나 기분을 기록으로 남겨보세요. \r\n기록을 남기고 하단의 Save를 누르시면 저장됩니다.\r\n저장된 일기는 왼쪽의 목록에서 확인 할 수 있습니다.\r\n\r\n매일 매일 기록을 쌓아보세요.\r\n");
 		jourDesc.setBounds(0, 0, 615, 349);
-		jourList.add(jourDesc);
+		panel_jourInput.add(jourDesc);
+		//-------------일기 입력 종료------------------
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(251, 234, 189));
-		panel.setBounds(12, 10, 242, 422);
-		panel_2.add(panel);
-		panel.setLayout(null);
+		//Jpanel 객체 생성
+		JPanel panel_jourList = new JPanel();
+		panel_jourList.setBackground(new Color(251, 234, 189));
+		panel_jourList.setBounds(12, 10, 242, 422);
+		panel_2.add(panel_jourList);
+		panel_jourList.setLayout(null);
 		
+		//------------------ 리스트 출력 구현---------------
 		//리스트모델 불러오기
-		model = new DefaultListModel();
-			list = new JList(model);
-		list.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				String item = list.getSelectedValue().toString();
-			
-				//출력할 곳 입력
-				// .setText(item);
+		list = new JList();
+		list.setModel(new AbstractListModel() {
+			String[] values = viewJourList();
+
+			@Override
+			public int getSize() {
+				return values.length;
+			}
+
+			@Override
+			public Object getElementAt(int index) {
+				return values[index];
 			}
 		});
+		
+//		model = (DefaultListModel)list.getModel(); 
+//		model.addElement(panel_jourList);//여기까지 뭔가 뜨기는 함
+		
+		list.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		list.setBackground(new Color(255, 255, 255));
 		list.setBounds(0, 0, 242, 422);
-		panel.add(list);
+		
+		panel_jourList.add(list);
+		
+		JScrollBar scrollBar = new JScrollBar();
+		scrollBar.setBounds(0, 0, 17, 422);
+		panel_jourList.add(scrollBar);
 
 	
 		JPanel panel_1 = new JPanel();
@@ -165,5 +185,21 @@ public class JournalView  extends JFrame {
 		lblNewLabel.setBounds(0, 0, 1034, 624);
 		lblNewLabel.setIcon(icon);
 		AccountPanel.add(lblNewLabel);
+	}
+
+	private String userid = "SY";
+	
+	//------------------리스트 조회-------------------------
+	private String[] viewJourList() {
+		// TODO Auto-generated method stub
+		ArrayList jours = JournalDAO.getInstance().selectJour(userid);
+		String[] jourList = new String[jours.size()];
+		
+		for(int i = 0; i < jours.size(); i++) {
+			JournalDTO dto = (JournalDTO)jours.get(i);
+			jourList[i] = dto.getRegdate().toString();
+			System.out.println(jourList[i]);
+		}
+		return jourList;
 	}
 }

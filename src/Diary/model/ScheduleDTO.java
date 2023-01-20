@@ -9,25 +9,21 @@ public class ScheduleDTO {
 	
 	
 	private String userId;
+	private String sdate;
+	private String title;
+	private String memo;
+	private boolean attention;
+	private Date alert_time;
+	private int num;
+	
+	
 	public String getUserId() {
 		return userId;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	private String sdate;
-	private String title;
-	private String memo;
-	private boolean attention;
-	private Date alert_time;
-	private LocalDate localDate;
 	
-	public LocalDate getLocalDate() {
-		return localDate;
-	}
-	public void setLocalDate(LocalDate localDate) {
-		this.localDate = localDate;
-	}
 	public String getSdate() {
 		return sdate;
 	}
@@ -57,6 +53,12 @@ public class ScheduleDTO {
 	}
 	public void setAlert_time(Date alert_time) {
 		this.alert_time = alert_time;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
 	}
 	
 
