@@ -40,6 +40,7 @@ import com.mommoo.flat.text.textfield.FlatTextField;
 
 import Diary.Controller.Aircon;
 import Diary.Controller.Trans;
+import Diary.Controller.WordGame;
 import Diary.model.AccountDAO;
 import Diary.model.AccountDTO;
 import Diary.model.MemberDAO;
@@ -152,6 +153,17 @@ public class DiaryView extends JFrame {
 		});
 		mntmNewMenuItem.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		mnNewMenu.add(mntmNewMenuItem);
+		
+		JMenuItem todayProverb = new JMenuItem("오늘의 속담");
+		todayProverb.setFont(new Font("Dialog", Font.BOLD, 12));
+		todayProverb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource()== todayProverb) {
+					JOptionPane.showMessageDialog(todayProverb,new WordGame().wordGame("다"),"오늘의 속담",JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		mnNewMenu.add(todayProverb);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
