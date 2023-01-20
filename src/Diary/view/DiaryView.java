@@ -105,7 +105,7 @@ public class DiaryView extends JFrame {
 	private final JLabel transLangBg = new JLabel("l");
 	private JPanel accountPanel_3 = new JPanel();
 	private FlatTextField accountAmount = new FlatTextField(false);
-	private JComboBox accountCategory = new JComboBox(category);
+	private JComboBox<?> accountCategory = new JComboBox<Object>(category);
 	private  FlatButton accountMemo = new FlatButton();
 	private final JLabel AccountLogo = new JLabel("");
 	private final JPanel accountPanel_2 = new JPanel();
@@ -116,7 +116,7 @@ public class DiaryView extends JFrame {
 	private final JLabel lblNewLabel_3 = new JLabel("메모");
 	private final JLabel lblNewLabel_3_1 = new JLabel("금액");
 	private final JLabel lblNewLabel_3_1_1 = new JLabel("날짜");
-	private final JComboBox accountType = new JComboBox(type);
+	private final JComboBox<?> accountType = new JComboBox<Object>(type);
 	private final JPanel panel_4 = new JPanel();
 	private final JScrollPane scrollPane = new JScrollPane();
 	private final JLabel lblNewLabel = new JLabel("");

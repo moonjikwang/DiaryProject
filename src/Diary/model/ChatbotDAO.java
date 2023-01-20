@@ -53,7 +53,9 @@ public class ChatbotDAO {
 					result = rs.getString("response");
 				}
 			}
-
+			rs.close();
+			stmt.close();
+			conn.close();
 		if(result == null) {
 //			result = "제가 모르는 내용이네요. 어떤대답을 원하세요??";
 //			String add = JOptionPane.showInputDialog("제가 모르는 내용이네요. 어떤대답을 원하세요??");
@@ -76,6 +78,8 @@ public class ChatbotDAO {
 			pstmt.setString(1, memData);
 			pstmt.setString(2, text);
 			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,9 +95,12 @@ public class ChatbotDAO {
 			ResultSet rs = stmt.executeQuery("select count(*) as cnt from chatbot");
 			rs.next();
 			result = rs.getInt("cnt");
+			stmt.close();
+			conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
 		return result;
 	}
 }
