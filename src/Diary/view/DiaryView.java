@@ -109,9 +109,7 @@ public class DiaryView extends JFrame {
 	private  FlatButton accountMemo = new FlatButton();
 	private final JLabel AccountLogo = new JLabel("");
 	private final JPanel accountPanel_2 = new JPanel();
-	private final JPanel accountPanel_1 = new JPanel();
 	private final JPanel accountPanel = new JPanel(false);
-	private final JLabel lblNewLabel_1_1 = new JLabel("가계부로고");
 	private final FlatPanel flatPanel = new FlatPanel();
 	private  FlatTextField flatTextField = new FlatTextField(false);
 	private final JLabel lblNewLabel_2 = new JLabel("가계부 작성");
@@ -584,14 +582,6 @@ public class DiaryView extends JFrame {
 				accountPanel.setBounds(0, 0, 1034, 624);
 				
 				contentPane.add(accountPanel);
-				accountPanel_1.setLayout(null);
-				accountPanel_1.setBackground(new Color(255, 234, 151));
-				accountPanel_1.setBounds(725, 0, 309, 111);
-				
-				accountPanel.add(accountPanel_1);
-				lblNewLabel_1_1.setBounds(0, 10, 297, 91);
-				
-				accountPanel_1.add(lblNewLabel_1_1);
 				accountPanel_2.setLayout(null);
 				accountPanel_2.setBackground(new Color(251, 234, 189));
 				accountPanel_2.setBounds(70, 121, 893, 442);
