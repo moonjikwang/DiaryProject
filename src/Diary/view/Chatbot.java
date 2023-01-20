@@ -1,7 +1,6 @@
 package Diary.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,14 +18,11 @@ import com.mommoo.flat.text.textarea.FlatTextArea;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JTextArea;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class Chatbot extends JFrame {
@@ -78,22 +74,7 @@ public class Chatbot extends JFrame {
 				}
 			}
 
-			private void addAnswer(String text) {
-				ChatbotDAO.getInstance().addWord(text);
-				textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>이해했어요!");
-				chatStats = 0;
-			}
 
-			private void makeAnswer(String text) {
-				String response = ChatbotDAO.getInstance().response(text);
-				if(response == null) {
-					response = "제가 모르는 내용이네요. 어떤 대답을 원하세요?";
-					chatStats = 1;
-				}else {
-					chatStats = 0;
-				}
-				textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>"+response);
-			}
 		});
 		flatButton.setText("전송");
 		flatButton.setBackground(new Color(242, 206, 96));
@@ -101,6 +82,19 @@ public class Chatbot extends JFrame {
 		panel_1.add(flatButton);
 		
 		flatTextField = new FlatTextField(false);
+		flatTextField.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == 10) {
+					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
+					if(chatStats == 0) {
+					makeAnswer(flatTextField.getText());
+					}else {
+						addAnswer(flatTextField.getText());
+					}
+					flatTextField.setText("");
+				}
+			}
+		});
 		flatTextField.setBounds(0, 0, 239, 48);
 		panel_1.add(flatTextField);
 		
@@ -146,5 +140,21 @@ public class Chatbot extends JFrame {
 		lblNewLabel.setBounds(0, 0, 312, 510);
 		lblNewLabel.setIcon(icon);
 		panel.add(lblNewLabel);
+	}
+	private void addAnswer(String text) {
+		ChatbotDAO.getInstance().addWord(text);
+		textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>이해했어요!");
+		chatStats = 0;
+	}
+
+	private void makeAnswer(String text) {
+		String response = ChatbotDAO.getInstance().response(text);
+		if(response == null) {
+			response = "제가 모르는 내용이네요. 어떤 대답을 원하세요?";
+			chatStats = 1;
+		}else {
+			chatStats = 0;
+		}
+		textarea.setText(textarea.getText()+"\n"+"<스마트다이어리>"+response);
 	}
 }
