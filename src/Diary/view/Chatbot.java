@@ -73,6 +73,7 @@ public class Chatbot extends JFrame {
 					makeAnswer(flatTextField.getText());
 					}else if(chatStats == 2) {
 						textarea.setText(textarea.getText()+Trans.trans(flatTextField.getText()).toString());
+						chatStats = 0;
 					}else {
 						addAnswer(flatTextField.getText());
 					}
@@ -98,6 +99,7 @@ public class Chatbot extends JFrame {
 						JOptionPane.showMessageDialog(flatButton, "값을 입력하고 전송해주세요.");
 					}else if(chatStats == 2) {
 						textarea.setText(textarea.getText()+Trans.trans(flatTextField.getText()).toString());
+						chatStats = 0;
 					}else {
 					textarea.setText(textarea.getText()+"\n"+"<나>"+flatTextField.getText());
 					if(chatStats == 0) {
