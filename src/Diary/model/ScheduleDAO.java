@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class ScheduleDAO {
 	private static Connection conn; // 그냥 멤필이어도 되지만 스태틱을 붙여서 클래스 로드 할 때 한번만 초기화 되게 한다
 
@@ -21,7 +20,7 @@ public class ScheduleDAO {
 	private ScheduleDAO() {
 
 	}
-	
+
 //------------------------<커넥션 얻기>----------------------
 	private Connection getConnection() {
 		try {
@@ -93,13 +92,12 @@ public class ScheduleDAO {
 	public ArrayList<ScheduleDTO> select(ScheduleDTO sDTO) {
 
 		String id = sDTO.getUserId();
-		int yy = Integer.parseInt(sDTO.getSdate().substring(0,4));
-		int mm = Integer.parseInt(sDTO.getSdate().substring(5,6));
-		
+		int yy = Integer.parseInt(sDTO.getSdate().substring(0, 4));
+		int mm = Integer.parseInt(sDTO.getSdate().substring(5, 6));
+
 		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
 		Connection con = getConnection();
-		String sql = "SELECT * FROM schedule WHERE userid = ? "
-				+ "and EXTRACT(month from sdate) = ? "
+		String sql = "SELECT * FROM schedule WHERE userid = ? " + "and EXTRACT(month from sdate) = ? "
 				+ "and EXTRACT(year from sdate) = ? order by SDATE";
 
 		ScheduleDTO dto;
@@ -111,14 +109,14 @@ public class ScheduleDAO {
 			pstmt.setString(1, id);
 			pstmt.setInt(2, mm);
 			pstmt.setInt(3, yy);
-			
+
 			rs = pstmt.executeQuery();
 
 			schedules = new ArrayList<ScheduleDTO>(); // 리스트 생성
-			
+
 			if (rs.next()) {
-				
-				do{
+
+				do {
 					dto = new ScheduleDTO();
 					dto.setSdate(rs.getString("SDATE"));
 					dto.setTitle(rs.getString("TITLE"));
@@ -128,7 +126,7 @@ public class ScheduleDAO {
 
 					schedules.add(dto);
 
-				}while (rs.next()) ;
+				} while (rs.next());
 			}
 
 		} catch (Exception e) {
@@ -145,7 +143,6 @@ public class ScheduleDAO {
 				}
 			}
 		}
-		
 
 //		콘솔에서 조회내용을 확인하기 위한 메서드
 //		for (ScheduleDTO pdto : schedules) {
@@ -157,6 +154,69 @@ public class ScheduleDAO {
 //		System.out.println(sDTO.getSdate().substring(5,6));
 		return schedules;
 	}
-	
-	
+
+	public ArrayList search(ScheduleDTO sDTO, String keyword) {
+		String id = sDTO.getUserId();
+		int yy = Integer.parseInt(sDTO.getSdate().substring(0, 4));
+		int mm = Integer.parseInt(sDTO.getSdate().substring(5, 6));
+
+		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
+		Connection con = getConnection();
+		String sql = "SELECT * FROM schedule WHERE userid = ? "
+				+ "and title like ? or memo like ?"
+				+ "order by SDATE";
+
+		ScheduleDTO dto;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, "%"+keyword+"%");
+			pstmt.setString(3, "%"+keyword+"%");
+			
+			rs = pstmt.executeQuery();
+
+			schedules = new ArrayList<ScheduleDTO>(); // 리스트 생성
+
+			if (rs.next()) {
+
+				do {
+					dto = new ScheduleDTO();
+					dto.setSdate(rs.getString("SDATE"));
+					dto.setTitle(rs.getString("TITLE"));
+					dto.setMemo(rs.getString("MEMO"));
+					dto.setAttention(rs.getBoolean("ATTENTION"));
+					dto.setAlert_time(rs.getDate("ALERT_TIME"));
+					dto.setNum(rs.getInt("NUM"));
+
+					schedules.add(dto);
+
+					System.out.println("검색결과 : "+rs.getString("TITLE"));
+					
+				} while (rs.next());
+			}
+
+		} catch (Exception e) {
+			System.out.println("조회 실패 : " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+					closer(con); // 지금 닫으면 다른 작업 못함
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			
+			
+
+			return schedules;
+		}
+
+	}
 }
