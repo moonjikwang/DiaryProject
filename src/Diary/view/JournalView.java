@@ -202,4 +202,14 @@ public class JournalView  extends JFrame {
 		}
 		return jourList;
 	}
+	
+	//-----------------리스트 클릭 -> 수정 ----------------
+	private void updateJour() {
+		
+	}
+	//-----------------리스트 클릭 -> 삭제-----------------
+	private void deleteJour() {
+		
+	}
+	
 }
