@@ -106,11 +106,6 @@ public class JournalDAO {
 			}
 		}
 		
-		//콘솔에서 조회내용을 확인하기 위한 메서드
-//		for (ScheduleDTO pdto : schedules) {
-//			System.out.println("["+pdto.getSdate()+"]"+pdto.getTitle()+" : "+pdto.getMemo());
-//		}
-		
 		//jourList dto에 담기
 		return jours;
 	}
@@ -144,7 +139,7 @@ public class JournalDAO {
 			pstmt.setString(1, journal);
 			result = pstmt.executeUpdate();
 			pstmt.close();
-//			conn.close();
+			conn.close();
 			return result;
 		} catch (Exception e) {
 			// TODO: handle exception
