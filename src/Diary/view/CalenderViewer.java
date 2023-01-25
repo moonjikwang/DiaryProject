@@ -487,10 +487,6 @@ public class CalenderViewer extends JFrame implements ActionListener {
 					panel_5.addTab("상세일정", panel_5_2);
 					panel_5.setSelectedIndex(1);
 					
-//					sdto.setSdate(jf1.getText());
-//					sdto.setTitle(jf2.getText());
-//					sdto.setMemo(jta1.getText());
-//					sdto.setAttention(chk.isSelected());
 				}//리스트 아이템 클릭이벤트내용
 				
 				
