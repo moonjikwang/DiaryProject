@@ -152,7 +152,6 @@ public class ScheduleDAO {
 //			System.out.println("["+pdto.getSdate()+"]"+pdto.getTitle()+" : "+pdto.getMemo());
 //		}
 //		
-//		
 //		System.out.println(sDTO.getSdate().substring(0, 4));
 //		System.out.println(sDTO.getSdate().substring(5,6));
 		return schedules;
@@ -207,9 +206,8 @@ public class ScheduleDAO {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-					closer(con); // 지금 닫으면 다른 작업 못함
+					closer(con); 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
