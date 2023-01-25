@@ -28,7 +28,7 @@ public class ScheduleDAO {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@jikwang.net:15210/xe", "green", "1234");
-			System.out.println("커넥션 생성 성공 : " + conn);
+//			System.out.println("커넥션 생성 성공 : " + conn);
 		} catch (Exception e) {
 			System.out.println("커넥션 생성시 예외 발생 : " + e.getMessage());
 			e.printStackTrace();

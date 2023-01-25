@@ -2,9 +2,9 @@ package Diary.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,37 +16,27 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.AbstractButton;
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import com.mommoo.flat.button.FlatButton;
 
 import Diary.model.ScheduleDAO;
 import Diary.model.ScheduleDTO;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.border.BevelBorder;
 
 public class CalenderViewer extends JFrame implements ActionListener {
 	/**
@@ -237,25 +227,25 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		panel_5_1 = new JPanel();	//편집모드
 		
 		sp = new JPanel();
-		sp.setLayout(new GridLayout(10, 1, 15, 0));
-
+		sp.setBackground(Color.white);
+		
 		panel_5.setBounds(563, 29, 283, 320);
 
 		panel_5.addTab("이달의 일정", panel_5_3);
 		panel_5.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 
-		JScrollPane scrollPane = new JScrollPane(sp);
+		JScrollPane scrollPane = new JScrollPane(sp,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_5_3.add(scrollPane);
 
 		panel_2.add(panel_5);
 		
 		// 상세일정
-
 		panel_5_2.setLayout(new BorderLayout());
 
 		chk = new JCheckBox("중요");
 		chk.setFont(new Font("나눔고딕", Font.BOLD, 12));
-
+	
 		jl1 = new JLabel("날짜");
 		jl1.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		jf1 = new JTextField();
@@ -298,7 +288,6 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(editnum);
 				sdto = new ScheduleDTO();
 				sdto.setSdate(jf1.getText());
 				sdto.setTitle(jf2.getText());
@@ -307,6 +296,13 @@ public class CalenderViewer extends JFrame implements ActionListener {
 				sdto.setNum(editnum);
 				ScheduleDAO.getInstance().edit(sdto);
 				
+				panel_5.remove(1);
+				sp.setVisible(false);
+				sp.removeAll();
+				scheduleList();
+				sp.setVisible(true);
+								
+				panel_5.setSelectedIndex(0);
 
 			}
 		}); //edit 클릭이벤트
@@ -319,8 +315,15 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(editnum);
 				ScheduleDAO.getInstance().delete(editnum);
+				
+				panel_5.remove(1);
+				sp.setVisible(false);
+				sp.removeAll();
+				scheduleList();
+				sp.setVisible(true);
+								
+				panel_5.setSelectedIndex(0);
 			}
 		});
 
@@ -413,7 +416,6 @@ public class CalenderViewer extends JFrame implements ActionListener {
 				sp.removeAll();
 				scheduleList();
 				sp.setVisible(true);
-				
 			}
 		});
 		
@@ -425,14 +427,19 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		
 		scheduleList();
 
-		panel_5_3.add("Center", sp);
+//		panel_5_3.add("Center", sp);
+		panel_5_3.add("Center", scrollPane);
 
-		panel_5_3.add(sp);
+//		panel_5_3.add(sp);
 	}
 
 	private void scheduleList() {
 		int yy = (Integer) yearCombo.getSelectedItem();
 		int mm = (Integer) monthCombo.getSelectedItem();
+		
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints gbc = new GridBagConstraints();
+		
 
 		ScheduleDTO sDTO = new ScheduleDTO();
 		sDTO.setUserId(userid);
@@ -451,18 +458,10 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		for (int i = 0; i < schedules.size(); i++) {
 			ScheduleDTO editDTO = schedules.get(i);
-//			String sDate = schedules.get(i).getSdate().substring(0, 10);
-//			String title = schedules.get(i).getTitle();
-//			String memo = schedules.get(i).getMemo();
-//			boolean att = schedules.get(i).isAttention();
 			String sDate = editDTO.getSdate().substring(0, 10);
 			String title = editDTO.getTitle();
 			String memo = editDTO.getMemo();
 			boolean att = editDTO.isAttention();
-			
-			int num = editDTO.getNum();
-			int snum = schedules.get(i).getNum();
-			
 
 			items[i] = new JButton("[" + sDate + "] " + title);
 			items[i].setHorizontalAlignment(SwingConstants.LEFT);
@@ -474,10 +473,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println(editDTO.getNum() + ":" + editDTO.getTitle() + ":" + editDTO.getSdate() );
 					editnum = editDTO.getNum();
-					System.out.println(editnum+ ":" + title + ":" + sDate );
-					System.out.println();
 
 					jf1.setText(sDate);
 					jf2.setText(title);
@@ -488,9 +484,13 @@ public class CalenderViewer extends JFrame implements ActionListener {
 					panel_5.setSelectedIndex(1);
 					
 				}//리스트 아이템 클릭이벤트내용
-				
-				
 			});//리스트 아이템 클릭이벤트
+			
+			sp.setLayout(gbl);
+			gbc.gridx = 1;
+			gbc.anchor = GridBagConstraints.NORTHWEST;
+			gbc.weightx = 0.9;
+			gbl.setConstraints(items[i], gbc);
 			
 			sp.add(items[i]);
 			sp.updateUI();
@@ -499,7 +499,8 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			
 		}//for문 끝
 		
-	
+		
+		
 	}//schedeleList 끝
 	
 	private void init_Addsche() {
@@ -514,7 +515,8 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		chckbxNewCheckBox = new JCheckBox("중요");
 		chckbxNewCheckBox.setFont(new Font("나눔고딕", Font.PLAIN, 12));
-		chckbxNewCheckBox.setBackground(new Color(0, 0, 0, 0));
+		
+		chckbxNewCheckBox.setBackground(new Color(255, 242, 192));
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == chckbxNewCheckBox) {
@@ -773,7 +775,6 @@ public class CalenderViewer extends JFrame implements ActionListener {
 							textField.setText(strYear + "-" + strMon + "-" + strdate); //
 							textField.updateUI();
 						} else {
-							System.out.println("버튼 배열엔 이벤트가 안걸리나봄?");
 							return;
 						}
 
@@ -847,6 +848,11 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			makeCalendar(panel_3, makeCalData(yy, mm));
 
 			panel_3.setVisible(true); // 패널 재출력
+			
+			sp.setVisible(false);
+			sp.removeAll();
+			scheduleList();
+			sp.setVisible(true);
 		}
 
 		// ----<화살표로 월 이동하는 이벤트>
@@ -861,6 +867,11 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			}
 			makeCalendar(panel_3, makeCalData(yy, mm));
 			panel_3.setVisible(true);
+			
+			sp.setVisible(false);
+			sp.removeAll();
+			scheduleList();
+			sp.setVisible(true);
 
 		}
 		if (eventObj == btnNewButton_3) {
