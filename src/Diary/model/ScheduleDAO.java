@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class ScheduleDAO {
 	private static Connection conn; // 그냥 멤필이어도 되지만 스태틱을 붙여서 클래스 로드 할 때 한번만 초기화 되게 한다
 
@@ -155,6 +157,7 @@ public class ScheduleDAO {
 		return schedules;
 	}
 
+//------------------------<일정 검색>----------------------
 	public ArrayList search(ScheduleDTO sDTO, String keyword) {
 		String id = sDTO.getUserId();
 		int yy = Integer.parseInt(sDTO.getSdate().substring(0, 4));
@@ -162,9 +165,7 @@ public class ScheduleDAO {
 
 		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
 		Connection con = getConnection();
-		String sql = "SELECT * FROM schedule WHERE userid = ? "
-				+ "and title like ? or memo like ?"
-				+ "order by SDATE";
+		String sql = "SELECT * FROM schedule WHERE userid = ? " + "and title like ? or memo like ?" + "order by SDATE";
 
 		ScheduleDTO dto;
 		ResultSet rs = null;
@@ -173,9 +174,9 @@ public class ScheduleDAO {
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
-			pstmt.setString(2, "%"+keyword+"%");
-			pstmt.setString(3, "%"+keyword+"%");
-			
+			pstmt.setString(2, "%" + keyword + "%");
+			pstmt.setString(3, "%" + keyword + "%");
+
 			rs = pstmt.executeQuery();
 
 			schedules = new ArrayList<ScheduleDTO>(); // 리스트 생성
@@ -193,8 +194,8 @@ public class ScheduleDAO {
 
 					schedules.add(dto);
 
-					System.out.println("검색결과 : "+rs.getString("TITLE"));
-					
+					System.out.println("검색결과 : " + rs.getString("TITLE"));
+
 				} while (rs.next());
 			}
 
@@ -211,12 +212,85 @@ public class ScheduleDAO {
 					e.printStackTrace();
 				}
 			}
-			
-			
-			
 
 			return schedules;
 		}
 
 	}
+
+//------------------------<일정 삭제>----------------------
+
+	public void delete(int num) {
+		PreparedStatement pstmt = null;
+		String sql = "delete from schedule WHERE NUM =? ";
+
+		int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?");
+
+		if (result == JOptionPane.YES_OPTION) {
+			Connection con = getConnection();
+			try {
+				pstmt = con.prepareStatement(sql);
+
+				pstmt.setInt(1, num);
+
+				pstmt.executeUpdate();
+				System.out.println("삭제 완료");
+
+			} catch (Exception e) {
+				System.out.println("삭제 실패 : " + e.getMessage());
+				e.printStackTrace();
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+						closer(con);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+		}else {
+			System.out.println("뭔가 잘못됨");
+		}
+
+	}
+
+//------------------------<일정 수정>----------------------
+	public void edit(ScheduleDTO dto) {
+		PreparedStatement pstmt = null;
+		String sql = "update schedule set  SDATE=?, TITLE=?, MEMO=?, ATTENTION=? WHERE NUM =? ";
+
+		int result = JOptionPane.showConfirmDialog(null, "일정을 수정 하시겠습니까?");
+
+		if (result == JOptionPane.YES_OPTION) {
+
+			Connection con = getConnection();
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, dto.getSdate());
+				pstmt.setString(2, dto.getTitle());
+				pstmt.setString(3, dto.getMemo());
+				pstmt.setBoolean(4, dto.isAttention());
+				pstmt.setInt(5, dto.getNum());
+
+				result = pstmt.executeUpdate();
+				System.out.println("일정 업데이트 성공");
+
+			} catch (Exception e) {
+				System.out.println("업데이트 실패: " + e.getMessage());
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+						closer(con); // 지금 닫으면 다른 작업 못함
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
 }
