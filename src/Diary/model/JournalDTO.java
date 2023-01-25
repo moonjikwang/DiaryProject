@@ -8,6 +8,7 @@ public class JournalDTO {
 	private String userId;
 	private String journal;
 	private Date regdate;
+	private int num;
 //	private String JournalList;
 
 	public JournalDTO(String userId, String journal) {
@@ -40,5 +41,13 @@ public class JournalDTO {
 
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}
+
+	public int getNum() {
+		return num;
+	}
+	
+	public void setNum(int num) {
+		this.num = num;
 	}
 }
