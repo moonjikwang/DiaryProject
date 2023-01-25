@@ -125,6 +125,7 @@ public class ScheduleDAO {
 					dto.setMemo(rs.getString("MEMO"));
 					dto.setAttention(rs.getBoolean("ATTENTION"));
 					dto.setAlert_time(rs.getDate("ALERT_TIME"));
+					dto.setNum(rs.getInt("NUM"));
 
 					schedules.add(dto);
 
@@ -223,11 +224,11 @@ public class ScheduleDAO {
 	public void delete(int num) {
 		PreparedStatement pstmt = null;
 		String sql = "delete from schedule WHERE NUM =? ";
-
+		Connection con = getConnection();
 		int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?");
 
 		if (result == JOptionPane.YES_OPTION) {
-			Connection con = getConnection();
+		
 			try {
 				pstmt = con.prepareStatement(sql);
 
@@ -260,12 +261,12 @@ public class ScheduleDAO {
 	public void edit(ScheduleDTO dto) {
 		PreparedStatement pstmt = null;
 		String sql = "update schedule set  SDATE=?, TITLE=?, MEMO=?, ATTENTION=? WHERE NUM =? ";
-
+		Connection con = getConnection();
 		int result = JOptionPane.showConfirmDialog(null, "일정을 수정 하시겠습니까?");
 
 		if (result == JOptionPane.YES_OPTION) {
 
-			Connection con = getConnection();
+			
 			try {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, dto.getSdate());
@@ -290,6 +291,8 @@ public class ScheduleDAO {
 					}
 				}
 			}
+		}else {
+			System.out.println("취소했습니다");
 		}
 	}
 
