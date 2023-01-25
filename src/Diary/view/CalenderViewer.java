@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,19 +12,14 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import javax.swing.AbstractButton;
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -34,18 +28,9 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import com.mommoo.flat.button.FlatButton;
-
 import Diary.model.ScheduleDAO;
 import Diary.model.ScheduleDTO;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.border.BevelBorder;
 
 public class CalenderViewer extends JFrame implements ActionListener {
 	/**
@@ -66,6 +51,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 	private JPanel panel_2;	//달력과 탭의 바탕 패널
 	JPanel panel_8;	//요일 패널
 	JPanel panel_4;	//일정 추가 패널
+	int num = 0;
 	
 	//콤보박스 : 최초 날짜 세팅
 	JPanel panel_3;	//날짜 패널
@@ -293,7 +279,13 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		del = new JButton("삭제");
 		del.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		del.setBackground(new Color(242, 206, 96));
-
+		del.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(num);
+				ScheduleDAO.getInstance().delete(num);
+			}
+		});
 		panel_5_2.add("North", chk);
 
 		JPanel pane = new JPanel();
@@ -370,7 +362,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 						String title = schedules.get(i).getTitle();
 						String memo = schedules.get(i).getMemo();
 						boolean att = schedules.get(i).isAttention();
-						int num = schedules.get(i).getNum();
+						num = schedules.get(i).getNum();
 
 						items[i] = new JButton("[" + sDate + "] " + title);
 						items[i].setHorizontalAlignment(SwingConstants.LEFT);
@@ -389,12 +381,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 								jta1.setText(memo);
 								chk.setSelected(att);
 								
-								del.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
-										ScheduleDAO.getInstance().delete(num);
-									}
-								});
+
 								edit.addActionListener(new ActionListener() {
 									
 									@Override
@@ -461,7 +448,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		panel_5_3.add("North", sf);
 
-		
+
 
 		// 이달의 일정 파트
 		makeList();
@@ -502,7 +489,6 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		}
 
 	}
-
 	private void makeList() {
 		int yy = (Integer) yearCombo.getSelectedItem();
 		int mm = (Integer) monthCombo.getSelectedItem();
@@ -516,15 +502,14 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		ArrayList<ScheduleDTO> schedules = ScheduleDAO.getInstance().select(sDTO);
 
 		JButton[] items = new JButton[schedules.size()];
-
+		
 		for (int i = 0; i < schedules.size(); i++) {
 			ScheduleDTO editDTO = schedules.get(i);
 			String sDate = schedules.get(i).getSdate().substring(0, 10);
 			String title = schedules.get(i).getTitle();
 			String memo = schedules.get(i).getMemo();
 			boolean att = schedules.get(i).isAttention();
-			int num = schedules.get(i).getNum();
-
+			num = schedules.get(i).getNum();
 			items[i] = new JButton("[" + sDate + "] " + title);
 			items[i].setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -532,50 +517,33 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			items[i].setFont(new Font("나눔고딕", Font.PLAIN, 12));
 			items[i].setBorderPainted(false);
 			items[i].addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
-
-//					panel_5_2.setVisible(true);
-
 					jf1.setText(sDate);
 					jf2.setText(title);
 					jta1.setText(memo);
-					chk.setSelected(att);			 
-
-					del.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							ScheduleDAO.getInstance().delete(num);
-						}
-					});
+					chk.setSelected(att);			
 					edit.addActionListener(new ActionListener() {
-						
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							editDTO.setSdate(jf1.getText());
 							editDTO.setTitle(jf2.getText());
 							editDTO.setMemo(jta1.getText());
 							editDTO.setAttention(chk.isSelected());
-							
 							ScheduleDAO.getInstance().edit(editDTO);
-							
 						}
 					});
-					
-					
 					panel_5.addTab("상세일정", panel_5_2);
 					panel_5.setSelectedIndex(1);
-
 				}
 			});
-
 			sp.add(items[i]);
 
 		}
 
 	}
 
+	
 	private void init_Addsche() {
 		JPanel jp1 = new JPanel();
 		jp1.setBackground(new Color(255, 255, 255, 0));
@@ -783,6 +751,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		}
 		return calDates;
 	}
+	
 
 //----------(달력 모양 만들기)--------------
 	// -------------<요일칸>---------------
@@ -847,6 +816,8 @@ public class CalenderViewer extends JFrame implements ActionListener {
 						}
 
 					}
+					
+					
 				});
 
 				dateButs[i][j].setFont(new Font("나눔고딕", Font.PLAIN, 12));
@@ -871,6 +842,8 @@ public class CalenderViewer extends JFrame implements ActionListener {
 					dateButs[i][j].setBackground(new Color(251, 234, 151));
 
 				panel_3.add(dateButs[i][j]);
+				
+
 			}
 		}
 	}
