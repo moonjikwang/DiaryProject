@@ -40,13 +40,20 @@ public class JournalView  extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JList list;
+	private JPanel list;
 	FlatTextArea jourDesc; 
 	JButton update;
-	private DefaultListModel model;
 	private int row;
 	int updateNum;
 	JPanel panel_jourInput;
+	/*
+	String columnNames[] = {"날짜","텍스트"};
+	//Jlist에 출력할 데이터 배열
+		String data[][] = {
+				{"2023-01-19","텍스트_1"},
+				{"2023-01-19","텍스트_2"}};
+//		DefaultListModel<String> model = new DefaultListModel<String>();	
+	*/
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -115,6 +122,10 @@ public class JournalView  extends JFrame {
 					panel_jourInput.revalidate();
 					panel_jourInput.repaint();
 					jourDesc.setText("");
+					list.setVisible(false);
+					list.removeAll();
+					viewJourList();
+					list.setVisible(true);
 				}
 			}
 		});
@@ -146,7 +157,12 @@ public class JournalView  extends JFrame {
 				delBtn.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						JournalDAO.getInstance().deleteJour(row);
+						System.out.println(updateNum);
+						JournalDAO.getInstance().deleteJour(updateNum); //이 부분 고민,,
+						list.setVisible(false);
+						list.removeAll();
+						viewJourList();
+						list.setVisible(true);
 					}
 				});
 				
@@ -166,7 +182,6 @@ public class JournalView  extends JFrame {
 		panel_jourInput.add(delBtn);
 		//-------------삭제 버튼 종료-------------------
 		
-		//Jpanel 객체 생성
 		JPanel panel_jourList = new JPanel();
 		panel_jourList.setBackground(new Color(251, 234, 189));
 		panel_jourList.setBounds(12, 10, 242, 422);
@@ -190,7 +205,7 @@ public class JournalView  extends JFrame {
 //			}
 //		});
 		
-		JPanel list = new JPanel();
+		list = new JPanel();
 		viewJourList();
 		list.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		list.setBackground(new Color(255, 255, 255));
@@ -229,17 +244,23 @@ public class JournalView  extends JFrame {
 		jDTO.setUserId(userid);
 		
 		ArrayList<JournalDTO> jours = JournalDAO.getInstance().selectJour(jDTO);
+		
 		JButton[] jourList = new JButton[jours.size()];
 		
 		for(int i = 0; i < jours.size(); i++) {
 			JournalDTO updateDTO = jours.get(i);
 			String date = updateDTO.getRegdate().toString();
 			String memo = updateDTO.getjournal().substring(0, 5);
+			String allmemo = updateDTO.getjournal();
 			int num = updateDTO.getNum();
 			
-			jourList[i] = new JButton(date + memo);
+			jourList[i] = new JButton(date + ":" + memo);
 			jourList[i].setHorizontalAlignment(SwingConstants.LEFT);
+			jourList[i].setBackground(Color.WHITE);
 			jourList[i].setFont(new Font("나눔고딕", Font.PLAIN, 14));
+			jourList[i].setBorderPainted(false);
+			System.out.println(date + ":" + memo);
+			list.add(jourList[i]);
 			jourList[i].addActionListener(new ActionListener() {
 				
 				@Override
@@ -248,9 +269,10 @@ public class JournalView  extends JFrame {
 					updateNum = updateDTO.getNum();
 					System.out.println(updateNum + ":" + date);
 					System.out.println();
+					System.out.println(num);
 					
 					jourDesc.setText(date);
-					jourDesc.setText(memo);
+					jourDesc.setText(allmemo);
 					
 					jourDesc.revalidate();
 					jourDesc.repaint();

@@ -48,7 +48,7 @@ public class JournalDAO {
 		int result = 0;
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into diary (userid,memo,regdate) values (?,?,sysdate)");// ,
+			PreparedStatement pstmt = conn.prepareStatement("insert into diary (num,userid,memo,regdate) values (numbering.nextval,?,?,sysdate)");// ,
 			// SCHEDULE_SEQ.NEXTVAL
 			pstmt.setString(1, Jouranl.getUserId());
 			pstmt.setString(2, Jouranl.getjournal());
@@ -91,6 +91,7 @@ public class JournalDAO {
 					dto.setUserId(rs.getString("USERID"));
 					dto.setjournal(rs.getString("MEMO"));
 					dto.setRegdate(rs.getDate("REGDATE"));
+					dto.setNum(rs.getInt("NUM"));
 
 					jours.add(dto);
 
@@ -150,7 +151,7 @@ public class JournalDAO {
 	// ---------------삭제 메서드 시작---------------
 	public void deleteJour(int num) {
 		PreparedStatement pstmt = null;
-		String sql = "Deleate From DIARY where memo = ?";
+		String sql = "delete from DIARY WHERE NUM =? ";
 		Connection conn = getConnection();
 
 		int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?");
@@ -159,7 +160,7 @@ public class JournalDAO {
 			try {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
-				result = pstmt.executeUpdate();
+				pstmt.executeUpdate();
 				System.out.println("일기 삭제 완료!");
 				
 			} catch (Exception e) {
