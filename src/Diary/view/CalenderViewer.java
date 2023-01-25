@@ -108,10 +108,12 @@ public class CalenderViewer extends JFrame implements ActionListener {
 	JLabel jl1;
 	JLabel jl2;
 	JLabel jl3;
-	JLabel jf1;
-	JLabel jf2;
-	JLabel jta1;
+	JTextField jf1;
+	JTextField jf2;
+	JTextArea jta1;
 	JButton quit;
+	JButton edit;
+	JButton del;
 	//---편집
 	
 	//일정추가 영역
@@ -246,11 +248,10 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		chk = new JCheckBox("중요");
 		chk.setFont(new Font("나눔고딕", Font.BOLD, 12));
-		chk.setEnabled(false);
 
 		jl1 = new JLabel("날짜");
 		jl1.setFont(new Font("나눔고딕", Font.PLAIN, 14));
-		jf1 = new JLabel();
+		jf1 = new JTextField();
 		jf1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		jf1.setSize(100, 20);
 		jf1.setOpaque(true);
@@ -258,7 +259,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		jl2 = new JLabel("제목");
 		jl2.setFont(new Font("나눔고딕", Font.PLAIN, 14));
-		jf2 = new JLabel();
+		jf2 = new JTextField();
 		jf2.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		jf2.setSize(100, 20);
 		jf2.setOpaque(true);
@@ -266,10 +267,10 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		jl3 = new JLabel("내용");
 		jl3.setFont(new Font("나눔고딕", Font.PLAIN, 14));
-		jta1 = new JLabel();
+		jta1 = new JTextArea();
 		jta1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		jta1.setOpaque(true);
-		jta1.setVerticalAlignment(SwingConstants.TOP);
+//		jta1.setVerticalAlignment(SwingConstants.TOP);
 		jta1.setBackground(Color.white);
 
 		quit = new JButton("닫기");
@@ -285,11 +286,11 @@ public class CalenderViewer extends JFrame implements ActionListener {
 			}
 		});
 
-		JButton edit = new JButton("수정");
+		edit = new JButton("수정");
 		edit.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		edit.setBackground(new Color(242, 206, 96));
 
-		JButton del = new JButton("삭제");
+		del = new JButton("삭제");
 		del.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		del.setBackground(new Color(242, 206, 96));
 
@@ -333,7 +334,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 		JPanel sf = new JPanel();
 		stf = new JTextField();
-		stf.setColumns(13);
+		stf.setColumns(10);
 		JButton sbtt = new JButton("검색");
 
 		sbtt.setBorderPainted(false);
@@ -364,10 +365,12 @@ public class CalenderViewer extends JFrame implements ActionListener {
 
 					for (int i = 0; i < schedules.size(); i++) {
 
+						ScheduleDTO editDTO = schedules.get(i);
 						String sDate = schedules.get(i).getSdate().substring(0, 10);
 						String title = schedules.get(i).getTitle();
 						String memo = schedules.get(i).getMemo();
 						boolean att = schedules.get(i).isAttention();
+						int num = schedules.get(i).getNum();
 
 						items[i] = new JButton("[" + sDate + "] " + title);
 						items[i].setHorizontalAlignment(SwingConstants.LEFT);
@@ -385,7 +388,27 @@ public class CalenderViewer extends JFrame implements ActionListener {
 								jf2.setText(title);
 								jta1.setText(memo);
 								chk.setSelected(att);
-
+								
+								del.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										ScheduleDAO.getInstance().delete(num);
+									}
+								});
+								edit.addActionListener(new ActionListener() {
+									
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										editDTO.setSdate(jf1.getText());
+										editDTO.setTitle(jf2.getText());
+										editDTO.setMemo(jta1.getText());
+										editDTO.setAttention(chk.isSelected());
+										
+										ScheduleDAO.getInstance().edit(editDTO);
+										
+									}
+								});
+								
 								panel_5.addTab("상세일정", panel_5_2);
 								panel_5.setSelectedIndex(1);
 
@@ -495,11 +518,12 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		JButton[] items = new JButton[schedules.size()];
 
 		for (int i = 0; i < schedules.size(); i++) {
-
+			ScheduleDTO editDTO = schedules.get(i);
 			String sDate = schedules.get(i).getSdate().substring(0, 10);
 			String title = schedules.get(i).getTitle();
 			String memo = schedules.get(i).getMemo();
 			boolean att = schedules.get(i).isAttention();
+			int num = schedules.get(i).getNum();
 
 			items[i] = new JButton("[" + sDate + "] " + title);
 			items[i].setHorizontalAlignment(SwingConstants.LEFT);
@@ -517,8 +541,29 @@ public class CalenderViewer extends JFrame implements ActionListener {
 					jf1.setText(sDate);
 					jf2.setText(title);
 					jta1.setText(memo);
-					chk.setSelected(att);
+					chk.setSelected(att);			 
 
+					del.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							ScheduleDAO.getInstance().delete(num);
+						}
+					});
+					edit.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							editDTO.setSdate(jf1.getText());
+							editDTO.setTitle(jf2.getText());
+							editDTO.setMemo(jta1.getText());
+							editDTO.setAttention(chk.isSelected());
+							
+							ScheduleDAO.getInstance().edit(editDTO);
+							
+						}
+					});
+					
+					
 					panel_5.addTab("상세일정", panel_5_2);
 					panel_5.setSelectedIndex(1);
 
