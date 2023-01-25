@@ -35,7 +35,6 @@ public class WordGame {
 	            jsonObj = (JSONObject) jsonObj.get("channel");
 	            jsonArr = (JSONArray) jsonObj.get("item");
 	            	jsonObj = (JSONObject) jsonArr.get((int)(Math.random()*15));
-	            	System.out.println(jsonObj.get("word"));
 	            	result = jsonObj.get("word").toString();
 	            	jsonArr = (JSONArray) jsonObj.get("sense");
 	            	jsonObj = (JSONObject) jsonArr.get(0);

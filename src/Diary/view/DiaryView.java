@@ -682,10 +682,7 @@ public class DiaryView extends JFrame {
 				String columnNames[] = {"no.","날짜","카테고리","수입/지출","메모","금액" };
 			    
 			    // 테이블에 출력할 데이터 배열
-			        String data[][] ={
-			                {"1", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"},
-			                {"2", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"},
-			                {"3", "수입", "로또당첨금","2023-01-18","500,000","로또 1등 당첨금"}};
+			        String data[][] ={};
 			     
 			        DefaultTableModel model = new DefaultTableModel(data,columnNames);
 				table = new JTable(model);
