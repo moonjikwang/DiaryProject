@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JOptionPane;
 
@@ -69,7 +70,7 @@ public class JournalDAO {
 	public ArrayList<JournalDTO> selectJour(JournalDTO jDTO) {
 
 		String id = jDTO.getUserId();
-		ArrayList<JournalDTO> jours = null;
+		ArrayList<JournalDTO> jours = new ArrayList<JournalDTO>();
 		Connection con = getConnection();
 		String sql = "select * from DIARY where userid = ? order by REGDATE desc";
 

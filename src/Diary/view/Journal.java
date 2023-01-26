@@ -95,7 +95,7 @@ public class Journal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == saveBtn) {
 					String journal = jourDesc.getText();
-					String userId = "SY";
+					String userId = userId();
 					JournalDTO journaldto = new JournalDTO(userId, journal);
 					JournalDAO.getInstance().registerJournal(journaldto);
 					panel_jourInput.revalidate();// 빈화면 세팅
@@ -163,7 +163,7 @@ public class Journal extends JFrame {
 				jdto.setNum(updateNum);
 				JournalDAO.getInstance().updateJour(jdto);
 
-				list.remove(1);
+				list.remove(0);
 				list.setVisible(false);
 				list.removeAll();
 				viewJourList();
@@ -225,14 +225,12 @@ public class Journal extends JFrame {
 
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
-
+		JButton[] jourList;
 		JournalDTO jDTO = new JournalDTO();
 		jDTO.setUserId(userid);
 
 		ArrayList<JournalDTO> jours = JournalDAO.getInstance().selectJour(jDTO);
-
-		JButton[] jourList = new JButton[jours.size()];
-
+		jourList = new JButton[jours.size()];
 		for (int i = 0; i < jours.size(); i++) {
 			JournalDTO updateDTO = jours.get(i);
 			String date = updateDTO.getRegdate().toString();
