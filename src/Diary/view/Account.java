@@ -134,7 +134,7 @@ public class Account extends JFrame {
 		inputPanel.add(accountMemo);
 		
 		JLabel descLabel = new JLabel("가계부 작성");
-		descLabel.setBounds(16, 6, 61, 16);
+		descLabel.setBounds(16, 6, 102, 16);
 		inputPanel.add(descLabel);
 		
 		JLabel memoLabel = new JLabel("메모");
