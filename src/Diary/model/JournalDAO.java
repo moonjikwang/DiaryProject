@@ -6,8 +6,8 @@ package Diary.model;
  * 3. 메서드 정의
  * 	3_1. 일기 저장 메서드 
  * 	3_2. 일기 목록 출력 메서드 정의
- * 	3_3. 일기 삭제 메서드 정의 //미
- * 	3_4. 일기 편집 메서드 정의 //미
+ * 	3_3. 일기 삭제 메서드 정의
+ * 	3_4. 일기 편집 메서드 정의
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
