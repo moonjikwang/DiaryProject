@@ -1,26 +1,26 @@
 package Diary.view;
 /*
  * 1. 윈도우 빌더 밑그림
- * 2. 저장버튼 : 저장메서드 연결
- * 3. 목록 출력 : 출력메서드 연결 //
- * 4. 목록 선택버튼 -> 일기 출력 및 편집 : update //
- * 5. 목록 선택버튼 -> 삭제버튼 : 데이터삭제 //
+ * 2. 저장버튼
+ * 3. 목록 출력
+ * 4. 목록 i 선택 -> 일기 출력 및 편집 : update
+ * 5. 목록 i 선택 -> 삭제버튼 : 데이터삭제
  */
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -46,14 +46,7 @@ public class JournalView  extends JFrame {
 	private int row;
 	int updateNum;
 	JPanel panel_jourInput;
-	/*
-	String columnNames[] = {"날짜","텍스트"};
-	//Jlist에 출력할 데이터 배열
-		String data[][] = {
-				{"2023-01-19","텍스트_1"},
-				{"2023-01-19","텍스트_2"}};
-//		DefaultListModel<String> model = new DefaultListModel<String>();	
-	*/
+	JournalDTO jdto;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -119,7 +112,7 @@ public class JournalView  extends JFrame {
 					String userId = "SY";
 					JournalDTO journaldto = new JournalDTO(userId,journal);
 					JournalDAO.getInstance().registerJournal(journaldto);
-					panel_jourInput.revalidate();
+					panel_jourInput.revalidate();//새로 그리고 빈화면 세팅
 					panel_jourInput.repaint();
 					jourDesc.setText("");
 					list.setVisible(false);
@@ -137,14 +130,11 @@ public class JournalView  extends JFrame {
 		
 		//--------------일기 입력----------------------
 		jourDesc = new FlatTextArea();
+		jourDesc.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		jourDesc.setText("안녕하세요:)\r\n스마트 다이어리입니다.\r\n\r\n오늘의 일기나 기분을 기록으로 남겨보세요. \r\n기록을 남기고 하단의 저장을 누르시면 일기가 저장됩니다.\r\n저장된 일기는 왼쪽의 목록에서 확인 할 수 있습니다.\r\n\r\n매일 매일 기록을 쌓아보세요.\r\n");
 		jourDesc.setBounds(0, 0, 615, 349);
 		panel_jourInput.add(jourDesc);
 		//-------------일기 입력 종료------------------
-		
-		JTextField jf1 = new JTextField();
-		JTextField jf2 = new JTextField();
-		
 		
 		//-------------삭제 버튼, 리스트 클릭 -> 삭제-----------------------
 		FlatButton delBtn;
@@ -158,21 +148,16 @@ public class JournalView  extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						System.out.println(updateNum);
-						JournalDAO.getInstance().deleteJour(updateNum); //이 부분 고민,,
+						JournalDAO.getInstance().deleteJour(updateNum);
+						panel_jourInput.revalidate(); //빈화면 보이게 만들기
+						panel_jourInput.repaint();
+						jourDesc.setText("");
 						list.setVisible(false);
 						list.removeAll();
 						viewJourList();
 						list.setVisible(true);
 					}
 				});
-				
-//				if(e.getSource()==delBtn) {
-//					String userId = "SY";
-//					String journal = jourDesc.getText();
-//					JournalDAO.getInstance().deleteJour(row);
-//					panel_jourInput.revalidate();
-//					panel_jourInput.repaint();
-//				}
 			}
 		});
 		
@@ -182,42 +167,48 @@ public class JournalView  extends JFrame {
 		panel_jourInput.add(delBtn);
 		//-------------삭제 버튼 종료-------------------
 		
+		//-------------수정 버튼------------------------
+		FlatButton editBtn;
+		editBtn = new FlatButton("수정");
+		editBtn.setFont(new Font("나눔고딕", Font.BOLD, 21));
+		editBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				jdto = new JournalDTO();
+				jdto.setjournal(jourDesc.getText());
+				jdto.setNum(updateNum);
+				JournalDAO.getInstance().updateJour(jdto);
+				
+				list.remove(1);
+				list.setVisible(false);
+				list.removeAll();
+				viewJourList();
+				list.setVisible(true);
+				
+			}
+		});
+		
+		editBtn.setBackground(new Color(242, 206, 96));
+		editBtn.setBounds(222, 359, 119, 53);
+		panel_jourInput.add(editBtn);
+		//-------------수정 버튼 종료-------------------
+		
 		JPanel panel_jourList = new JPanel();
 		panel_jourList.setBackground(new Color(251, 234, 189));
-		panel_jourList.setBounds(12, 10, 242, 422);
+		panel_jourList.setBounds(12, 10, 224, 422);
 		panel_2.add(panel_jourList);
 		panel_jourList.setLayout(null);
-		
-		//------------------ 리스트 출력 구현---------------
-		//리스트모델 불러오기
-//		list = new JList();
-//		list.setModel(new AbstractListModel() {
-//			String[] values = viewJourList();
-//
-//			@Override
-//			public int getSize() {
-//				return values.length;
-//			}
-//
-//			@Override
-//			public Object getElementAt(int index) {
-//				return values[index];
-//			}
-//		});
 		
 		list = new JPanel();
 		viewJourList();
 		list.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		list.setBackground(new Color(255, 255, 255));
-		list.setBounds(0, 0, 242, 422);
+		list.setBounds(0, 0, 224, 422);
 		
 		panel_jourList.add(list);
 		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(0, 0, 17, 422);
-		panel_jourList.add(scrollBar);
-
-	
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 234, 151));
 		panel_1.setBounds(0, 0, 203, 111);
@@ -239,7 +230,10 @@ public class JournalView  extends JFrame {
 	
 	//------------------리스트 조회-------------------------
 	private void viewJourList() {
-
+		
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints gbc = new GridBagConstraints();
+		
 		JournalDTO jDTO = new JournalDTO();
 		jDTO.setUserId(userid);
 		
@@ -250,24 +244,26 @@ public class JournalView  extends JFrame {
 		for(int i = 0; i < jours.size(); i++) {
 			JournalDTO updateDTO = jours.get(i);
 			String date = updateDTO.getRegdate().toString();
-			String memo = updateDTO.getjournal().substring(0, 5);
+//			String memo = updateDTO.getjournal().substring(0, 6);
+			String memo = updateDTO.getjournal().length() > 7 ? updateDTO.getjournal().substring(0, 7) : updateDTO.getjournal();
 			String allmemo = updateDTO.getjournal();
 			int num = updateDTO.getNum();
 			
-			jourList[i] = new JButton(date + ":" + memo);
+			jourList[i] = new JButton(date + " : " + memo);
 			jourList[i].setHorizontalAlignment(SwingConstants.LEFT);
 			jourList[i].setBackground(Color.WHITE);
-			jourList[i].setFont(new Font("나눔고딕", Font.PLAIN, 14));
+			jourList[i].setFont(new Font("나눔고딕", Font.PLAIN, 13));
 			jourList[i].setBorderPainted(false);
+//			jourList[i].set
 			System.out.println(date + ":" + memo);
 			list.add(jourList[i]);
 			jourList[i].addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println(updateDTO.getNum() + ":" + updateDTO.getRegdate());
+					System.out.println(updateDTO.getNum() + " : " + updateDTO.getRegdate());
 					updateNum = updateDTO.getNum();
-					System.out.println(updateNum + ":" + date);
+					System.out.println(updateNum + " : " + date);
 					System.out.println();
 					System.out.println(num);
 					
@@ -276,31 +272,19 @@ public class JournalView  extends JFrame {
 					
 					jourDesc.revalidate();
 					jourDesc.repaint();
-//					panel_jourInput.revalidate();
-//					panel_jourInput.repaint();
-					
-				}
-			});
+				}//jourList 클릭이벤트 내용
+			});//jourList 클릭이벤트 종료
+			
+//			list.setLayout(gbl);//그리드정렬
+//			gbc.gridx = 1;
+//			gbc.anchor = GridBagConstraints.NORTHWEST;
+//			gbc.weightx = 1;
+//			gbl.setConstraints(jourList[i], gbc);
+//			
+//			list.add(jourList[i]);
+//			list.updateUI();
+//			list.setVisible(true);
 		}
 		
 	}
-	
-//	//------------------리스트 조회-------------------------
-//	private String[] viewJourList() {
-//		// TODO Auto-generated method stub
-//		JournalDTO jDTO = new JournalDTO();
-//		ArrayList jours = JournalDAO.getInstance().selectJour(userid);
-//		String[] jourList = new String[jours.size()];
-//		
-//		for(int i = 0; i < jours.size(); i++) {
-//			JournalDTO dto = (JournalDTO)jours.get(i);
-//			jourList[i] = dto.getRegdate().toString();
-//			System.out.println(jourList[i]);
-//		}
-//		return jourList;
-//	}
-	
-	
-
-
 }
