@@ -134,7 +134,6 @@ public class Calender extends JFrame implements ActionListener {
 	 */
 	// 생성자 : 기본프레임 구조
 	public Calender() {
-		super("캘린더");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1050, 663);
