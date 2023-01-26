@@ -135,11 +135,7 @@ public class Calender extends JFrame implements ActionListener {
 	// 생성자 : 기본프레임 구조
 	public Calender() {
 		super("캘린더");
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1050, 663);
 		contentPane = new JPanel();

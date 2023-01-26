@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import org.json.simple.JSONObject;
 import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.text.label.FlatLabel;
@@ -55,6 +57,11 @@ public class Login extends JFrame {
 	private final JLabel logo_2 = new JLabel("");
 
 	public Login() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
