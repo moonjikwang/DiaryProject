@@ -10,26 +10,19 @@ package Diary.view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.component.FlatPanel;
 import com.mommoo.flat.text.textarea.FlatTextArea;
-
 import Diary.model.JournalDAO;
 import Diary.model.JournalDTO;
 import java.awt.event.MouseAdapter;
@@ -51,10 +44,7 @@ public class Journal extends JFrame {
 	JournalDTO jdto;
 
 
-	/**
-	 * Create the frame.
-	 */
-	@SuppressWarnings("rawtypes")
+
 	public Journal() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -186,7 +176,6 @@ public class Journal extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				jdto = new JournalDTO();
 				jdto.setjournal(jourDesc.getText());
 				jdto.setNum(updateNum);
@@ -251,9 +240,6 @@ public class Journal extends JFrame {
 
 	// ------------------리스트 조회-------------------------
 	private void viewJourList() {
-
-		GridBagLayout gbl = new GridBagLayout();
-		GridBagConstraints gbc = new GridBagConstraints();
 		JButton[] jourList;
 		JournalDTO jDTO = new JournalDTO();
 		jDTO.setUserId(userid);
