@@ -1,6 +1,7 @@
 package Diary.view;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -57,6 +58,34 @@ public class Account extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBackground(new Color(0, 0, 0, 0));
+		panel.setBounds(942, 509, 92, 82);
+		contentPane.add(panel);
+		
+		JLabel ChatbotBtn = new JLabel("");
+		ChatbotBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getSource()==ChatbotBtn) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								Chatbot frame = new Chatbot();
+								frame.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		});
+		ChatbotBtn.setIcon(new ImageIcon("img/chat.png"));
+		ChatbotBtn.setBounds(0, 0, 92, 82);
+		panel.add(ChatbotBtn);
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
