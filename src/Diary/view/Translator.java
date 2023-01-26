@@ -131,9 +131,11 @@ public class Translator extends JFrame {
 		MenuPanel.add(mainPanel);
 		
 		FlatScrollPane afterScroll = new FlatScrollPane();
+		afterScroll.setThemeColor(new Color(233, 141, 86));
 		afterScroll.setBounds(451, 44, 430, 340);
 		mainPanel.add(afterScroll);
 		FlatScrollPane beforeScroll = new FlatScrollPane();
+		beforeScroll.setThemeColor(new Color(233, 141, 86));
 		beforeScroll.setBounds(12, 44, 427, 340);
 		mainPanel.add(beforeScroll);
 		
