@@ -3,18 +3,17 @@ package Diary.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.swing.AbstractButton;
@@ -26,18 +25,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import com.mommoo.flat.button.FlatButton;
+import com.mommoo.flat.component.FlatScrollPane;
 
 import Diary.model.ScheduleDAO;
 import Diary.model.ScheduleDTO;
@@ -239,8 +236,9 @@ public class Calender extends JFrame implements ActionListener {
 		panel_5.addTab("이달의 일정", panel_5_3);
 		panel_5.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 
-		JScrollPane scrollPane = new JScrollPane(sp, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		FlatScrollPane scrollPane = new FlatScrollPane(sp, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setThemeColor(new Color(233, 141, 86));
 		panel_5_3.add(scrollPane);
 
 		panel_2.add(panel_5);
