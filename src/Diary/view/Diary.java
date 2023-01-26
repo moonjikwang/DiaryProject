@@ -10,7 +10,7 @@ public class Diary {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DiaryView frame = new DiaryView();
+					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

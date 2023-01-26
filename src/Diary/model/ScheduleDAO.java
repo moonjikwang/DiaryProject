@@ -28,7 +28,7 @@ public class ScheduleDAO {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@jikwang.net:15210/xe", "green", "1234");
-			System.out.println("커넥션 생성 성공 : " + conn);
+//			System.out.println("커넥션 생성 성공 : " + conn);
 		} catch (Exception e) {
 			System.out.println("커넥션 생성시 예외 발생 : " + e.getMessage());
 			e.printStackTrace();
@@ -125,6 +125,7 @@ public class ScheduleDAO {
 					dto.setMemo(rs.getString("MEMO"));
 					dto.setAttention(rs.getBoolean("ATTENTION"));
 					dto.setAlert_time(rs.getDate("ALERT_TIME"));
+					dto.setNum(rs.getInt("NUM"));
 
 					schedules.add(dto);
 
@@ -151,7 +152,6 @@ public class ScheduleDAO {
 //			System.out.println("["+pdto.getSdate()+"]"+pdto.getTitle()+" : "+pdto.getMemo());
 //		}
 //		
-//		
 //		System.out.println(sDTO.getSdate().substring(0, 4));
 //		System.out.println(sDTO.getSdate().substring(5,6));
 		return schedules;
@@ -165,7 +165,7 @@ public class ScheduleDAO {
 
 		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
 		Connection con = getConnection();
-		String sql = "SELECT * FROM schedule WHERE userid = ? " + "and title like ? or memo like ?" + "order by SDATE";
+		String sql = "SELECT * FROM schedule WHERE userid = ? " + "and (title like ? or memo like ?)" + "order by SDATE";
 
 		ScheduleDTO dto;
 		ResultSet rs = null;
@@ -206,9 +206,8 @@ public class ScheduleDAO {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
-					closer(con); // 지금 닫으면 다른 작업 못함
+					closer(con); 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -223,11 +222,11 @@ public class ScheduleDAO {
 	public void delete(int num) {
 		PreparedStatement pstmt = null;
 		String sql = "delete from schedule WHERE NUM =? ";
-
+		Connection con = getConnection();
 		int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?");
 
 		if (result == JOptionPane.YES_OPTION) {
-			Connection con = getConnection();
+		
 			try {
 				pstmt = con.prepareStatement(sql);
 
@@ -260,12 +259,12 @@ public class ScheduleDAO {
 	public void edit(ScheduleDTO dto) {
 		PreparedStatement pstmt = null;
 		String sql = "update schedule set  SDATE=?, TITLE=?, MEMO=?, ATTENTION=? WHERE NUM =? ";
-
+		Connection con = getConnection();
 		int result = JOptionPane.showConfirmDialog(null, "일정을 수정 하시겠습니까?");
 
 		if (result == JOptionPane.YES_OPTION) {
 
-			Connection con = getConnection();
+			
 			try {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, dto.getSdate());
@@ -290,6 +289,8 @@ public class ScheduleDAO {
 					}
 				}
 			}
+		}else {
+			System.out.println("취소했습니다");
 		}
 	}
 
