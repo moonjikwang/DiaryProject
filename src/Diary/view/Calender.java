@@ -178,6 +178,15 @@ public class Calender extends JFrame implements ActionListener {
 		panel_1.setLayout(null);
 
 		JLabel lblNewLabel_1_2 = new JLabel("New label");
+		lblNewLabel_1_2.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(e.getSource() == lblNewLabel_1_2) {
+					Menu menu = new Menu(Login.member);
+					menu.setVisible(true);
+					setVisible(false);
+				}
+			}
+		});
 		lblNewLabel_1_2.setIcon(new ImageIcon("img/logo6.png"));
 		lblNewLabel_1_2.setBounds(-25, 10, 252, 91);
 		panel_1.add(lblNewLabel_1_2);
