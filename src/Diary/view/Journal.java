@@ -65,11 +65,40 @@ public class Journal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBackground(new Color(0, 0, 0, 0));
+		panel.setBounds(942, 509, 92, 82);
+		contentPane.add(panel);
+		
+		JLabel ChatbotBtn = new JLabel("");
+		ChatbotBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getSource()==ChatbotBtn) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								Chatbot frame = new Chatbot();
+								frame.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		});
+		ChatbotBtn.setIcon(new ImageIcon("img/chat.png"));
+		ChatbotBtn.setBounds(0, 0, 92, 82);
+		panel.add(ChatbotBtn);
+		
 		JPanel AccountPanel = new JPanel();
 		AccountPanel.setBounds(0, 0, 1034, 624);
 		contentPane.add(AccountPanel);
 		AccountPanel.setLayout(null);
 
+		
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
 		panel_1_1.setBackground(new Color(255, 234, 151));

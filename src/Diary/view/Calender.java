@@ -3,6 +3,7 @@ package Diary.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -144,6 +145,34 @@ public class Calender extends JFrame implements ActionListener {
 		AccountPanel.setBounds(0, 0, 1034, 624);
 		contentPane.add(AccountPanel);
 		AccountPanel.setLayout(null);
+		
+		JPanel panel_1_2 = new JPanel();
+		panel_1_2.setLayout(null);
+		panel_1_2.setBackground(new Color(0, 0, 0, 0));
+		panel_1_2.setBounds(942, 509, 92, 82);
+		AccountPanel.add(panel_1_2);
+		
+		JLabel ChatbotBtn = new JLabel("");
+		ChatbotBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getSource()==ChatbotBtn) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								Chatbot frame = new Chatbot();
+								frame.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		});
+		ChatbotBtn.setIcon(new ImageIcon("img/chat.png"));
+		ChatbotBtn.setBounds(0, 0, 92, 82);
+		panel_1_2.add(ChatbotBtn);
 
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
@@ -925,5 +954,4 @@ public class Calender extends JFrame implements ActionListener {
 		yearCombo.setSelectedItem(yy);
 		monthCombo.setSelectedItem(mm);
 	}
-
 }
