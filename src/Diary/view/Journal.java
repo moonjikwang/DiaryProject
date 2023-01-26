@@ -245,15 +245,15 @@ public class Journal extends JFrame {
 			jourList[i].setBackground(Color.WHITE);
 			jourList[i].setFont(new Font("나눔고딕", Font.PLAIN, 13));
 			jourList[i].setBorderPainted(false);
-			System.out.println(date + ":" + memo);
+//			System.out.println(date + " : " + memo);
 			list.add(jourList[i]);
 			jourList[i].addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println(updateDTO.getNum() + " : " + updateDTO.getRegdate());
+//					System.out.println(updateDTO.getNum() + " : " + updateDTO.getRegdate());
 					updateNum = updateDTO.getNum();
-					System.out.println(updateNum + " : " + date);
+//					System.out.println(updateNum + " : " + date);
 					System.out.println();
 					System.out.println(num);
 
