@@ -694,7 +694,7 @@ public class CalenderViewer extends JFrame implements ActionListener {
 		eDay.set(calYear, calMonth, 1); // 다음달 첫날에서 하루 전 날이 이번달의 막날임
 		eDay.add(Calendar.DATE, -1);
 
-		int start_Day_of_week = sDay.get(Calendar.DAY_OF_WEEK); // 첫날 요일 찾기
+		int start_Day_of_week = sDay.get(Calendar.DAY_OF_WEEK)-1; // 첫날 요일 찾기
 		int end_Day = eDay.get(Calendar.DATE);
 
 		// 달력 배열 초기화
