@@ -75,6 +75,7 @@ public class ScheduleDAO {
 			System.out.println("일정추가 성공");
 
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "내용을 입력해 주세요.");
 			System.out.println("인서트 실패 : " + e.getMessage());
 		} finally {
 			if (pstmt != null) {
