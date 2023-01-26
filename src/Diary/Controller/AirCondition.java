@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class Aircon {
+public class AirCondition {
 	public static JSONObject airCon() throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=KcWb85U8KXjc0sKRCahwAYRTO3fYMRWuPjJmeWIHNElgOzWGjD7Odjxm%2FWgpxldHCUakujF2avJ7KzvYu7fzrw%3D%3D"); /*Service Key*/

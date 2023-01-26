@@ -1,18 +1,14 @@
 package Diary.model;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import javax.swing.JOptionPane;
-
 import org.json.simple.JSONObject;
 
-import Diary.Controller.Aircon;
+import Diary.Controller.AirCondition;
 
 public class ChatbotDAO {
 	//---------------------필드선언 및 초기화 --------------------
@@ -40,7 +36,7 @@ public class ChatbotDAO {
 		String result = null;
 		JSONObject jsonObj;
 		try {
-			jsonObj = Aircon.airCon();
+			jsonObj = AirCondition.airCon();
 		conn = getConnection();
 		if(requestText.contains("미세먼지")) {
 			result = jsonObj.get("stationName") +"" + jsonObj.get("dataTime") + " 기준\n미세먼지(PM10) 농도 : " + jsonObj.get("pm10Value") +
