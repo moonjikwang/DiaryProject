@@ -165,7 +165,7 @@ public class ScheduleDAO {
 
 		ArrayList<ScheduleDTO> schedules = null; // null로 초기화 해 버리면 호출한 쪽에서 예외가 뜨므로 빈 배열을 넘겨준다
 		Connection con = getConnection();
-		String sql = "SELECT * FROM schedule WHERE userid = ? " + "and title like ? or memo like ?" + "order by SDATE";
+		String sql = "SELECT * FROM schedule WHERE userid = ? " + "and ( title like ? or memo like ? )" + "order by SDATE";
 
 		ScheduleDTO dto;
 		ResultSet rs = null;
