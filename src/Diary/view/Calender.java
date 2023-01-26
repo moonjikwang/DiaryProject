@@ -2,6 +2,7 @@ package Diary.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -13,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.swing.AbstractButton;
@@ -31,6 +33,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import com.mommoo.flat.button.FlatButton;
@@ -45,56 +49,55 @@ public class Calender extends JFrame implements ActionListener {
 	private ImageIcon icon = new ImageIcon("img/bg.png");
 	private ImageIcon logoim = new ImageIcon("img/logo6.png");
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	/**
 	 * 클래스 변수
 	 */
-	//기본 컴포넌트
+	// 기본 컴포넌트
 	private JPanel contentPane;
 	private JPanel AccountPanel;
-	private JPanel panel;	//콤보박스의 바탕 패널
-	private JPanel panel_2;	//달력과 탭의 바탕 패널
-	JPanel panel_8;	//요일 패널
-	JPanel panel_4;	//일정 추가 패널
-	
-	//콤보박스 : 최초 날짜 세팅
-	JPanel panel_3;	//날짜 패널
-	JButton btnNewButton_2;	//월이동버튼
-	JButton btnNewButton_3;	//월이동버튼
-	JButton btnNewButton_4;	//오늘날짜보기
-	//---현재날짜 구하기
+	private JPanel panel; // 콤보박스의 바탕 패널
+	private JPanel panel_2; // 달력과 탭의 바탕 패널
+	JPanel panel_8; // 요일 패널
+	JPanel panel_4; // 일정 추가 패널
+
+	// 콤보박스 : 최초 날짜 세팅
+	JPanel panel_3; // 날짜 패널
+	JButton btnNewButton_2; // 월이동버튼
+	JButton btnNewButton_3; // 월이동버튼
+	JButton btnNewButton_4; // 오늘날짜보기
+	// ---현재날짜 구하기
 	Calendar date = Calendar.getInstance();
 	LocalDate now = LocalDate.now();
 	int nowyear = now.getYear();
 	int nowmonth = now.getMonthValue();
 	int nowdate = now.getDayOfMonth();
-	//---콤보박스에 세팅된 날짜 세팅하기
+	// ---콤보박스에 세팅된 날짜 세팅하기
 	JComboBox yearCombo;
 	DefaultComboBoxModel<Integer> yearModel = new DefaultComboBoxModel<Integer>();
 	JComboBox monthCombo;
 	DefaultComboBoxModel<Integer> monthModel = new DefaultComboBoxModel<Integer>();
-	
-	//달력내용
-	//---달력 칸수
+
+	// 달력내용
+	// ---달력 칸수
 	static final int CAL_WIDTH = 7;
 	final static int CAL_HEIGHT = 6;
 	int calDates[][] = new int[CAL_HEIGHT][CAL_WIDTH];
-	//---달력에 출력할 날짜
+	// ---달력에 출력할 날짜
 	int calYear;
 	int calMonth;
 	int calDayOfMon;
 	private FlatButton dateButs[][];
-	
-	//탭
-	JTabbedPane panel_5;	//기본적인 탭 구조
-	JPanel panel_5_2;		//이달의일정 탭
-	JPanel panel_5_3;		//상세 탭
-	JPanel panel_5_1;		//편집 탭
-	//---이달의일정
-	JPanel sp;	//검색결과 표시 패널
-	JTextField stf;	//검색창
-	//---상세
+
+	// 탭
+	JTabbedPane panel_5; // 기본적인 탭 구조
+	JPanel panel_5_2; // 이달의일정 탭
+	JPanel panel_5_3; // 상세 탭
+	JPanel panel_5_1; // 편집 탭
+	// ---이달의일정
+	JPanel sp; // 검색결과 표시 패널
+	JTextField stf; // 검색창
+	// ---상세
 	JCheckBox chk;
 	JLabel jl1;
 	JLabel jl2;
@@ -106,15 +109,14 @@ public class Calender extends JFrame implements ActionListener {
 	JButton edit;
 	JButton del;
 //	ScheduleDTO editDTO = null;
-	int editnum; //글번호 가져가기.
-	
-	
-	//일정추가 영역
-	JCheckBox chckbxNewCheckBox;	//중요체크
-	private JTextField textField;	//날짜
-	private JTextField textField_1;	//제목
-	private JTextField textField_2;	//메모
-	
+	int editnum; // 글번호 가져가기.
+
+	// 일정추가 영역
+	JCheckBox chckbxNewCheckBox; // 중요체크
+	private JTextField textField; // 날짜
+	private JTextField textField_1; // 제목
+	private JTextField textField_2; // 메모
+
 	// 일정 추가 : 텍스트 필드에 입력된 내용을 DB로 보내주기
 	ScheduleDTO sdto;
 //	MemberDTO  mdto; //할일:MemberDTO 필요
@@ -124,23 +126,20 @@ public class Calender extends JFrame implements ActionListener {
 	private String memo;
 	private boolean attention;
 
-	
-	//실행 메서드 : 본체에 이식 한 뒤 삭제예정
+	// 실행 메서드 : 본체에 이식 한 뒤 삭제예정
 
-	private String userId() {
-		String result = null;
-		if(Login.member != null) {
-			result = Login.member.getUserid();
-		}
-		return result;
-	}
 
 	/**
 	 * Create the frame.
 	 */
 	// 생성자 : 기본프레임 구조
 	public Calender() {
-
+		super("캘린더");
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1050, 663);
 		contentPane = new JPanel();
@@ -171,7 +170,7 @@ public class Calender extends JFrame implements ActionListener {
 		panel.setBackground(new Color(255, 234, 151));
 		panel.setBounds(46, 29, 380, 43);
 		panel_2.add(panel);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 234, 151));
 		panel_1.setBounds(0, 0, 203, 111);
@@ -179,16 +178,6 @@ public class Calender extends JFrame implements ActionListener {
 		panel_1.setLayout(null);
 
 		JLabel lblNewLabel_1_2 = new JLabel("New label");
-		lblNewLabel_1_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(e.getSource() == lblNewLabel_1_2) {
-					Menu menu = new Menu(Login.member);
-					menu.setVisible(true);
-					setVisible(false);
-				}
-			}
-		});
 		lblNewLabel_1_2.setIcon(new ImageIcon("img/logo6.png"));
 		lblNewLabel_1_2.setBounds(-25, 10, 252, 91);
 		panel_1.add(lblNewLabel_1_2);
@@ -200,54 +189,64 @@ public class Calender extends JFrame implements ActionListener {
 		panel_7.setBounds(438, 29, 111, 33);
 		panel_2.add(panel_7);
 
-		btnNewButton_4 = new JButton("오늘 날짜 보기");
+		btnNewButton_4 = new FlatButton("오늘 날짜 보기");
 		btnNewButton_4.setBackground(new Color(242, 206, 96));
-		btnNewButton_4.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+		btnNewButton_4.setFont(new Font("나눔고딕", Font.PLAIN, 11));
+		btnNewButton_4.setPreferredSize(new Dimension(100, 25));
+		btnNewButton_4.setForeground(Color.black);
 
 		btnNewButton_4.setBorderPainted(false);
 		btnNewButton_4.addActionListener(this);
 		panel_7.add(btnNewButton_4);
-		
-//---<달력내용 GUI>--------------------
-		init_Dates();
-//---<일정추가 영역 GUI>----------------
-		init_Addsche();
+
 //---<탭 영역>------------------------
 		init_Tabs();
-		
-//---<일정 탭>------------------------
-		
+//---<일정추가 영역 GUI>----------------
+		init_Addsche();
+//---<달력내용 GUI>--------------------
+		init_Dates();
 
+
+//---<일정 탭>------------------------
+
+	}
+
+	private String userId() {
+		String result = null;
+		if(Login.member != null) {
+			result = Login.member.getUserid();
+		}
+		return result;
 	}
 
 	private void init_Tabs() {
 
 		panel_5 = new JTabbedPane();
 
-		panel_5_2 = new JPanel(); 
-		panel_5_3 = new JPanel();	//이달의 일정
-		panel_5_1 = new JPanel();	//편집모드
-		
+		panel_5_2 = new JPanel();
+		panel_5_3 = new JPanel(); // 이달의 일정
+		panel_5_1 = new JPanel(); // 편집모드
+
 		sp = new JPanel();
 		sp.setBackground(Color.white);
-		
+
 		panel_5.setBounds(563, 29, 283, 320);
 
 		panel_5.addTab("이달의 일정", panel_5_3);
 		panel_5.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 
-		JScrollPane scrollPane = new JScrollPane(sp,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane scrollPane = new JScrollPane(sp, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_5_3.add(scrollPane);
 
 		panel_2.add(panel_5);
-		
+
 		// 상세일정
 		panel_5_2.setLayout(new BorderLayout());
 
 		chk = new JCheckBox("중요");
 		chk.setFont(new Font("나눔고딕", Font.BOLD, 12));
-	
+
 		jl1 = new JLabel("날짜");
 		jl1.setFont(new Font("나눔고딕", Font.PLAIN, 14));
 		jf1 = new JTextField();
@@ -270,10 +269,13 @@ public class Calender extends JFrame implements ActionListener {
 		jta1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		jta1.setOpaque(true);
 		jta1.setBackground(Color.white);
-		
-		quit = new JButton("닫기");
+
+		quit = new FlatButton("닫기");
 		quit.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		quit.setBackground(new Color(242, 206, 96));
+		quit.setBorderPainted(false);
+		quit.setPreferredSize(new Dimension(60, 25));
+		quit.setForeground(Color.black);
 		quit.addActionListener(new ActionListener() {
 
 			@Override
@@ -283,11 +285,14 @@ public class Calender extends JFrame implements ActionListener {
 			}
 		});
 
-		edit = new JButton("수정");
+		edit = new FlatButton("수정");
 		edit.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		edit.setBackground(new Color(242, 206, 96));
+		edit.setBorderPainted(false);
+		edit.setPreferredSize(new Dimension(60, 25));
+		edit.setForeground(Color.black);
 		edit.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sdto = new ScheduleDTO();
@@ -297,33 +302,36 @@ public class Calender extends JFrame implements ActionListener {
 				sdto.setAttention(chk.isSelected());
 				sdto.setNum(editnum);
 				ScheduleDAO.getInstance().edit(sdto);
+
 				panel_5.remove(1);
 				sp.setVisible(false);
 				sp.removeAll();
 				scheduleList();
 				sp.setVisible(true);
-								
+
 				panel_5.setSelectedIndex(0);
 
 			}
-		}); //edit 클릭이벤트
-		
+		}); // edit 클릭이벤트
 
-		del = new JButton("삭제");
+		del = new FlatButton("삭제");
 		del.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		del.setBackground(new Color(242, 206, 96));
+		del.setBorderPainted(false);
+		del.setPreferredSize(new Dimension(60, 25));
+		del.setForeground(Color.black);
 		del.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ScheduleDAO.getInstance().delete(editnum);
-				
+
 				panel_5.remove(1);
 				sp.setVisible(false);
 				sp.removeAll();
 				scheduleList();
 				sp.setVisible(true);
-								
+
 				panel_5.setSelectedIndex(0);
 			}
 		});
@@ -360,20 +368,23 @@ public class Calender extends JFrame implements ActionListener {
 
 		panel_5_2.add("South", pane2);
 
-		//이달의일정
-		//---검색파트
-		
+		// 이달의일정
+		// ---검색파트
+
 		panel_5_3.setLayout(new BorderLayout());
 
 		JPanel sf = new JPanel();
 		stf = new JTextField();
 		stf.setColumns(10);
-		JButton sbtt = new JButton("검색");
+		FlatButton sbtt = new FlatButton("검색");
 
 		sbtt.setBorderPainted(false);
 		sbtt.setBackground(new Color(242, 206, 96));
 		sbtt.setForeground(Color.black);
 		sbtt.setFont(new Font("나눔고딕", Font.PLAIN, 12));
+		sbtt.setBorderPainted(false);
+		sbtt.setPreferredSize(new Dimension(60, 25));
+		sbtt.setForeground(Color.black);
 		sbtt.addActionListener(new ActionListener() {
 
 			@Override
@@ -384,12 +395,12 @@ public class Calender extends JFrame implements ActionListener {
 
 				if (!stf.getText().equals("")) {
 					scheduleList();
-					} // if문 끝
+				} // if문 끝
 				else {
 					JTextPane msg = new JTextPane();
 					msg.setText("검색어를 입력해주세요");
 					msg.setFont(new Font("나눔고딕", Font.PLAIN, 12));
-					msg.setBackground(new Color(240, 240, 240));
+					msg.setBackground(Color.white);
 					sp.add(msg);
 					sp.updateUI();
 					sp.setVisible(true);
@@ -399,18 +410,18 @@ public class Calender extends JFrame implements ActionListener {
 
 		sf.add(stf);
 		sf.add(sbtt);
-		
-		//검색창 초기화
-		JButton reset = new JButton("초기화");
+
+		// 검색창 초기화
+		FlatButton reset = new FlatButton("초기화");
 
 		reset.setBorderPainted(false);
 		reset.setBackground(new Color(242, 206, 96));
+		reset.setPreferredSize(new Dimension(60, 25));
 		reset.setForeground(Color.black);
-		reset.setSize(500, 500);
 		reset.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 
 		reset.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sp.setVisible(false);
@@ -419,13 +430,13 @@ public class Calender extends JFrame implements ActionListener {
 				sp.setVisible(true);
 			}
 		});
-		
+
 		sf.add(reset);
 
 		panel_5_3.add("North", sf);
 
 		// 이달의 일정 파트
-		
+
 		scheduleList();
 
 //		panel_5_3.add("Center", sp);
@@ -434,13 +445,16 @@ public class Calender extends JFrame implements ActionListener {
 //		panel_5_3.add(sp);
 	}
 
+	
+	
+	
+
 	private void scheduleList() {
 		int yy = (Integer) yearCombo.getSelectedItem();
 		int mm = (Integer) monthCombo.getSelectedItem();
-		
+
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
-		
 
 		ScheduleDTO sDTO = new ScheduleDTO();
 		sDTO.setUserId(userid);
@@ -449,9 +463,9 @@ public class Calender extends JFrame implements ActionListener {
 		String keyword = stf.getText();
 		ArrayList<ScheduleDTO> schedules;
 
-		if( keyword.equalsIgnoreCase("")) {
+		if (keyword.equalsIgnoreCase("")) {
 			schedules = ScheduleDAO.getInstance().select(sDTO);
-		}else {
+		} else {
 			schedules = ScheduleDAO.getInstance().search(sDTO, keyword);
 		}
 
@@ -480,30 +494,28 @@ public class Calender extends JFrame implements ActionListener {
 					jf2.setText(title);
 					jta1.setText(memo);
 					chk.setSelected(att);
-					
+
 					panel_5.addTab("상세일정", panel_5_2);
 					panel_5.setSelectedIndex(1);
-					
-				}//리스트 아이템 클릭이벤트내용
-			});//리스트 아이템 클릭이벤트
-			
+
+				}// 리스트 아이템 클릭이벤트내용
+			});// 리스트 아이템 클릭이벤트
+
 			sp.setLayout(gbl);
 			gbc.gridx = 1;
 			gbc.anchor = GridBagConstraints.NORTHWEST;
 			gbc.weightx = 0.9;
 			gbl.setConstraints(items[i], gbc);
-			
+
 			sp.add(items[i]);
 			sp.updateUI();
 			sp.setVisible(true);
 			stf.setText(null);
-			
-		}//for문 끝
-		
-		
-		
-	}//schedeleList 끝
-	
+
+		} // for문 끝
+
+	}// schedeleList 끝
+
 	private void init_Addsche() {
 		JPanel jp1 = new JPanel();
 		jp1.setBackground(new Color(255, 255, 255, 0));
@@ -516,7 +528,7 @@ public class Calender extends JFrame implements ActionListener {
 
 		chckbxNewCheckBox = new JCheckBox("중요");
 		chckbxNewCheckBox.setFont(new Font("나눔고딕", Font.PLAIN, 12));
-		
+
 		chckbxNewCheckBox.setBackground(new Color(255, 242, 192));
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -575,10 +587,12 @@ public class Calender extends JFrame implements ActionListener {
 
 		JPanel jp2 = new JPanel();
 		jp2.setBackground(new Color(255, 255, 255, 0));
-		JButton btnNewButton = new JButton("지우기");
+		FlatButton btnNewButton = new FlatButton("지우기");
 		btnNewButton.setBackground(new Color(242, 206, 96));
 		btnNewButton.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		btnNewButton.setBorderPainted(false);
+		btnNewButton.setPreferredSize(new Dimension(70, 25));
+		btnNewButton.setForeground(Color.black);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -591,10 +605,12 @@ public class Calender extends JFrame implements ActionListener {
 		});
 		jp2.add(btnNewButton);
 
-		JButton btnNewButton_1 = new JButton("일정추가");
+		FlatButton btnNewButton_1 = new FlatButton("일정추가");
 		btnNewButton_1.setBackground(new Color(242, 206, 96));
 		btnNewButton_1.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		btnNewButton_1.setBorderPainted(false);
+		btnNewButton_1.setPreferredSize(new Dimension(70, 25));
+		btnNewButton_1.setForeground(Color.black);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -631,10 +647,12 @@ public class Calender extends JFrame implements ActionListener {
 	private void init_Combo() {
 		yearCombo = new JComboBox();
 		setYear();
-		btnNewButton_2 = new JButton("◀");
+		btnNewButton_2 = new FlatButton("◀");
 		btnNewButton_2.setToolTipText("이전월");
+		btnNewButton_2.setFont(new Font("나눔 고딕", Font.PLAIN, 14));
 		btnNewButton_2.setBackground(new Color(242, 206, 96));
 		btnNewButton_2.setBorderPainted(false);
+		btnNewButton_2.setPreferredSize(new Dimension(50, 25));
 		btnNewButton_2.addActionListener(this);
 		panel.add(btnNewButton_2);
 		yearCombo.setSelectedItem(nowyear);
@@ -642,7 +660,7 @@ public class Calender extends JFrame implements ActionListener {
 		panel.add(yearCombo);
 
 		JLabel lblNewLabel_4 = new JLabel("년");
-		lblNewLabel_4.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
+		lblNewLabel_4.setFont(new Font("나눔 고딕", Font.PLAIN, 12));
 		panel.add(lblNewLabel_4);
 
 		monthCombo = new JComboBox();
@@ -655,12 +673,14 @@ public class Calender extends JFrame implements ActionListener {
 		monthCombo.addActionListener(this);
 
 		JLabel lblNewLabel_5 = new JLabel("월");
-		lblNewLabel_5.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
+		lblNewLabel_5.setFont(new Font("나눔고딕", Font.PLAIN, 12));
 		panel.add(lblNewLabel_5);
 
-		btnNewButton_3 = new JButton("▶");
+		btnNewButton_3 = new FlatButton("▶");
 		btnNewButton_3.setToolTipText("다음월");
 		btnNewButton_3.setBackground(new Color(242, 206, 96));
+		btnNewButton_3.setFont(new Font("나눔고딕", Font.PLAIN, 14));
+		btnNewButton_3.setPreferredSize(new Dimension(50, 25));
 		btnNewButton_3.setBorderPainted(false);
 		btnNewButton_3.addActionListener(this);
 		panel.add(btnNewButton_3);
@@ -695,7 +715,7 @@ public class Calender extends JFrame implements ActionListener {
 		eDay.set(calYear, calMonth, 1); // 다음달 첫날에서 하루 전 날이 이번달의 막날임
 		eDay.add(Calendar.DATE, -1);
 
-		int start_Day_of_week = sDay.get(Calendar.DAY_OF_WEEK)-1; // 첫날 요일 찾기
+		int start_Day_of_week = sDay.get(Calendar.DAY_OF_WEEK) - 1; // 첫날 요일 찾기
 		int end_Day = eDay.get(Calendar.DATE);
 
 		// 달력 배열 초기화
@@ -751,6 +771,8 @@ public class Calender extends JFrame implements ActionListener {
 		int yy = (Integer) yearCombo.getSelectedItem();
 		int mm = (Integer) monthCombo.getSelectedItem();
 
+		
+		
 		dateButs = new FlatButton[6][7]; // 날짜 칸을 버튼의 이중배열로 정의
 
 		for (int i = 0; i < CAL_HEIGHT; i++) {
@@ -785,6 +807,8 @@ public class Calender extends JFrame implements ActionListener {
 				dateButs[i][j].setFont(new Font("나눔고딕", Font.PLAIN, 12));
 				dateButs[i][j].setForeground(Color.black);
 
+
+				
 				if (j == 0)
 					dateButs[i][j].setBackground(new Color(255, 220, 220)); // 일요일 색지정
 				else if (j == 6)
@@ -825,15 +849,13 @@ public class Calender extends JFrame implements ActionListener {
 		sdto.setMemo(memo);
 		sdto.setAttention(attention);
 
+		textField.setText("");
 		textField_1.setText("");
 		textField_2.setText("");
 		chckbxNewCheckBox.setSelected(false);
-		
-		
 
 		int result = ScheduleDAO.getInstance().insert(sdto);
 	}
-
 
 //---------------------<기능 구현>--------------------------
 	public void actionPerformed(ActionEvent e) {
@@ -849,7 +871,7 @@ public class Calender extends JFrame implements ActionListener {
 			makeCalendar(panel_3, makeCalData(yy, mm));
 
 			panel_3.setVisible(true); // 패널 재출력
-			
+
 			sp.setVisible(false);
 			sp.removeAll();
 			scheduleList();
@@ -868,7 +890,7 @@ public class Calender extends JFrame implements ActionListener {
 			}
 			makeCalendar(panel_3, makeCalData(yy, mm));
 			panel_3.setVisible(true);
-			
+
 			sp.setVisible(false);
 			sp.removeAll();
 			scheduleList();
