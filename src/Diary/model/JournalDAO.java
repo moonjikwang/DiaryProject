@@ -48,7 +48,8 @@ public class JournalDAO {
 		int result = 0;
 		try {
 			conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("insert into diary (num,userid,memo,regdate) values (numbering.nextval,?,?,sysdate)");// ,
+			PreparedStatement pstmt = conn.prepareStatement(
+					"insert into diary (num,userid,memo,regdate) values (numbering.nextval,?,?,sysdate)");// ,
 			// SCHEDULE_SEQ.NEXTVAL
 			pstmt.setString(1, Jouranl.getUserId());
 			pstmt.setString(2, Jouranl.getjournal());
@@ -66,7 +67,7 @@ public class JournalDAO {
 
 	// ----------------리스트 출력---------
 	public ArrayList<JournalDTO> selectJour(JournalDTO jDTO) {
-		
+
 		String id = jDTO.getUserId();
 		ArrayList<JournalDTO> jours = null;
 		Connection con = getConnection();
@@ -111,7 +112,6 @@ public class JournalDAO {
 				}
 			}
 		}
-
 		return jours;
 	}
 
@@ -120,20 +120,20 @@ public class JournalDAO {
 	public void updateJour(JournalDTO dto) {
 		PreparedStatement pstmt = null;
 		String sql = "Update DIARY SET memo = ? where num  = ? ";
-
+		Connection conn = getConnection();
 		int result = JOptionPane.showConfirmDialog(null, "일기를 수정할까요?");
 
 		if (result == JOptionPane.YES_OPTION) {
 
-			Connection conn = getConnection();
 			try {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, dto.getjournal());
+				pstmt.setInt(2, dto.getNum());
 				result = pstmt.executeUpdate();
 				System.out.println("일기가 수정되었습니다.");
 
 			} catch (SQLException e) {
-				System.out.println("일기 수정이 실패했습니다." + e.getMessage());
+				System.out.println("일기 수정 실패" + e.getMessage());
 			} finally {
 				if (pstmt != null) {
 					try {
@@ -144,6 +144,8 @@ public class JournalDAO {
 					}
 				}
 			}
+		} else {
+			System.out.println("일기 수정 취소");
 		}
 	}
 
@@ -162,7 +164,7 @@ public class JournalDAO {
 				pstmt.setInt(1, num);
 				pstmt.executeUpdate();
 				System.out.println("일기 삭제 완료!");
-				
+
 			} catch (Exception e) {
 				System.out.println("삭제 실패");
 				e.printStackTrace();
