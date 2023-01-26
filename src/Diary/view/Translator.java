@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import com.mommoo.flat.text.label.FlatLabel;
 import com.mommoo.flat.button.FlatButton;
 import com.mommoo.flat.text.textarea.FlatTextArea;
+import com.mommoo.flat.component.FlatScrollPane;
 
 public class Translator extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -129,17 +130,24 @@ public class Translator extends JFrame {
 		mainPanel.setBounds(70, 121, 893, 442);
 		MenuPanel.add(mainPanel);
 		
+		FlatScrollPane afterScroll = new FlatScrollPane();
+		afterScroll.setBounds(451, 44, 430, 340);
+		mainPanel.add(afterScroll);
+		FlatScrollPane beforeScroll = new FlatScrollPane();
+		beforeScroll.setBounds(12, 44, 427, 340);
+		mainPanel.add(beforeScroll);
+		
 		FlatTextArea beforeArea = new FlatTextArea();
 		beforeArea.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 		beforeArea.setBounds(12, 44, 427, 340);
 		
-		mainPanel.add(beforeArea);
+		beforeScroll.setViewportView(beforeArea);
 		
 		FlatTextArea afterArea = new FlatTextArea();
 		afterArea.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 		afterArea.setEditable(false);
 		afterArea.setBounds(451, 44, 427, 340);
-		mainPanel.add(afterArea);
+		afterScroll.setViewportView(afterArea);
 		
 		afterArea.addMouseListener(new MouseAdapter() {
 			@Override
