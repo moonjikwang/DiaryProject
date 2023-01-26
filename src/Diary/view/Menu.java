@@ -119,7 +119,7 @@ public class Menu extends JFrame {
 		logoPanel_1.setBounds(361, 96, 298, 54);
 		MenuPanel.add(logoPanel_1);
 		
-		JLabel logo_1 = new JLabel("SMARAT DIARY");
+		JLabel logo_1 = new JLabel("SMART DIARY");
 		logo_1.setHorizontalAlignment(SwingConstants.CENTER);
 		logo_1.setForeground(new Color(95, 80, 89));
 		logo_1.setFont(new Font("Comic Sans MS", Font.BOLD, 29));
