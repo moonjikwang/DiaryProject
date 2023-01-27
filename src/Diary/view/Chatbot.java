@@ -28,9 +28,8 @@ import java.awt.event.KeyEvent;
 
 
 public class Chatbot extends JFrame {
-	private ImageIcon icon = new ImageIcon("img/chatBg.png");
-	private ImageIcon talk = new ImageIcon("img/talk.png");
-	Image img = new ImageIcon("img/chatBg.png").getImage();
+	private ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("chatBg.png"));
+	Image img = new ImageIcon(getClass().getClassLoader().getResource("chatBg.png")).getImage();
 	
 	/**
 	 * 
@@ -151,7 +150,6 @@ public class Chatbot extends JFrame {
 		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(0, 0, 312, 50);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setIcon(talk);
 		myTalkPanel.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel = new JLabel("");

@@ -29,8 +29,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Journal extends JFrame {
-	private ImageIcon icon = new ImageIcon("img/bg.png");
-	private ImageIcon logoim = new ImageIcon("img/logo6.png");
+	private ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("bg.png"));
+	private ImageIcon logoim = new ImageIcon(getClass().getClassLoader().getResource("logo6.png"));
 	/**
 	 * 
 	 */
@@ -79,7 +79,7 @@ public class Journal extends JFrame {
 				}
 			}
 		});
-		ChatbotBtn.setIcon(new ImageIcon("img/chat.png"));
+		ChatbotBtn.setIcon(new ImageIcon(getClass().getClassLoader().getResource("chat.png")));
 		ChatbotBtn.setBounds(0, 0, 92, 82);
 		panel.add(ChatbotBtn);
 		
