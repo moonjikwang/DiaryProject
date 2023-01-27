@@ -11,9 +11,6 @@ public class Loading extends JWindow {
 	JProgressBar jb;
 	int i=0,num=0;     
 
-   /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 Image splashScreen;
    ImageIcon imageIcon;
@@ -55,14 +52,5 @@ Image splashScreen;
       super.paint(g);
       g.drawImage(splashScreen, 0, 0, this);
    }
-   public static void main(String[]args) {
-      Loading splash = new Loading();
-      try {
-         splash.dispose();
-			Login frame = new Login();
-			frame.setVisible(true);
-      } catch(Exception e) {
-         e.printStackTrace();
-      }
-   }
+
 }
