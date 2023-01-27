@@ -303,7 +303,10 @@ public class Login extends JFrame {
 							int logInVal = MemberDAO.getInstance().registerId(newMem);
 							switch (logInVal) {
 							case 1:
-								signUpAlert.setText("회원가입 완료");
+								JOptionPane.showMessageDialog(fltbtnSignUp, "회원가입완료");
+								logInpanel.setVisible(true);
+								btnPanel.setVisible(true);
+								signUpPanel.setVisible(false);
 								break;
 							default:
 								signUpAlert.setText("회원가입 실패");
