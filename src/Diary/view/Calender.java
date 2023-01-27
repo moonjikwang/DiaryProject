@@ -44,8 +44,8 @@ public class Calender extends JFrame implements ActionListener {
 	/**
 	 * 템플릿 사용 변수
 	 */
-	private ImageIcon icon = new ImageIcon("img/bg.png");
-	private ImageIcon logoim = new ImageIcon("img/logo6.png");
+	private ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("bg.png"));
+	private ImageIcon logoim = new ImageIcon(getClass().getClassLoader().getResource("logo6.png"));
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -170,7 +170,7 @@ public class Calender extends JFrame implements ActionListener {
 				}
 			}
 		});
-		ChatbotBtn.setIcon(new ImageIcon("img/chat.png"));
+		ChatbotBtn.setIcon(new ImageIcon(getClass().getClassLoader().getResource("chat.png")));
 		ChatbotBtn.setBounds(0, 0, 92, 82);
 		panel_1_2.add(ChatbotBtn);
 
@@ -208,7 +208,7 @@ public class Calender extends JFrame implements ActionListener {
 				}
 			}
 		});
-		lblNewLabel_1_2.setIcon(new ImageIcon("img/logo6.png"));
+		lblNewLabel_1_2.setIcon(new ImageIcon(getClass().getClassLoader().getResource("logo6.png")));
 		lblNewLabel_1_2.setBounds(-25, 10, 252, 91);
 		panel_1.add(lblNewLabel_1_2);
 

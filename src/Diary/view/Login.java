@@ -35,7 +35,7 @@ public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ImageIcon logoim = new ImageIcon("img/logo6.png");
+	private ImageIcon logoim = new ImageIcon(getClass().getClassLoader().getResource("logo6.png"));
 	private JPanel contentPane;
 	private JPanel bgPanel = new JPanel();
 	private FlatLabel loginAlert = new FlatLabel();
@@ -63,7 +63,6 @@ public class Login extends JFrame {
 			e.printStackTrace();
 		}
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1050, 663);
 		
@@ -130,7 +129,7 @@ public class Login extends JFrame {
 						}
 					}
 				});
-				ChatbotBtn.setIcon(new ImageIcon("img/chat.png"));
+				ChatbotBtn.setIcon(new ImageIcon(getClass().getClassLoader().getResource("chat.png")));
 				ChatbotBtn.setBounds(0, 0, 92, 82);
 				panel.add(ChatbotBtn);
 				
@@ -353,7 +352,7 @@ public class Login extends JFrame {
 						bg.setBounds(0, 0, 1040, 630);
 						bgPanel.add(bg);
 						bg.setForeground(new Color(255, 252, 250));
-						ImageIcon bg6 = new ImageIcon("img/bg6.png");
+						ImageIcon bg6 = new ImageIcon(getClass().getClassLoader().getResource("bg6.png"));
 						bg.setIcon(bg6);
 			
 				
